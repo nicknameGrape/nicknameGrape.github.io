@@ -2,6 +2,23 @@
 	<head>
 		<title>Welcome</title>
 		<link rel="icon" type="image/png" href="favicon.png">
+		<style>
+video {
+	height: 20vh;
+}
+figcaption {
+	text-align: center;
+}
+#videos {
+	display: flex;
+}
+#slideshows {
+	display: flex;
+}
+#slideshows img {
+	height: 10vh;
+}
+		</style>
 	</head>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-C5MPB2T6KH"></script>
@@ -37,6 +54,35 @@
 					<a href="https://nicknameGrape.github.io/time_trials/">Time Trials</a>
 				</li>
 			</ul>
+		</p>
+		<p>
+			Here are some videos:
+			<div id="videos">
+				<figure>
+					<video src="count_and_move_1-20.mp4" poster="count_and_move_1-20_poster.png" controls>Count 1 to 20</video>
+					<figcaption>Count from 1 to 20</figcaption>
+				</figure>
+				<figure>
+					<video src="count_and_move_20-1.mp4" poster="count_and_move_20-1_poster.png" controls>Count Down from 20 to 1</video>
+					<figcaption>Count Down from 20 to 1</figcaption>
+				</figure>
+				<figure>
+					<video src="five_little_ducks.mp4" poster="five_little_ducks_poster.jpg" controls>Five Little Ducks</video>
+					<figcaption>Five Little Ducks
+</figcaption>
+				</figure>
+			</div>
+		</p>
+		<p>
+			Here are some slideshows in pdf format:
+			<div id="slideshows">
+				<figure>
+					<a href="count_spiders.pdf">
+						<img src="count_spiders_poster.jpg"/>
+					</a>
+					<figcaption>Count Spiders</figcaption>
+				</figure>
+			</div>
 		</p>
 	</body>
 </html>
