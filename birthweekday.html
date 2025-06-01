@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+body {
+	display: grid;
+	grid-template-rows: 30vh 30vh 40vh;
+	margin:0;
+	padding:0;
+}
+
+#birthweekday {
+	display: flex;
+	flex-direction: column;
+	background-color: pink;
+}
+
+#months {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: orange;
+	height: 100%;
+}
+
+.month {
+	width: 30%;
+	color: blue;
+	font-size: 5vh;
+	text-align: center;
+}
+
+#dates {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 5vh;
+	height: 100%;
+	background-color: green;
+}
+
+.date {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 14%;
+	color: yellow;
+}
+
+#input {
+	font-size: 10vh;
+	text-align: center;
+	color: purple;
+}
+
+#result {
+	color: black;
+	font-size: 10vh;
+	text-align: center;
+}
+	</style>
+</head>
+<body>
+	<div id="birthweekday">
+		<div id="input" >month, date</div>
+		<div id="result" style="">day of the week</div>
+	</div>
+	<div id="months">
+		<div class="month" onclick="month = 0; setMonth(this)">January</div>
+		<div class="month" onclick="month = 1; setMonth(this)">February</div>
+		<div class="month" onclick="month = 2; setMonth(this)">March</div>
+		<div class="month" onclick="month = 3; setMonth(this)">April</div>
+		<div class="month" onclick="month = 4; setMonth(this)">May</div>
+		<div class="month" onclick="month = 5; setMonth(this)">June</div>
+		<div class="month" onclick="month = 6; setMonth(this)">July</div>
+		<div class="month" onclick="month = 7; setMonth(this)">August</div>
+		<div class="month" onclick="month = 8; setMonth(this)">September</div>
+		<div class="month" onclick="month = 9; setMonth(this)">October</div>
+		<div class="month" onclick="month = 10; setMonth(this)">November</div>
+		<div class="month" onclick="month = 11; setMonth(this)">December</div>
+	</div>
+	<div id="dates">
+		<div class="date" onclick="day = 1; setDate(this);">1st</div>
+		<div class="date" onclick="day = 2; setDate(this);">2nd</div>
+		<div class="date" onclick="day = 3; setDate(this);">3rd</div>
+		<div class="date" onclick="day = 4; setDate(this);">4th</div>
+		<div class="date" onclick="day = 5; setDate(this);">5th</div>
+		<div class="date" onclick="day = 6; setDate(this);">6th</div>
+		<div class="date" onclick="day = 7; setDate(this);">7th</div>
+		<div class="date" onclick="day = 8; setDate(this);">8th</div>
+		<div class="date" onclick="day = 9; setDate(this);">9th</div>
+		<div class="date" onclick="day = 10; setDate(this);">10th</div>
+		<div class="date" onclick="day = 11; setDate(this);">11th</div>
+		<div class="date" onclick="day = 12; setDate(this);">12th</div>
+		<div class="date" onclick="day = 13; setDate(this);">13th</div>
+		<div class="date" onclick="day = 14; setDate(this);">14th</div>
+		<div class="date" onclick="day = 15; setDate(this);">15th</div>
+		<div class="date" onclick="day = 16; setDate(this);">16th</div>
+		<div class="date" onclick="day = 17; setDate(this);">17th</div>
+		<div class="date" onclick="day = 18; setDate(this);">18th</div>
+		<div class="date" onclick="day = 19; setDate(this);">19th</div>
+		<div class="date" onclick="day = 20; setDate(this);">20st</div>
+		<div class="date" onclick="day = 21; setDate(this);">21th</div>
+		<div class="date" onclick="day = 22; setDate(this);">22nd</div>
+		<div class="date" onclick="day = 23; setDate(this);">23rd</div>
+		<div class="date" onclick="day = 24; setDate(this);">24th</div>
+		<div class="date" onclick="day = 25; setDate(this);">25th</div>
+		<div class="date" onclick="day = 26; setDate(this);">26th</div>
+		<div class="date" onclick="day = 27; setDate(this);">27th</div>
+		<div class="date" onclick="day = 28; setDate(this);">28th</div>
+		<div class="date" onclick="day = 29; setDate(this);">29th</div>
+		<div class="date" onclick="day = 30; setDate(this);">30th</div>
+		<div class="date" onclick="day = 31; setDate(this);">31st</div>
+	</div>
+	<script>
+		var oldestBirthYear = parseInt(prompt("Please enter the \"school year\" (学年) in which you were born.  This will be the same as the calendar year, unless you were born in January, February, or March, in which case please use the year before you were born."));
+		var year, month, day;
+		var inputDiv = document.getElementById("input");
+		var resultDiv = document.getElementById("result");
+
+		var setMonth = function (element) {
+			if (month <= 2) {
+				year = oldestBirthYear + 1;
+			} else {
+				year = oldestBirthYear;
+			}
+			console.log("Month is", month);
+			inputDiv.innerHTML = year + " " + element.innerHTML;
+			resultDiv.innerHTML = "";
+		}
+
+		var setDate = function (element) {
+			console.log("Date is", day);
+			inputDiv.innerHTML += " " + element.innerHTML;
+
+			var result = new Date(year, month, day);
+			resultDiv.innerHTML = result.toLocaleString('en-GB', { weekday: 'long' }) + " " + result.toLocaleString('ja-JP', { weekday: 'long' });
+		}
+	</script>
+</body>
+</html>
