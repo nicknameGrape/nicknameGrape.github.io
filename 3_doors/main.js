@@ -69,7 +69,7 @@ require(["Loader", "mousetrap.min", "HatDraw"], function (Loader, Mousetrap, Hat
 			console.log("animating");
 		}
 		
-		["cartoon_cat.png", "xenomorph.png", "sena_keiko_no_obake.png", "slimer.png", "five_nights_bear.png", "trex.png", "chucky.png", "it.png", "jaian.png", "pigumon.png", "stormtrooper.png", "creeper.png", "monster.png", "ghost.png", "bear.png", "tentacle.png"].forEach(function (src) {
+		["cartoon_cat.png", "xenomorph.png", "sena_keiko_no_obake.png", "slimer.png", "five_nights_bear.png", "trex.png", "chucky.png", "it.png", "jaian.png", "pigumon.png", "stormtrooper.png", "creeper.png", "monster.png", "ghost.png", "bear.png", "tentacle.png", "huggy_wuggy.png", "tung_tung_tung_sahur.png"].forEach(function (src) {
 			MONSTERS.push(game.loader.newImageAsset("img/" + src, onload));
 		});
 		["three_doors1.jpg", "three_doors2.jpg", "three_doors3.jpg"].forEach(function (src) {
