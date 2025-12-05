@@ -1,7 +1,7 @@
 <html>
 	<meta charset="utf-8">
 	<head>
-		<title>Welcome</title>
+		<title>the Back Room</title>
 		<link rel="icon" type="image/png" href="favicon.png">
 		<style>
 video {
@@ -25,6 +25,21 @@ figcaption {
 	color: black;
 	padding: 10px;
 }
+#minigames {
+	display: grid;
+	/* grid-template-columns: 20vw 80vw; */
+}
+#minigamePreview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: gray;
+	color: white;
+}
+#minigameLinks {
+	display: flex;
+	flex-direction: column;
+}
 #videos {
 	display: flex;
 	flex-wrap: wrap;
@@ -32,6 +47,7 @@ figcaption {
 #hamsters {
 	display: flex;
 	overflow: scroll;
+	overflow-y: hidden;
 }
 .hamster {
 }
@@ -71,81 +87,123 @@ padding: 2px 4px;
 	<body>
 		<h1>Welcome to the "Back Room"</h1>
 		<p>
-			Please check out <a href="https://nicknameGrape.github.io/smartboard/">The ALT Tools Hub</a> for ESL classrooms in Japan.
-		The most useful content is there.
+			I am an ALT in Fukuoka, Japan.
+			This is where I post supplementary lesson materials.
+			I hope you find something useful here.
 		</p>
-		<p>
-			Here are links to various other games:
+		<div id="links">
 			<ul>
+				<li><a href="https://nicknameGrape.github.io/smartboard/">The ALT Tools Hub</a> aims to provide convenient tools for ESL classrooms.</li>
 				<li>
-					<a href="https://nicknameGrape.github.io/viewer/">Viewer</a> - Slideshows
+					<p>
+						Official Textbooks Online:
+						<a id="new_horizon_5" href="https://ww5.tsho.jp/r6/eig/000/gr5/top/index.html?g=5">New Horizon G5</a>
+						<a id="new_horizon_6" href="https://ww5.tsho.jp/r6/eig/000/gr6/top/index.html?g=6">New Horizon G6</a>
+					</p>
 				</li>
-				<li>
-					<a href="https://nicknameGrape.github.io/head_shoulders_knees_and_toes/">Head, Shoulders, Knees, and Toes</a> - Mix up the order of the words in the classic song.
-				</li>
-				<li>
-					<a href="https://nicknameGrape.github.io/character_builder/">Character Builder</a> - Mix and match heads, torsos, and legs of popular anime characters.
-				</li>
-				<li>
-					<a href="https://nicknameGrape.github.io/lets_play/">Let's Play</a> - Invite a friend to play together.  They may or may not accept.
-				</li>
-				<li>
-					<a href="https://nicknameGrape.github.io/time_trials/">Time Trials</a>
-				</li>
-				<li>
-					<a href="birthweekday.html">Birthweekday</a> - Do you know on which day of the week you were born?
-				</li>
-				<li>
-					<a href="ducks/duck_the_waves.html">Missing Duck</a> - Help Mother Duck find her missing duckling!  (Just press <kbd>Spacebar</kbd> to advance the game.)
-				</li>
-				<li>
-					<a href="3_doors/3_doors.html">3 Doors</a> - Escape the dungeon!  (Choose a door with <kbd>&leftarrow;</kbd>, <kbd>&uparrow;</kbd>, or <kbd>&rightarrow;</kbd>.)
-				</li>
-				<li>
-					<a href="super_navi/super_navi.html">Super Navi</a> - Drive to the destination using <kbd>&leftarrow;</kbd>, <kbd>&uparrow;</kbd>, <kbd>&downarrow;</kbd>, and <kbd>&rightarrow;</kbd>.)
-				</li>
-				<li>
-					<a href="image_library/index.html">Image Library</a> - Pages that depend on the image library are grouped here.
-				</li>
-			</ul>
-		</p>
-		<p>
-			Official Textbooks Online:
-			<a id="new_horizon_5" href="https://ww5.tsho.jp/r6/eig/000/gr5/top/index.html?g=5">New Horizon G5</a>
-			<a id="new_horizon_6" href="https://ww5.tsho.jp/r6/eig/000/gr6/top/index.html?g=6">New Horizon G6</a>
-		<p>
-			Here are some videos:
-			<div id="videos">
-				<figure>
-					<video src="count_and_move_1-20.mp4" poster="count_and_move_1-20_poster.png" controls>Count 1 to 20</video>
-					<figcaption>Count from 1 to 20</figcaption>
-				</figure>
-				<figure>
-					<video src="count_and_move_20-1.mp4" poster="count_and_move_20-1_poster.png" controls>Count Down from 20 to 1</video>
-					<figcaption>Count Down from 20 to 1</figcaption>
-				</figure>
-				<figure>
-					<video src="five_little_ducks.mp4" poster="five_little_ducks_poster.jpg" controls>Five Little Ducks</video>
-					<figcaption>Five Little Ducks</figcaption>
-				</figure>
-				<figure>
-					<video src="i_see_something_blue.mp4" poster="i_see_something_blue_poster.png" controls>I See Something Blue</video>
-					<figcaption>I See Something Blue</figcaption>
-				</figure>
-				<figure>
-					<video src="曜日ダジャレ.mp4" poster="曜日ダジャレ_poster.png" controls>曜日ダジャレ</video>
-					<figcaption>曜日ダジャレ</figcaption>
-				</figure>
-				<figure>
-					<video src="animals_can.mp4" poster="animals_can_poster.png" controls>Animals Can</video>
-					<figcaption>Animals Can</figcaption>
-				</figure>
-				<figure>
-					<video src="animaniacs_nations_of_the_world.mp4" poster="animaniacs_nations_of_the_world_poster.png" controls>Animaniacs: The Nations of the World</video>
-					<figcaption>Animaniacs: The Nations of the World</figcaption>
-				</figure>
+				<li><a href="#minigames">Minigames</a> are my original programming projects and come without instructions.  Some use touch and others use the keyboard.</li>
+				<li><a href="#videos">Videos</a> are taken from YouTube and trimmed.</li>
+		</div>
+		<div id="minigames">
+			<h2>Minigames</h2>
+			<!--
+			<div id="minigamePreview">
+				<img id="previewImage">Preview Image<img>
 			</div>
-			<h3>Hungry Hamsters<h3>
+			-->
+			<div id="minigameLinks">
+				<ul>
+					<li>
+						<a href="https://nicknameGrape.github.io/viewer/">Viewer</a> - Slideshows
+					</li>
+					<li>
+						<a href="https://nicknameGrape.github.io/head_shoulders_knees_and_toes/">Head, Shoulders, Knees, and Toes</a> - Mix up the order of the words in the classic song.
+					</li>
+					<li>
+						<a href="https://nicknameGrape.github.io/character_builder/">Character Builder</a> - Mix and match heads, torsos, and legs of popular anime characters.
+					</li>
+					<li>
+						<a href="https://nicknameGrape.github.io/lets_play/">Let's Play</a> - Invite a friend to play together.  They may or may not accept.
+					</li>
+					<li>
+						<a href="https://nicknameGrape.github.io/time_trials/">Time Trials</a>
+					</li>
+					<li>
+						<a href="birthweekday.html">Birthweekday</a> - Do you know on which day of the week you were born?
+					</li>
+					<li>
+						<a href="ducks/duck_the_waves.html">Missing Duck</a> - Help Mother Duck find her missing duckling!  (Just press <kbd>Spacebar</kbd> to advance the game.)
+					</li>
+					<li>
+						<a href="3_doors/3_doors.html">3 Doors</a> - Escape the dungeon!  (Choose a door with <kbd>&leftarrow;</kbd>, <kbd>&uparrow;</kbd>, or <kbd>&rightarrow;</kbd>.)
+					</li>
+					<!--
+					<li>
+						<a href="super_navi/super_navi.html">Super Navi</a> - Drive to the destination using <kbd>&leftarrow;</kbd>, <kbd>&uparrow;</kbd>, <kbd>&downarrow;</kbd>, and <kbd>&rightarrow;</kbd>.)
+					</li>
+					-->
+					<li><a href="image_library/leeches/went_saw_ate_enjoyed/went_saw_ate_enjoyed.html">Went, Saw, Ate, Enjoyed</a><br></li>
+					<li><a href="image_library/leeches/famous_in_country/famous_in_country.html">Famous in What Country? Quiz</a></li>
+					<li><a href="image_library/leeches/three_of_a_kind/three_of_a_kind.html">Three of a Kind</a></li>
+					<li><a href="image_library/leeches/kewpie_matching/kewpie_matching.html">Kewpie Matchmaking</a></li>
+					<li><a href="image_library/leeches/pencil_thief/pencil_thief.html">Pencil Thief</a></li>
+					<li><a href="image_library/leeches/review_talk_and_listen/review_talk_and_listen.html">Review: Talk and Listen</a></li>
+					<li><a href="image_library/leeches/peel_and_see/peel_and_see.html">Hidden Picture</a></li>
+					<li>Mirrored Letters
+						<ul>
+							<li><a href="image_library/leeches/mirrored_letters/reflection_side_to_side.html">Mirrored Letters: Left to Right</a></li>
+							<li><a href="image_library/leeches/mirrored_letters/reflection_top_to_bottom.html">Mirrored Letters: Top to Bottom</a></li>
+						</ul>
+					</li>
+					<li><a href="image_library/leeches/touch_the_sign/touch_the_sign_lt1.html">Touch the Sign: Let's Try 1</a></li>
+					<li><a href="image_library/leeches/banknote_quiz/banknote_quiz.html">Banknote Quiz</a></li>
+					<li><a href="image_library/leeches/presents/presents.html">Presents! (Christmas or Birthday) Shop and Unwrap</a></li>
+					<li><a href="image_library/leeches/world_maps/world_maps.html">World Maps</a></li>
+					<li>Popular Characters from Anime, Video Games, and Products (Japan-centric)
+						<ul>
+							<li><a href="image_library/leeches/character_list/character_list.html">List of Popular Characters</a></li>
+							<li><a href="image_library/leeches/blur_it/he_she_day_1.html">Character Silhouette Quiz #1</a><br></li>
+							<li><a href="image_library/leeches/blur_it/he_she_day_2.html">Character Silhouette Quiz #2</a><br></li>
+							<li><a href="image_library/leeches/blur_it/he_she_day_3.html">Character Silhouette Quiz #3</a><br></li>
+						</ul>
+					</li>
+			</div>
+		</div>
+		<h2>Videos</h2>
+		<div id="videos">
+			<figure>
+				<video src="count_and_move_1-20.mp4" poster="count_and_move_1-20_poster.png" controls>Count 1 to 20</video>
+				<figcaption>Count from 1 to 20</figcaption>
+			</figure>
+			<figure>
+				<video src="count_and_move_20-1.mp4" poster="count_and_move_20-1_poster.png" controls>Count Down from 20 to 1</video>
+				<figcaption>Count Down from 20 to 1</figcaption>
+			</figure>
+			<figure>
+				<video src="five_little_ducks.mp4" poster="five_little_ducks_poster.jpg" controls>Five Little Ducks</video>
+				<figcaption>Five Little Ducks</figcaption>
+			</figure>
+			<figure>
+				<video src="i_see_something_blue.mp4" poster="i_see_something_blue_poster.png" controls>I See Something Blue</video>
+				<figcaption>I See Something Blue</figcaption>
+			</figure>
+			<figure>
+				<video src="曜日ダジャレ.mp4" poster="曜日ダジャレ_poster.png" controls>曜日ダジャレ</video>
+				<figcaption>曜日ダジャレ</figcaption>
+			</figure>
+			<figure>
+				<video src="animals_can.mp4" poster="animals_can_poster.png" controls>Animals Can</video>
+				<figcaption>Animals Can</figcaption>
+			</figure>
+			<figure>
+				<video src="animaniacs_nations_of_the_world.mp4" poster="animaniacs_nations_of_the_world_poster.png" controls>Animaniacs: The Nations of the World</video>
+				<figcaption>Animaniacs: The Nations of the World</figcaption>
+			</figure>
+			<h3 style="flex-basis: 100%">Hungry Hamsters</h3>
+			<p>
+				Watch these hungry hamsters eat seeds, carrots, and nuts!
+				Try and count how many they can pack in their cheeks.
+			</p>
 			<div id="hamsters">
 				<figure>
 					<video src="hamsters_and_seeds/hamster_muffin.mp4" poster="hamsters_and_seeds/hamster_muffin.png" controls>Muffin the Hamster</video>
@@ -180,113 +238,6 @@ padding: 2px 4px;
 					<figcaption>Smoke</figcaption>
 				</figure>
 			</div>
-		</p>
-		<p>
-			Here are some slideshows and printables in PDF format:
-			<div id="pdfs">
-				<figure>
-					<a href="pdfs/words_and_phrases_cards_a3_printable_40_count.zip">
-						<img src="pdfs/words_and_phrases_cards.jpg"/>
-					</a>
-					<figcaption>Reading Practice Sheets (40 jpg, zipped)</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/count_spiders.pdf">
-						<img src="pdfs/count_spiders_poster.jpg"/>
-					</a>
-					<figcaption>How Many Spiders?</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/word_search_ABC_simple.pdf">
-						<img src="pdfs/word_search_ABC_simple_poster.png"/>
-					</a>
-					<figcaption>Alphabet Word Search<br><em>Uppercase</em></figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/monday_mushroom_bingo.pdf">
-						<img src="pdfs/monday_mushroom_bingo_poster.jpg"/>
-					</a>
-					<figcaption>Monday Mushroom Bingo</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/decode.pdf">
-						<img src="pdfs/decode_poster.jpg"/>
-					</a>
-					<figcaption>Decode Numbers to Letters</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/game_cards_wake_up_time.pdf">
-						<img src="pdfs/game_cards_wake_up_time_poster.png"/>
-					</a>
-					<figcaption>"What time is it?" Matching Game</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/what_time_is_it_bingo.pdf">
-						<img src="pdfs/what_time_is_it_bingo_poster.jpg"/>
-					</a>
-					<figcaption>"What time is it?" Bingo</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/bingo_color_stationery.pdf">
-						<img src="pdfs/bingo_color_stationery_poster.jpg"/>
-					</a>
-					<figcaption>"Color Stationery" Bingo</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/abc_search.pdf">
-						<img src="pdfs/abc_search_poster.png"/>
-					</a>
-					<figcaption>Lowercase Alphabet Word Search</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/mixed_case_abc_search.zip">
-						<img src="pdfs/mixed_case_abc_search_poster.png"/>
-					</a>
-					<figcaption>Mixed Case Alphabet Word Search (zip)</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/i_can_game_cards.pdf">
-						<img src="pdfs/i_can_game_cards_poster.png"/>
-					</a>
-					<figcaption>"I can ..." Game Cards</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/tic_tac_toe.pdf">
-						<img src="pdfs/tic_tac_toe_poster.jpg"/>
-					</a>
-					<figcaption>"I can/I can't" Tic Tac Toe</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/can_you_game_cards.pdf">
-						<img src="pdfs/can_you_game_cards_poster.jpg"/>
-					</a>
-					<figcaption>"Can you ..." Game Cards</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/daily_routine_spot_the_difference.pdf">
-						<img src="pdfs/daily_routine_spot_the_difference_poster.jpg"/>
-					</a>
-					<figcaption>Daily Routine: Spot the Difference</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/g6u3_translation_cards.pdf">
-						<img src="pdfs/g6u3_translation_cards_poster.jpg"/>
-					</a>
-					<figcaption>Translation Cards<br><small>New Horizon ES G6 Unit 3</small></figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/country_attraction_bingo.pdf">
-						<img src="pdfs/country_attraction_bingo_poster.jpg"/>
-					</a>
-					<figcaption>Country and Attraction Bingo</figcaption>
-				</figure>
-				<figure>
-					<a href="pdfs/animals_biomes_cards.jpg">
-						<img src="pdfs/animals_biomes_cards_poster.jpg"/>
-					</a>
-					<figcaption>Animals and Biomes Matching Cards</figcaption>
-				</figure>
-			</div>
-		</p>
+		</div>
 	</body>
 </html>
