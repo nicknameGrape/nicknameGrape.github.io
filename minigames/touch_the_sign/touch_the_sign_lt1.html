@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+	<link rel="icon" type="image/png" href="/favicon.png">
+	<style>
+		body {
+			margin: 0;
+			touch-action: none;
+			display: flex;
+			flex-direction: column;
+		}
+		#points {
+			display: flex;
+			text-align: center;
+			height: 20vh;
+			width: 100vw;
+		}
+		#avg {
+			display: flex;
+			height: 100%;
+			width: 20%;
+			color: white;
+			background: pink;
+		}
+		#total {
+			display: flex;
+			background: purple;
+			color: white;
+			height: 100%;
+			width: 40%;
+		}
+		#toAdd {
+			display: flex;
+			color: purple;
+			height: 100%;
+			width: 40%;
+		}
+		#game {
+			width: 100vw;
+			height: 80vh;
+			display: flex;
+			flex-direction: row;
+		}
+		#map {
+			background: snow;
+			width: 80vw;
+			height: 80vh;
+			display: flex;
+			align-items: center;
+			justify-content: start;
+		}
+		#map > canvas {
+			height: 80vh;
+		}
+		#hint {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 20vw;
+			background: orange;
+		}
+	</style>
+</head>
+<body>
+	<div id="points">
+		<div id="avg"></div>
+		<div id="total"></div>
+		<div id="toAdd"></div>
+	</div>
+	<div id="game">
+		<div id="map"></div>
+		<div id="hint"></div>
+	</div>
+<script type="module" src="touch_the_sign_lt1_main.js">
+</script>
+</body>
+</html>

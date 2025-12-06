@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<head>
+	<link rel="icon" type="image/png" href="/favicon.png">
+	<style>
+		body {
+			background: black;
+			margin:0;
+		}
+		#myCanvas {
+			width: 100vw;
+			height: 56.25vw;
+			max-height: 100vh;
+			max-width: 177.78vh;
+			margin: auto;
+			position: absolute;
+			top: 0; bottom: 0;
+			left: 0; right: 0;
+		}
+	</style>
+</head>
+<body>
+	<canvas width=800 height=450 id="myCanvas"></canvas>
+</body>
+<script src="./mousetrap.min.js"></script>
+<script src="../js_modules/state-machine3.js"></script>
+<script>
+	const game = {};
+	game.canvas = document.getElementById("myCanvas");
+	game.context = game.canvas.getContext("2d");
+	game.options = {
+		"uppercase": true,
+		"blackAndWhite": false,
+		"rotated": false,
+		"angle": 0,
+		"stretched": false,
+		"xStretch": 1,
+		"yStretch": 1,
+		"inverted": false,
+		"dropped": []
+	};
+</script>
+<script type="module" src="main.js"></script>
+</html>

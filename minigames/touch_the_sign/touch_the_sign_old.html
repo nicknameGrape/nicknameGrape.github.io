@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		body {
+			margin: 0;
+			touch-action: none;
+			font-family: sans-serif;
+		}
+		#game {
+			height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+		#points {
+			width: 100%;
+			height: 20%;
+			display: flex;
+			text-align: center;
+		}
+		#avg {
+			background: pink;
+			color: white;
+			width: 20%;
+			height: 100%;
+		}
+		#total {
+			background: purple;
+			color: white;
+			width: 40%;
+			height: 100%;
+		}
+		#toAdd {
+			color: purple;
+			width: 40%;
+			height: 100%;
+		}
+		#hint {
+			background: lavender;
+			width: 100%;
+			height: 10%;
+			align-items: center;
+			justify-content: center;
+		}
+		#container {
+			background: yellow;
+			width: 100%;
+			height: 70%;
+		}
+	</style>
+	<body>
+		<div id="game">
+			<div id="points">
+				<div id="avg"><br>ATTEMPTS: 0<br>AVG: 0</div>
+				<div id="total">0</div>
+				<div id="toAdd"></div>
+			</div>
+			<div id="hint"></div>
+			<div id="container"></div>
+		</div>
+		<script data-main="touch_the_sign_main.js" src="../js/require.js"></script>
+	</body>
+</html>

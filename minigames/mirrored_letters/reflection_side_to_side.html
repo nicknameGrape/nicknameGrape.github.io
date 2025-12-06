@@ -1,0 +1,90 @@
+<html>
+	<head>
+		<link rel="icon" type="image/png" href="/favicon.png">
+		<style>
+body {
+touch-action: none;
+width: 100%;
+height: 100%;
+margin: 0;
+display: flex;
+}
+canvas {
+}
+#buttonErase {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	width: 10vw;
+	height: 10vh;
+}
+		</style>
+	<head>
+<body>
+	<button id="buttonErase">Erase</button>
+	<canvas id="canvas"></canvas>
+<script>
+const RAD = 15;
+
+function resizeHandler(e) {
+	console.log("resizing");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	//canvas
+	context.fillStyle = "skyBlue";
+	context.fillRect(0,0,canvas.width/2,canvas.height);
+	context.fillStyle = "pink";
+	context.fillRect(canvas.width/2,0,canvas.width/2,canvas.height);
+	context.fillStyle = "black";
+}
+
+function drawCanvas(x, y) {
+	//context.fillRect(x-RAD, y-RAD, RAD*2, RAD*2);
+	//context.fillRect(canvas.width - (x+RAD), y-RAD, RAD*2, RAD*2);
+	context.beginPath();
+	context.arc(x, y, RAD, 0, Math.PI*2);
+	context.arc(canvas.width-x, y, RAD, 0, Math.PI*2);
+	context.fill();
+}
+
+function process_pointerdown(e) {
+	e.preventDefault();
+	isPointerDown = true;
+	let x = e.clientX;
+	let y = e.clientY;
+	drawCanvas(x, y);
+};
+
+function process_pointermove(e) {
+	e.preventDefault();
+	let x = e.clientX;
+	let y = e.clientY;
+	if (isPointerDown) {
+		drawCanvas(x, y);
+	}
+};
+
+function process_pointerup(e) {
+	e.preventDefault();
+	isPointerDown = false;
+};
+
+function buttonEraseClickHandler(e) {
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	resizeHandler();
+};
+
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+const buttonErase = document.getElementById("buttonErase");
+let isPointerDown = false;
+
+canvas.addEventListener("pointerdown", process_pointerdown);
+canvas.addEventListener("pointermove", process_pointermove);
+canvas.addEventListener("pointerup", process_pointerup);
+buttonErase.addEventListener("click", buttonEraseClickHandler);
+window.addEventListener("resize", resizeHandler);
+resizeHandler();
+</script>
+</body>
+</html>

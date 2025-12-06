@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+	<head>
+		<link rel="icon" type="image/png" href="/favicon.png">
+		<style>
+body {margin: 0; touch-action: none;}
+.view {display: flex; flex-direction: column;}
+.title {display: flex; align-items: center; justify-content: center; height: 20vh; font-size: 10vh; background: yellow;}
+#menuContents {display: flex; flex-direction: column; align-items: center; gap: 3vh;}
+.menuButton {font-size: 5vh;}
+#alphabet {display: grid; grid-template-columns: repeat(7, 1fr); gap: 3%; margin: 2.5%;}
+.letter {font-size: 7vh; height: 14vh;}
+#subjectButtons {display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 1fr); gap: 2vh;}
+.subjectButton > img {width: 30vh; height: 30vh; object-fit: contain;}
+#monthButtons {display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: 2vh; width: 50vw;}
+.monthButton > img {width: 20vh; height: 20vh; object-fit: contain;}
+#dateButtons {display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(5, 1fr); width: 50vw;}
+.dateButton {display: flex; align-items: center; justify-content: center; width: 7vw; height: 7vw; font-size: 4vh;}
+input {display: none;}
+input:checked + label > img {background: lime;}
+input:checked + label {background: lime;}
+input[name="can"] + label {border: thick solid gray; font-size: 10vh; opacity: 50%;}
+input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; opacity: 100%;}
+#yes + label {background: lime;}
+#no + label {background: red;}
+#imgCanYou {height: 50vh;}
+		</style>
+	</head>
+	<body>
+<div id="menu" class="view">
+	<div class="title">Review: Talk and Listen</div>
+	<div id="menuContents">
+		<button class="menuButton" value="spellName">How do you spell your name?</button>
+		<button class="menuButton" value="subject">What subject do you like?</button>
+		<button class="menuButton" value="birthday">When is your birthday?</button>
+		<button class="menuButton" value="can_you" id="menuButtonCan">Can you do it?</button>
+	</div>
+</div>
+<div id="spellName" class="view" style="display: none;">
+	<div class="title" id="spellNameTitle">How do you spell your name?</div>
+	<div id="alphabet">
+		<button class="letter" value="A">A</button>
+		<button class="letter" value="B">B</button>
+		<button class="letter" value="C">C</button>
+		<button class="letter" value="D">D</button>
+		<button class="letter" value="E">E</button>
+		<button class="letter" value="F">F</button>
+		<button class="letter" value="G">G</button>
+		<button class="letter" value="H">H</button>
+		<button class="letter" value="I">I</button>
+		<button class="letter" value="J">J</button>
+		<button class="letter" value="K">K</button>
+		<button class="letter" value="L">L</button>
+		<button class="letter" value="M">M</button>
+		<button class="letter" value="N">N</button>
+		<button class="letter" value="O">O</button>
+		<button class="letter" value="P">P</button>
+		<button class="letter" value="Q">Q</button>
+		<button class="letter" value="R">R</button>
+		<button class="letter" value="S">S</button>
+		<button class="letter" value="T">T</button>
+		<button class="letter" value="U">U</button>
+		<button class="letter" value="V">V</button>
+		<button class="letter" value="W">W</button>
+		<button class="letter" value="X">X</button>
+		<button class="letter" value="Y">Y</button>
+		<button class="letter" value="Z">Z</button>
+		<button class="letter" value=" ">_</button>
+		<button class="letter" id="backspace" value="" style="background: pink">&leftarrow;</button>
+	</div>
+</div>
+<div id="subject" class="view" style="display: none;">
+	<div class="title">What subject do you like?</div>
+	<div id="subjectButtons"></div>
+</div>
+<div id="birthday" class="view" style="display: none;">
+	<div id="birthdayTitle" class="title">When is your birthday?</div>
+	<div style="display:flex;">
+		<div id="monthButtons"></div>
+		<div id="dateButtons"></div>
+	</div>
+</div>
+<div id="can_you" class="view" style="display: none;">
+	<div id="canYouTitle" class="title">Can you do it?</div>
+	<div style="display:flex; flex-direction: column; align-items: center;">
+		<img id="imgCanYou"/>
+		<div>
+			<input id="yes" type="radio" name="can"/>
+			<label for="yes">Yes, I can.</label>
+			<input id="no" type="radio" name="can"/>
+			<label for="no">No, I can't.</label>
+		</div>
+	</div>
+</div>
+	</body>
+	<script type="module">
+import Loader from "../js_modules/Loader.mjs"
+import images from "../../image_library/image_library.mjs"
+import can_do from "./images_can/can_do.mjs"
+
+function menuButtonClickHandler(ev) {
+	console.log("Switching to", ev.target.value);
+	viewMenu.style.display = "none";
+	window[ev.target.value].style.display = "flex";
+}
+function letterButtonClickHandler(ev) {
+	console.log("Letter is", ev.target.value);
+	if (viewSpellNameTitle.innerHTML === "How do you spell your name?") {
+		viewSpellNameTitle.innerHTML = ev.target.value;
+	} else {
+		viewSpellNameTitle.innerHTML += ev.target.value;
+	}
+}
+function backspaceButtonClickHandler(ev) {
+	let name = viewSpellNameTitle.innerHTML;
+	viewSpellNameTitle.innerHTML = name.slice(0, name.length-1);
+}
+const PATH_TO_IMAGES = "../../image_library/images/";
+const viewMenu = document.getElementById("menu");
+const viewSpellName = document.getElementById("spellName");
+const viewSpellNameTitle = document.getElementById("spellNameTitle");
+const SUBJECTS = ["Japanese", "math", "art", "English", "social studies", "P.E.", "calligraphy", "home economics", "music", "science"];
+const divSubjectButtons = document.getElementById("subjectButtons");
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const DATES = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st"];
+const divMonthButtons = document.getElementById("monthButtons");
+const divDateButtons = document.getElementById("dateButtons");
+let birthMonth = "";
+let birthDate = "";
+const viewBirthdayTitle = document.getElementById("birthdayTitle");
+
+Array.from(document.getElementsByClassName("menuButton")).forEach(el => el.addEventListener("click", menuButtonClickHandler));
+Array.from(document.getElementsByClassName("letter")).forEach(el => el.addEventListener("click", letterButtonClickHandler));
+SUBJECTS.forEach(function (text) {
+	let div = document.createElement("div");
+	let input = document.createElement("input");
+	let label = document.createElement("label");
+	let img = document.createElement("img");
+	let image_library_entry = images.filter(o => o.text === text)[0];
+	let src = PATH_TO_IMAGES + image_library_entry.src;
+	input.type = "radio";
+	input.id = text;
+	input.name = "subject";
+	label.htmlFor = text;
+	label.classList.add("subjectButton");
+	img.src = src;
+	label.appendChild(img);
+	div.appendChild(input);
+	div.appendChild(label);
+	divSubjectButtons.appendChild(div);
+});
+MONTHS.forEach(function (text) {
+	let div = document.createElement("div");
+	let input = document.createElement("input");
+	let label = document.createElement("label");
+	let img = document.createElement("img");
+	let image_library_entry = images.filter(o => o.text === text)[0];
+	let src = PATH_TO_IMAGES + image_library_entry.src;
+	input.type = "radio";
+	input.id = text;
+	input.name = "month";
+	input.addEventListener("change", function (ev) {
+		birthMonth = ev.target.id;
+		viewBirthdayTitle.innerHTML = birthMonth + " " + birthDate;
+	});
+	label.htmlFor = text;
+	label.classList.add("monthButton");
+	img.src = src;
+	label.appendChild(img);
+	div.appendChild(input);
+	div.appendChild(label);
+	divMonthButtons.appendChild(div);
+});
+DATES.forEach(function (text) {
+	let div = document.createElement("div");
+	let input = document.createElement("input");
+	let label = document.createElement("label");
+	input.type = "radio";
+	input.id = text;
+	input.name = "date";
+	input.addEventListener("change", function (ev) {
+		birthDate = ev.target.id;
+		viewBirthdayTitle.innerHTML = birthMonth + " " + birthDate;
+	});
+	label.htmlFor = text;
+	label.innerHTML = text;
+	label.classList.add("dateButton");
+	div.appendChild(input);
+	div.appendChild(label);
+	divDateButtons.appendChild(div);
+});
+document.getElementById("backspace").addEventListener("click", backspaceButtonClickHandler);
+document.getElementById("menuButtonCan").addEventListener("click", function () {
+	let randomCanDo = can_do[Math.floor(Math.random()*can_do.length)];
+	document.getElementById("imgCanYou").src = "./images_can/"+randomCanDo.src;
+	document.getElementById("canYouTitle").innerHTML = randomCanDo.english;
+	document.getElementById("yes").checked = false;
+	document.getElementById("no").checked = false;
+});
+	</script>
+</html>
