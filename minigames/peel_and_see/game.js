@@ -1,6 +1,6 @@
 import fitText from "../js_modules/fitText.mjs"
 import fitImage from "../js_modules/fitImage.mjs"
-import IMAGE_LIBRARY from "../../image_library/image_library.mjs"
+import IMAGE_LIBRARY from "../image_library/image_library.mjs"
 var ilib;
 
 var view = {};

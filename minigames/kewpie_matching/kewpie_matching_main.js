@@ -3,7 +3,7 @@
 import fitImage from "../js_modules/fitImage.mjs"
 import fitText from "../js_modules/fitText.mjs"
 import Loader from "../js_modules/Loader.mjs"
-import FLAGS from "../../image_library/flags/flags.mjs"
+import FLAGS from "../image_library/flags/flags.mjs"
 
 function Princess() {
 	var index = Math.floor(Math.random()*unmatchedFemales.length);
@@ -130,7 +130,7 @@ var COUNTRIES = {
 }
 
 var loader = new Loader("./img/");
-var loaderFlags = new Loader("../../image_library/flags/img/");
+var loaderFlags = new Loader("../image_library/flags/img/");
 var unmatchedMales = [];
 var unmatchedFemales = [];
 var canvas = document.createElement("canvas");

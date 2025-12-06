@@ -3,7 +3,7 @@
 import Loader from "../js_modules/Loader.mjs"
 import fitText from "../js_modules/fitText.mjs"
 import fitImage from "../js_modules/fitImage.mjs"
-import flags from "../../image_library/flags/flags.mjs"
+import flags from "../image_library/flags/flags.mjs"
 
 function render() {
 	context.fillStyle = "gray";
@@ -57,7 +57,7 @@ var box_width = canvas.width/2/3;
 var box_height = canvas.height/5;
 var box_item_width = box_width/3;
 var box_item_height = box_height/3;
-var loaderFlags = new Loader("../../image_library/flags/img/");
+var loaderFlags = new Loader("../image_library/flags/img/");
 var loaderAttractions = new Loader("./attractions/");
 var COUNTRIES = ["au", "br", "cn", "eg", "fr", "de", "in", "it", "jp", "ke", "kr", "ch", "gb", "us"];
 var ATTRACTIONS = {

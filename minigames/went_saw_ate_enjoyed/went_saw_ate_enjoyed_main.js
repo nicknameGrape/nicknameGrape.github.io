@@ -1,5 +1,5 @@
 "use strict"
-import il from "../../image_library/image_library.mjs";
+import il from "../image_library/image_library.mjs";
 
 function resizeHandler() {
 }
@@ -7,7 +7,7 @@ function resizeHandler() {
 function setup() {
 	groups.forEach(function (group) {
 		group.o.forEach(function (o) {
-			let src = "../../image_library/images/" + il.find(function (ilo) {return ilo.text === o.keyword;})["src"];
+			let src = "../image_library/images/" + il.find(function (ilo) {return ilo.text === o.keyword;})["src"];
 			let img = document.createElement("img");
 			img.src = src;
 			img.draggable = false;

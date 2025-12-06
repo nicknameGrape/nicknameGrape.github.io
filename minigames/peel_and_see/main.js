@@ -5,7 +5,7 @@ import menu from "./menu.js"
 import gameView from "./game.js"
 
 console.log(game);
-game.loader = new Loader("../../image_library/images/");
+game.loader = new Loader("../image_library/images/");
 game.state = new StateMachine({
 	init: "loading",
 	transitions: [

@@ -15,7 +15,6 @@ game.context = game.canvas.getContext("2d");
 game.context.fillStyle = "yellow";
 
 require(["Loader", "mousetrap.min", "HatDraw"], function (Loader, Mousetrap, HatDraw) {
-	//game.loader = new Loader("../image_library/images/");
 	game.loader = new Loader();
 	require(["fitText", "fitImage"], function (fitText, fitImage) {
 		var canvas = game.canvas;

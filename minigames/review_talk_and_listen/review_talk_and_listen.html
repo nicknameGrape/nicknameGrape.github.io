@@ -94,7 +94,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 	</body>
 	<script type="module">
 import Loader from "../js_modules/Loader.mjs"
-import images from "../../image_library/image_library.mjs"
+import images from "../image_library/image_library.mjs"
 import can_do from "./images_can/can_do.mjs"
 
 function menuButtonClickHandler(ev) {
@@ -114,7 +114,7 @@ function backspaceButtonClickHandler(ev) {
 	let name = viewSpellNameTitle.innerHTML;
 	viewSpellNameTitle.innerHTML = name.slice(0, name.length-1);
 }
-const PATH_TO_IMAGES = "../../image_library/images/";
+const PATH_TO_IMAGES = "../image_library/images/";
 const viewMenu = document.getElementById("menu");
 const viewSpellName = document.getElementById("spellName");
 const viewSpellNameTitle = document.getElementById("spellNameTitle");

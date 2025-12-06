@@ -4,7 +4,7 @@ import fitText from "../js_modules/fitText.mjs"
 import fitImage from "../js_modules/fitImage.mjs"
 import Loader from "../js_modules/Loader.mjs"
 import HatDraw from "../js_modules/HatDraw.mjs"
-import CHARACTERS from "../../image_library/characters/popular.mjs"
+import CHARACTERS from "../image_library/characters/popular.mjs"
 
 function keypressHandlerEnter(ev) {
 	if (ev.key == "Enter") {
@@ -40,7 +40,7 @@ var game = {
 
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
-var loader = new Loader("../../image_library/characters/popular/");
+var loader = new Loader("../image_library/characters/popular/");
 var lloader = new Loader("./");
 var lastTime;
 var request;

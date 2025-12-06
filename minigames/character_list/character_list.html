@@ -13,11 +13,11 @@ body {
 	</style>
 </head>
 <script type="module">
-	import CHARACTERS from "../../image_library/characters/popular.mjs"
+	import CHARACTERS from "../image_library/characters/popular.mjs"
 	CHARACTERS.forEach(function (obj) {
 		const link = document.createElement("a");
 		link.innerHTML = obj.name;
-		link.href = "../../image_library/characters/popular/"+obj.src;
+		link.href = "../image_library/characters/popular/"+obj.src;
 		document.body.appendChild(link);
 		console.log(link);
 	})

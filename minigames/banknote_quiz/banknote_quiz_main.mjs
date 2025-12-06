@@ -2,7 +2,7 @@
 
 import Loader from "../js_modules/Loader.mjs";
 import shuffle from "../js_modules/shuffle.mjs";
-import flags from "../../image_library/flags/flags.mjs";
+import flags from "../image_library/flags/flags.mjs";
 import BANKNOTES from "./banknotes_data.mjs";
 
 function Quiz() {
@@ -79,7 +79,7 @@ const buttonChoice4 = document.getElementById("choice4");
 const buttonChoice5 = document.getElementById("choice5");
 const listOfElementsToRemoveChildren = [divBanknote, buttonChoice1, buttonChoice2, buttonChoice3, buttonChoice4, buttonChoice5];
 const loader = new Loader("./banknotes/");
-const loaderFlags = new Loader("../../image_library/flags/img/", onload);
+const loaderFlags = new Loader("../image_library/flags/img/", onload);
 const audioCorrect = document.createElement("audio");
 const audioWrong = document.createElement("audio");
 let banknotes = BANKNOTES.slice();

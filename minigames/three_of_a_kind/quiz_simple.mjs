@@ -4,8 +4,8 @@ import fitTextMontage from "../js_modules/fitTextMontage.mjs"
 import fitImage from "../js_modules/fitImage.mjs"
 import fitMontage from "../js_modules/fitMontage.mjs"
 import HatDraw from "../js_modules/HatDraw.mjs"
-import CHARACTERS from "../../image_library/characters/popular.mjs"
-import images from "../../image_library/image_library.mjs"
+import CHARACTERS from "../image_library/characters/popular.mjs"
+import images from "../image_library/image_library.mjs"
 
 function keypressHandler(ev) {
 	if (ev.key === " ") {
@@ -24,7 +24,7 @@ var n = parseInt(prompt("How many examples would you like to be given\nbefore th
 var progress = 0;
 var categories = ["color", "food", "fruit", "animal", "vegetable", "drink", "sport"];
 var categoriesHD;
-var loader = new Loader("../../image_library/images/");
+var loader = new Loader("../image_library/images/");
 var theseImages, theseWords, theseAre;
 
 var newQuiz = function () {
