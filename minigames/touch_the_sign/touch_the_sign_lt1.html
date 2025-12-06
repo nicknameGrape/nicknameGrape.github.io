@@ -1,7 +1,16 @@
 <!DOCTYPE html>
-<head>
-	<link rel="icon" type="image/png" href="/favicon.png">
-	<style>
+	<head>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C5MPB2T6KH"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-C5MPB2T6KH');
+		</script>
+		<link rel="icon" type="image/png" href="/favicon.png">
+		<style>
 		body {
 			margin: 0;
 			touch-action: none;
@@ -58,19 +67,18 @@
 			width: 20vw;
 			background: orange;
 		}
-	</style>
-</head>
-<body>
-	<div id="points">
-		<div id="avg"></div>
-		<div id="total"></div>
-		<div id="toAdd"></div>
-	</div>
-	<div id="game">
-		<div id="map"></div>
-		<div id="hint"></div>
-	</div>
-<script type="module" src="touch_the_sign_lt1_main.js">
-</script>
-</body>
+		</style>
+	</head>
+	<body>
+		<div id="points">
+			<div id="avg"></div>
+			<div id="total"></div>
+			<div id="toAdd"></div>
+		</div>
+		<div id="game">
+			<div id="map"></div>
+			<div id="hint"></div>
+		</div>
+	<script type="module" src="touch_the_sign_lt1_main.js"></script>
+	</body>
 </html>
