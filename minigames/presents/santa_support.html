@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+body {
+	display: grid; grid-template-columns: 48vw 4vw 48vw; grid-template-rows: 100vh;
+	margin: 0px; overflow: hidden;
+	touch-action: none; user-select: none;
+	}
+#p1 {
+	transform-origin: top left; transform: rotate(90deg) translate(0, -48vw);
+	width: 100vh; height: 48vw;
+}
+#elf {
+	display: grid; grid-template-columns: 10vh 90vh; grid-template-rows: repeat(2, auto);
+	justify-items: center;
+	width: 100vh; height: 48vw;
+	background: green;
+}
+#imgElf {grid-area: 1/1/3/2; align-self: end; justify-self: start; width: 20vh;}
+#instructions {
+	display: grid; grid-template-columns: repeat(2, auto); grid-template-rows: repeat(2, auto);
+	align-self: end;
+	place-items: center; gap: 1vh;
+	width: 70vh; height: 15vw;
+	box-sizing: border-box; padding: 2vh;
+	background: pink;
+}
+#imgPresent {width: 15vh; max-height: 10vw;}
+#name {font-size: xx-large; font-family: sans-serif;}
+#confirm {display: grid; grid-template-columns: repeat(2, auto); grid-template-rows: repeat(2, auto); place-items: center; gap: 1vh; padding-bottom: 5vh;}
+#imgChoice {width: 20vh;}
+#canvasWritten {width: 40vh; background: beige; border: thick double black;}
+.buttonConfirm {font-size: x-large;}
+.confirmPresent {}
+.confirmWriting {}
+#border {background: black;}
+#p2 {
+	transform-origin: top left; transform: rotate(-90deg) translate(-100vh);
+	width: 100vh; height: 48vw;
+}
+#santa {
+	display: flex; align-items: center; justify-content: center;
+	width: 100vh; height: 48vw;
+	color: white;
+	background: red;
+}
+#choosePresent {
+	display: grid; grid-template-columns: repeat(5, 20vh); grid-template-rows: repeat(2, auto); row-gap: 2vw;
+}
+#imgChoosePresent {
+	grid-area: 1/1/2/6; justify-self: center; height: 20vw;
+}
+.choice {
+	justify-self: center;
+	display: flex; align-items: center; justify-content: center;
+	width: 18vh;
+}
+.choice:disabled {
+	opacity: 50%;
+}
+.choice > img {
+	box-sizing: border-box; padding: 5px;
+	width: 15vh;
+}
+#writeName {
+	display: none;
+	flex-direction: column;
+}
+#imgSantaWriting {
+	object-fit: contain;
+	height: 15vw;
+}
+#canvasWriting {
+	width: 80vh; height: 30vw;
+	box-sizing: border-box; border: thick double black;
+	background: beige;
+}
+		</style>
+	</head>
+	<body>
+		<div id="p1">
+			<div id="elf">
+				<img id="imgElf" src="elf_support.png"/>
+				<div id="instructions">
+					<span>Present:</span><span>Name:</span>
+					<img id="imgPresent" src="img_gifts/0349_drum_01.png"/><span id="name">Thomas</span>
+				</div>
+				<div id="confirm">
+					<img id="imgChoice" src="img_gifts/0349_drum_01.png"/><canvas id="canvasWritten"></canvas>
+					<div>
+						<button id="acceptPresent" class="buttonConfirm confirmPresent" disabled>○ Yes</button>
+						<button id="rejectPresent" class="buttonConfirm confirmPresent" disabled>☓ No</button>
+					</div>
+					<div>
+						<button id="acceptWriting" class="buttonConfirm confirmWriting" disabled>○ Yes</button>
+						<button id="rejectWriting" class="buttonConfirm confirmWriting" disabled>☓ No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="border">
+		</div>
+		<div id="p2">
+			<div id="santa">
+				<div id="choosePresent">
+					<img id="imgChoosePresent" src="santa_searching.png"/>
+					<button id="choice1" class="choice"><img src="img_gifts/0349_drum_01.png"/></button>
+					<button id="choice2" class="choice"><img src="img_gifts/0349_drum_01.png"/></button>
+					<button id="choice3" class="choice"><img src="img_gifts/0349_drum_01.png"/></button>
+					<button id="choice4" class="choice"><img src="img_gifts/0349_drum_01.png"/></button>
+					<button id="choice5" class="choice"><img src="img_gifts/0349_drum_01.png"/></button>
+				</div>
+				<div id="writeName">
+					<img id="imgSantaWriting" src="santa_writing.png"/>
+					<canvas id="canvasWriting"></canvas>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="module">
+import HatDraw from "../js_modules/HatDraw.mjs"
+const PRESENTS = [
+	"img_gifts/0080_monkey_01.png",
+	"img_gifts/0083_horse_01.png",
+	"img_gifts/0087_dog_01.png",
+	"img_gifts/0088_cat_01.png",
+	"img_gifts/0089_hamster_01.png",
+	"img_gifts/0090_rabbit_01.png",
+	"img_gifts/0091_pig_01.png",
+	"img_gifts/0092_sheep_01.png",
+	"img_gifts/0094_mouse_01.png",
+	"img_gifts/0104_squid_01.png",
+	"img_gifts/0105_octopus_01.png",
+	"img_gifts/0106_crab_01.png",
+	"img_gifts/0107_shrimp_01.png",
+	"img_gifts/0110_turtle_01.png",
+	"img_gifts/0111_pigeon_01.png",
+	"img_gifts/0118_frog_01.png",
+	"img_gifts/0119_snail_01.png",
+	"img_gifts/0120_snake_01.png",
+	"img_gifts/0121_butterfly_01.png",
+	"img_gifts/0122_beetle_01.png",
+	"img_gifts/0128_stagbeetle_01.png",
+	"img_gifts/0133_fish_01.png",
+	"img_gifts/0134_bird_01.png",
+	"img_gifts/0135_melon_01.png",
+	"img_gifts/0136_watermelon_01.png",
+	"img_gifts/0137_strawberry_01.png",
+	"img_gifts/0138_banana_01.png",
+	"img_gifts/0139_apple_01.png",
+	"img_gifts/0140_orange_01.png",
+	"img_gifts/0141_grapes_01.png",
+	"img_gifts/0142_peach_01.png",
+	"img_gifts/0143_grapefruit_01.png",
+	"img_gifts/0144_pineapple_01.png",
+	"img_gifts/0145_cherry_01.png",
+	"img_gifts/0146_kiwifruit_01.png",
+	"img_gifts/0147_lemon_01.png",
+	"img_gifts/0148_carrot_01.png",
+	"img_gifts/0149_cucumber_01.png",
+	"img_gifts/0150_cabbage_01.png",
+	"img_gifts/0151_potato_01.png",
+	"img_gifts/0152_sweetpotato_01.png",
+	"img_gifts/0153_onion_01.png",
+	"img_gifts/0154_tomato_01.png",
+	"img_gifts/0155_corn_01.png",
+	"img_gifts/0156_greenpepper_01.png",
+	"img_gifts/0157_pumpkin_01.png",
+	"img_gifts/0158_eggplant_01.png",
+	"img_gifts/0159_turnip_01.png",
+	"img_gifts/0167_egg_01.png",
+	"img_gifts/0185_cheese_01.png",
+	"img_gifts/0193_juice_01.png",
+	"img_gifts/0195_milk_01.png",
+	"img_gifts/0196_tea_01.png",
+	"img_gifts/0197_greentea_01.png",
+	"img_gifts/0198_coffee_01.png",
+	"img_gifts/0200_cake_01.png",
+	"img_gifts/0201_icecream_01.png",
+	"img_gifts/0202_donut_01.png",
+	"img_gifts/0203_pudding_01.png",
+	"img_gifts/0204_jelly_01.png",
+	"img_gifts/0205_parfait_01.png",
+	"img_gifts/0221_baseball_01.png",
+	"img_gifts/0222_bat_01.png",
+	"img_gifts/0223_glove_01.png",
+	"img_gifts/0224_soccerball_01.png",
+	"img_gifts/0225_ball_01.png",
+	"img_gifts/0313_book_01.png",
+	"img_gifts/0314_notebook_01.png",
+	"img_gifts/0315_pencil_01.png",
+	"img_gifts/0316_pen_01.png",
+	"img_gifts/0318_eraser_01.png",
+	"img_gifts/0319_pencilcase_01.png",
+	"img_gifts/0320_ruler_01.png",
+	"img_gifts/0321_triangle_01.png",
+	"img_gifts/0322_protractor_01.png",
+	"img_gifts/0323_scissors_01.png",
+	"img_gifts/0324_glue_01.png",
+	"img_gifts/0325_paper_01.png",
+	"img_gifts/0326_compasses_01.png",
+	"img_gifts/0327_crayon_01.png",
+	"img_gifts/0328_paint_01.png",
+	"img_gifts/0329_brush_01.png",
+	"img_gifts/0332_dictionary_01.png",
+	"img_gifts/0336_map_01.png",
+	"img_gifts/0337_globe_01.png",
+	"img_gifts/0338_computer_01.png",
+	"img_gifts/0339_ink_01.png",
+	"img_gifts/0341_piano_01.png",
+	"img_gifts/0342_accordion_01.png",
+	"img_gifts/0343_harmonica_01.png",
+	"img_gifts/0344_xylophone_01.png",
+	"img_gifts/0345_recorder_01.png",
+	"img_gifts/0346_guitar_01.png",
+	"img_gifts/0347_violin_01.png",
+	"img_gifts/0348_tambourine_01.png",
+	"img_gifts/0349_drum_01.png",
+	"img_gifts/0350_castanets_01.png",
+	"img_gifts/0351_triangle_01.png",
+	"img_gifts/0352_mat_01.png",
+	"img_gifts/0353_beaker_01.png",
+	"img_gifts/0354_microscope_01.png",
+	"img_gifts/0355_skeleton_01.png",
+	"img_gifts/0356_bag_01.png",
+	"img_gifts/0454_TV_01.png",
+	"img_gifts/0455_washingmachine_01.png",
+	"img_gifts/0456_vacuumcleaner_01.png",
+	"img_gifts/0457_telephone_01.png",
+	"img_gifts/0458_refrigerator_01.png",
+	"img_gifts/0459_kettle_01.png",
+	"img_gifts/0460_fryingpan_01.png",
+	"img_gifts/0461_cup_01.png",
+	"img_gifts/0462_glass_01.png",
+	"img_gifts/0463_fork_01.png",
+	"img_gifts/0464_knife_01.png",
+	"img_gifts/0465_spoon_01.png",
+	"img_gifts/0466_box_01.png",
+	"img_gifts/0467_trashcan_01.png",
+	"img_gifts/0469_mat_01.png",
+	"img_gifts/0470_calendar_01.png",
+	"img_gifts/0471_mirror_01.png",
+	"img_gifts/0474_CD_01.png",
+	"img_gifts/0475_newspaper_01.png",
+	"img_gifts/0477_clock_01.png",
+	"img_gifts/0478_watch_01.png",
+	"img_gifts/0479_camera_01.png",
+	"img_gifts/0480_umbrella_01.png",
+	"img_gifts/0481_toothbrush_01.png",
+	"img_gifts/0482_T-shirt_01.png",
+	"img_gifts/0483_sweater_01.png",
+	"img_gifts/0484_shirt_01.png",
+	"img_gifts/0485_pants_01.png",
+	"img_gifts/0486_skirt_01.png",
+	"img_gifts/0487_cap_01.png",
+	"img_gifts/0488_hat_01.png",
+	"img_gifts/0489_shoes_01.png",
+	"img_gifts/0490_socks_01.png",
+	"img_gifts/0491_glasses_01.png",
+	"img_gifts/0492_gloves_01.png",
+	"img_gifts/0493_handkerchief_01.png",
+	"img_gifts/0573_flower_01.png",
+	"img_gifts/0574_morningglory_01.png",
+	"img_gifts/0575_sunflower_01.png",
+	"img_gifts/0576_dandelion_01.png",
+	"img_gifts/0577_rose_01.png",
+	"img_gifts/0586_car_01.png",
+	"img_gifts/0596_bike_01.png",
+	"img_gifts/0597_motorcycle_01.png",
+	"img_gifts/0598_unicycle_01.png",
+	"img_gifts/0600_sailboat_01.png"
+]
+const NAMES = [
+	"Ai",
+	"Akiko",
+	"Akira",
+	"Atsuko",
+	"Atsushi",
+	"Aya",
+	"Ayako",
+	"Chie",
+	"Daisuke",
+	"Eri",
+	"Hideki",
+	"Hiroaki",
+	"Hiroko",
+	"Hiromi",
+	"Hiroshi",
+	"Hiroyuki",
+	"Hitomi",
+	"Jun",
+	"Junko",
+	"Kanako",
+	"Kaori",
+	"Kayoko",
+	"Kazuko",
+	"Kazuo",
+	"Keiko",
+	"Kenichi",
+	"Kenji",
+	"Koji",
+	"Kumiko",
+	"Kyoko",
+	"Mai",
+	"Makiko",
+	"Makoto",
+	"Mari",
+	"Mariko",
+	"Masahiro",
+	"Masaki",
+	"Masako",
+	"Masami",
+	"Masayuki",
+	"Mayumi",
+	"Megumi",
+	"Michiko",
+	"Miho",
+	"Mika",
+	"Miki",
+	"Minoru",
+	"Miyuki",
+	"Naoki",
+	"Naoko",
+	"Naomi",
+	"Noriko",
+	"Reiko",
+	"Rie",
+	"Sachiko",
+	"Satoshi",
+	"Shigeru",
+	"Shinji",
+	"Takahiro",
+	"Takashi",
+	"Takayuki",
+	"Takeshi",
+	"Tetsuya",
+	"Tomoko",
+	"Tomomi",
+	"Toshio",
+	"Toshiyuki",
+	"Yasuhiro",
+	"Yoko",
+	"Yoshiko",
+	"Yuji",
+	"Yuka",
+	"Yukari",
+	"Yuki",
+	"Yukiko",
+	"Yuko",
+	"Yumi",
+	"Yumiko",
+	"Yusuke",
+	"Yutaka"
+]
+
+function setup() {
+	imgPresent.src = hdPresent.drawOne();
+	spanName.innerHTML = hdName.drawOne();
+	imgChoice.src = "";
+	choices.forEach(el => el.firstChild.src = hdPresent.drawOne());
+	hdChoices.drawOne().firstChild.src = imgPresent.src;
+	buttonsConfirmPresent.forEach(button => button.disabled = true);
+	buttonsConfirmWriting.forEach(button => button.disabled = true);
+	choices.forEach(button => button.disabled = false);
+	divSearch.style.display = "grid";
+	divWrite.style.display = "none";
+	contextWriting.clearRect(0, 0, canvasWriting.width, canvasWriting.height);
+	contextWritten.clearRect(0, 0, canvasWritten.width, canvasWritten.height);
+}
+
+function resizeHander(ev) {
+	let rect = canvasWriting.getBoundingClientRect();
+	canvasWriting.width = rect.right - rect.left;
+	canvasWriting.height = rect.bottom - rect.top;
+	console.log(canvasWriting);
+}
+
+function choiceClickHandler(ev) {
+	imgChoice.src = ev.target.src;
+	choices.forEach(button => button.disabled = true);
+	buttonsConfirmPresent.forEach(button => button.disabled = false);
+}
+
+function acceptPresentHandler(ev) {
+	buttonsConfirmPresent.forEach(button => button.disabled = true);
+	buttonsConfirmWriting.forEach(button => button.disabled = false);
+	divSearch.style.display = "none";
+	divWrite.style.display = "flex";
+	resizeHander();
+}
+
+function rejectPresentHandler(ev) {
+	imgChoice.src = "";
+	choices.forEach(button => button.disabled = false);
+	buttonsConfirmPresent.forEach(button => button.disabled = true);
+}
+
+function acceptWritingHandler(ev) {
+	divP1.appendChild(divP2.children[0]);
+	divP2.appendChild(divP1.children[0]);
+	setup();
+}
+
+function rejectWritingHandler(ev) {
+	contextWriting.clearRect(0, 0, canvasWriting.width, canvasWriting.height);
+	contextWritten.clearRect(0, 0, canvasWritten.width, canvasWritten.height);
+}
+
+function canvasTouchHandler(ev) {
+	let w = ev.target.width;
+	let h = ev.target.height;
+	contextWriting.fillRect(ev.offsetX*w/h, ev.offsetY*h/w, 10, 10);
+	contextWritten.drawImage(canvasWriting, 0, 0, canvasWritten.width, canvasWritten.height);
+}
+
+const hdPresent = new HatDraw(PRESENTS);
+const hdName = new HatDraw(NAMES);
+const imgPresent = document.getElementById("imgPresent");
+const spanName = document.getElementById("name");
+const imgChoice = document.getElementById("imgChoice");
+const choices = Array.from(document.getElementsByClassName("choice"));
+const buttonsConfirmPresent = Array.from(document.getElementsByClassName("confirmPresent"));
+const buttonsConfirmWriting = Array.from(document.getElementsByClassName("confirmWriting"));
+const hdChoices = new HatDraw(choices);
+const divSearch = document.getElementById("choosePresent");
+const divWrite = document.getElementById("writeName");
+const canvasWriting = document.getElementById("canvasWriting");
+const canvasWritten = document.getElementById("canvasWritten");
+const contextWriting = canvasWriting.getContext("2d");
+const contextWritten = canvasWritten.getContext("2d");
+const divP1 = document.getElementById("p1");
+const divP2 = document.getElementById("p2");
+const divElf = document.getElementById("elf");
+const divSanta = document.getElementById("santa");
+setup();
+choices.forEach(button => button.addEventListener("click", choiceClickHandler));
+window.addEventListener("keydown", function (ev) {
+	if (ev.key === " ") {setup();}
+});
+document.getElementById("acceptPresent").addEventListener("click", acceptPresentHandler);
+document.getElementById("rejectPresent").addEventListener("click", rejectPresentHandler);
+document.getElementById("acceptWriting").addEventListener("click", acceptWritingHandler);
+document.getElementById("rejectWriting").addEventListener("click", rejectWritingHandler);
+canvasWriting.addEventListener("pointerdown", canvasTouchHandler);
+canvasWriting.addEventListener("pointermove", canvasTouchHandler);
+	</script>
+</html>
