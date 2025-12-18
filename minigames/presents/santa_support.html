@@ -19,17 +19,23 @@ body {
 }
 #imgElf {grid-area: 1/1/3/2; align-self: end; justify-self: start; width: 20vh;}
 #instructions {
-	display: grid; grid-template-columns: repeat(2, auto); grid-template-rows: repeat(2, auto);
+	grid-area: 1/1/2/3; display: grid; grid-template-columns: repeat(3, auto); grid-template-rows: repeat(2, auto);
 	align-self: end;
 	place-items: center; gap: 1vh;
-	width: 70vh; height: 15vw;
-	box-sizing: border-box; padding: 2vh;
+	width: 90vh; height: 15vw;
+	box-sizing: border-box; padding: 1vh;
 	background: pink;
 }
+#canvasHouse {width: 40vh; background: gray;}
 #imgPresent {width: 15vh; max-height: 10vw;}
 #name {font-size: xx-large; font-family: sans-serif;}
-#confirm {display: grid; grid-template-columns: repeat(2, auto); grid-template-rows: repeat(2, auto); place-items: center; gap: 1vh; padding-bottom: 5vh;}
-#imgChoice {width: 20vh;}
+#confirm {display: flex; place-items: center; padding-bottom: 5vh;}
+.wrapper {grid-area: 2/1/3/2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1vw;}
+#wrapperHouse {}
+#wrapperChoice {display: none;}
+#wrapperWriting {display: none;}
+#canvasHouseClone {width: 30vh; background: gray;}
+#imgChoice {width: 20vh; height: 20vh; border: solid white;}
 #canvasWritten {width: 40vh; background: beige; border: thick double black;}
 .buttonConfirm {font-size: x-large;}
 .confirmPresent {}
@@ -45,8 +51,24 @@ body {
 	color: white;
 	background: red;
 }
+#chooseHouse {
+	display: grid; grid-template-columns: repeat(2, 45vh); grid-template-rows: 15vw repeat(2, auto); place-items: center;
+}
+.choiceHouse {
+	display: flex; place-items: center; justify-content: center;
+	width: 45vh; height: 25vh;
+}
+.choiceHouse > canvas {
+	width: 40vh; height: 20vh; background: gray;
+}
+.choiceHouse:disabled {
+	opacity: 50%;
+}
+#imgChooseHouse {
+	grid-area: 1/1/2/3; justify-self: center; height: 15vw; background: navy;
+}
 #choosePresent {
-	display: grid; grid-template-columns: repeat(5, 20vh); grid-template-rows: repeat(2, auto); row-gap: 2vw;
+	display: none; grid-template-columns: repeat(5, 20vh); grid-template-rows: repeat(2, auto); row-gap: 2vw;
 }
 #imgChoosePresent {
 	grid-area: 1/1/2/6; justify-self: center; height: 20vw;
@@ -83,18 +105,30 @@ body {
 			<div id="elf">
 				<img id="imgElf" src="elf_support.png"/>
 				<div id="instructions">
-					<span>Present:</span><span>Name:</span>
-					<img id="imgPresent" src="img_gifts/0349_drum_01.png"/><span id="name">Thomas</span>
+					<span>House:</span><span>Present:</span><span>Name:</span>
+					<canvas id="canvasHouseClone"></canvas><img id="imgPresent" src="img_gifts/0349_drum_01.png"/><span id="name">Thomas</span>
 				</div>
 				<div id="confirm">
-					<img id="imgChoice" src="img_gifts/0349_drum_01.png"/><canvas id="canvasWritten"></canvas>
-					<div>
-						<button id="acceptPresent" class="buttonConfirm confirmPresent" disabled>○ Yes</button>
-						<button id="rejectPresent" class="buttonConfirm confirmPresent" disabled>☓ No</button>
+					<div id="wrapperHouse" class="wrapper">
+						<canvas id="canvasHouse"></canvas>
+						<div>
+							<button id="acceptHouse" class="buttonConfirm confirmHouse" disabled>○ Yes</button>
+							<button id="rejectHouse" class="buttonConfirm confirmHouse" disabled>☓ No</button>
+						</div>
 					</div>
-					<div>
-						<button id="acceptWriting" class="buttonConfirm confirmWriting" disabled>○ Yes</button>
-						<button id="rejectWriting" class="buttonConfirm confirmWriting" disabled>☓ No</button>
+					<div id="wrapperChoice" class="wrapper">
+						<img id="imgChoice" alt="プレセント" src="img_gifts/0349_drum_01.png"/>
+						<div>
+							<button id="acceptPresent" class="buttonConfirm confirmPresent" disabled>○ Yes</button>
+							<button id="rejectPresent" class="buttonConfirm confirmPresent" disabled>☓ No</button>
+						</div>
+					</div>
+					<div id="wrapperWriting" class="wrapper">
+						<canvas id="canvasWritten"></canvas>
+						<div>
+							<button id="acceptWriting" class="buttonConfirm confirmWriting" disabled>○ Yes</button>
+							<button id="rejectWriting" class="buttonConfirm confirmWriting" disabled>☓ No</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -103,6 +137,13 @@ body {
 		</div>
 		<div id="p2">
 			<div id="santa">
+				<div id="chooseHouse">
+					<img id="imgChooseHouse" src="santa_lost.png"/>
+					<button id="choiceHouse1" class="choiceHouse"><canvas/></canvas>
+					<button id="choiceHouse2" class="choiceHouse"><canvas/></canvas>
+					<button id="choiceHouse3" class="choiceHouse"><canvas/></canvas>
+					<button id="choiceHouse4" class="choiceHouse"><canvas/></canvas>
+				</div>
 				<div id="choosePresent">
 					<img id="imgChoosePresent" src="santa_searching.png"/>
 					<button id="choice1" class="choice"><img src="img_gifts/0349_drum_01.png"/></button>
@@ -119,7 +160,10 @@ body {
 		</div>
 	</body>
 	<script type="module">
+import IMAGE_LIBRARY from "../image_library/image_library.mjs"
+import Loader from "../js_modules/Loader.mjs"
 import HatDraw from "../js_modules/HatDraw.mjs"
+import fitImage from "../js_modules/fitImage.mjs"
 const PRESENTS = [
 	"img_gifts/0080_monkey_01.png",
 	"img_gifts/0083_horse_01.png",
@@ -270,7 +314,7 @@ const PRESENTS = [
 	"img_gifts/0597_motorcycle_01.png",
 	"img_gifts/0598_unicycle_01.png",
 	"img_gifts/0600_sailboat_01.png"
-]
+];
 const NAMES = [
 	"Ai",
 	"Akiko",
@@ -353,20 +397,55 @@ const NAMES = [
 	"Yusuke",
 	"Yutaka"
 ]
+const PLACES_BLACKLIST = ["space"];
+const BUILDINGS = IMAGE_LIBRARY.filter(o => o.tags.includes("building") || o.tags.includes("place") && !PLACES_BLACKLIST.includes(o.text))
+console.log(BUILDINGS.map(o => o.text));
+const LOADER = new Loader("../image_library/images/");
+console.log(IMAGE_LIBRARY.find((o) => o.text === "house"));
+const IMG_HOUSE = LOADER.newImageAsset(IMAGE_LIBRARY.find(o => o.text === "house").src, setup);
 
 function setup() {
-	imgPresent.src = hdPresent.drawOne();
-	spanName.innerHTML = hdName.drawOne();
-	imgChoice.src = "";
-	choices.forEach(el => el.firstChild.src = hdPresent.drawOne());
-	hdChoices.drawOne().firstChild.src = imgPresent.src;
+	//generate new houses
+	let values = []
+	choicesHouses.forEach(function (el) {
+		let canvas = el.firstChild;
+		let context = canvas.getContext("2d");
+		let rPlace = LOADER.newImageAsset(hdPlaces.drawOne().src, function () {
+			if (LOADER.assetsLoaded) {
+				let rPair = this[Math.floor(this.length*Math.random())];
+				this.forEach(function (pair) {
+					let ctx = pair[0];
+					let img = pair[1];
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+					fitImage(ctx, img, canvas.width/4, 0, canvas.width*3/4, canvas.height);
+					fitImage(ctx, IMG_HOUSE, 0, 0, canvas.width/4, canvas.height);
+				});
+				contextHouseClone.clearRect(0, 0, canvasHouseClone.width, canvasHouseClone.height);
+				contextHouseClone.drawImage(rPair[0].canvas, 0, 0, canvasHouseClone.width, canvasHouseClone.height);
+			}
+		}.bind(values));
+		values.push([context, rPlace]);
+	});
+	choicesHouses.forEach(button => button.disabled = false);
+	divHouse.style.display = "grid";
+	buttonsConfirmHouse.forEach(button => button.disabled = true);
+	contextHouse.clearRect(0, 0, canvasHouse.width, canvasHouse.height);
+	wrapperHouse.style.display = "flex";
+	//setup present div
+	wrapperChoice.style.display = "none";
+	divSearch.style.display = "none";
 	buttonsConfirmPresent.forEach(button => button.disabled = true);
-	buttonsConfirmWriting.forEach(button => button.disabled = true);
-	choices.forEach(button => button.disabled = false);
-	divSearch.style.display = "grid";
+	imgChoice.src = ""; //erase default drum image
+	choices.forEach(el => el.firstChild.src = hdPresent.drawOne());
+	imgPresent.src = hdPresent.drawOne();
+	hdChoices.drawOne().firstChild.src = imgPresent.src;
+	//setup writing div
+	wrapperWriting.style.display = "none";
+	spanName.innerHTML = hdName.drawOne();
 	divWrite.style.display = "none";
 	contextWriting.clearRect(0, 0, canvasWriting.width, canvasWriting.height);
 	contextWritten.clearRect(0, 0, canvasWritten.width, canvasWritten.height);
+	buttonsConfirmWriting.forEach(button => button.disabled = true);
 }
 
 function resizeHander(ev) {
@@ -376,15 +455,40 @@ function resizeHander(ev) {
 	console.log(canvasWriting);
 }
 
+function houseClickHandler(ev) {
+	contextHouse.clearRect(0, 0, canvasHouse.width, canvasHouse.height);
+	contextHouse.drawImage(ev.target, 0, 0, canvasHouse.width, canvasHouse.height);
+	choicesHouses.forEach(button => button.disabled = true);
+	buttonsConfirmHouse.forEach(button => button.disabled = false);
+}
+
 function choiceClickHandler(ev) {
 	imgChoice.src = ev.target.src;
 	choices.forEach(button => button.disabled = true);
 	buttonsConfirmPresent.forEach(button => button.disabled = false);
 }
 
+function acceptHouseHandler(ev) {
+	choices.forEach(button => button.disabled = false);
+	divHouse.style.display = "none";
+	wrapperHouse.style.display = "none";
+	divSearch.style.display = "grid";
+	wrapperChoice.style.display = "flex";
+	divWrite.style.display = "none";
+	resizeHander();
+}
+
+function rejectHouseHandler(ev) {
+	contextHouse.clearRect(0, 0, canvasHouse.width, canvasHouse.height);
+	choicesHouses.forEach(button => button.disabled = false);
+	buttonsConfirmHouse.forEach(button => button.disabled = true);
+}
+
 function acceptPresentHandler(ev) {
 	buttonsConfirmPresent.forEach(button => button.disabled = true);
 	buttonsConfirmWriting.forEach(button => button.disabled = false);
+	wrapperChoice.style.display = "none";
+	wrapperWriting.style.display = "flex";
 	divSearch.style.display = "none";
 	divWrite.style.display = "flex";
 	resizeHander();
@@ -410,7 +514,10 @@ function rejectWritingHandler(ev) {
 function canvasTouchHandler(ev) {
 	let w = ev.target.width;
 	let h = ev.target.height;
-	contextWriting.fillRect(ev.offsetX*w/h, ev.offsetY*h/w, 10, 10);
+	//contextWriting.fillRect(ev.offsetX*w/h, ev.offsetY*h/w, 10, 10);
+	contextWriting.beginPath();
+	contextWriting.arc(ev.offsetX*w/h, ev.offsetY*h/w, 5, 0, 2*Math.PI);
+	contextWriting.fill();
 	contextWritten.drawImage(canvasWriting, 0, 0, canvasWritten.width, canvasWritten.height);
 }
 
@@ -418,11 +525,19 @@ const hdPresent = new HatDraw(PRESENTS);
 const hdName = new HatDraw(NAMES);
 const imgPresent = document.getElementById("imgPresent");
 const spanName = document.getElementById("name");
+const choicesHouses = Array.from(document.getElementsByClassName("choiceHouse"));
 const imgChoice = document.getElementById("imgChoice");
 const choices = Array.from(document.getElementsByClassName("choice"));
+const buttonsConfirmHouse = Array.from(document.getElementsByClassName("confirmHouse"));
 const buttonsConfirmPresent = Array.from(document.getElementsByClassName("confirmPresent"));
 const buttonsConfirmWriting = Array.from(document.getElementsByClassName("confirmWriting"));
+const hdPlaces = new HatDraw(BUILDINGS);
 const hdChoices = new HatDraw(choices);
+const divHouse = document.getElementById("chooseHouse");
+const canvasHouse = document.getElementById("canvasHouse");
+const contextHouse = canvasHouse.getContext("2d");
+const canvasHouseClone = document.getElementById("canvasHouseClone");
+const contextHouseClone = canvasHouseClone.getContext("2d");
 const divSearch = document.getElementById("choosePresent");
 const divWrite = document.getElementById("writeName");
 const canvasWriting = document.getElementById("canvasWriting");
@@ -433,11 +548,13 @@ const divP1 = document.getElementById("p1");
 const divP2 = document.getElementById("p2");
 const divElf = document.getElementById("elf");
 const divSanta = document.getElementById("santa");
-setup();
+choicesHouses.forEach(button => button.addEventListener("click", houseClickHandler));
 choices.forEach(button => button.addEventListener("click", choiceClickHandler));
 window.addEventListener("keydown", function (ev) {
 	if (ev.key === " ") {setup();}
 });
+document.getElementById("acceptHouse").addEventListener("click", acceptHouseHandler);
+document.getElementById("rejectHouse").addEventListener("click", rejectHouseHandler);
 document.getElementById("acceptPresent").addEventListener("click", acceptPresentHandler);
 document.getElementById("rejectPresent").addEventListener("click", rejectPresentHandler);
 document.getElementById("acceptWriting").addEventListener("click", acceptWritingHandler);
