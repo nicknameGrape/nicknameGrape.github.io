@@ -9,6 +9,7 @@
 
 			gtag('config', 'G-C5MPB2T6KH');
 		</script>
+		<meta charset="utf-8">
 		<title>スーパーナビ</title>
 		<style>
 body {
@@ -35,8 +36,8 @@ body {
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
-	border: solid skyblue;
-	background: blue;
+	border: solid red;
+	background: pink;
 }
 #screen_right div {
 	transform-origin: center;
@@ -53,6 +54,25 @@ body {
 	box-sizing: border-box;
 	border: solid;
 	background: tan;
+}
+#roomAnswer {
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 3vw;
+}
+#canvasAnswer {
+	background: pink;
+	width: 80vh;
+	height: 40vh;
+}
+#guess {
+	width: 20vh;
+	height: 20vh;
+	box-sizing: border-box;
+	border: thin white dashed;
+	object-fit: contain;
 }
 #controls {
 	display: grid;
@@ -79,6 +99,30 @@ button {
 #button_right {
 	grid-area: 2/3/3/4;
 }
+#roomChoices {
+	display: none;
+	grid-template-rows: repeat(4, auto);
+	grid-template-columns: repeat(4, auto);
+}
+input[name="roomChoice"] {
+	display: none;
+}
+input[name="roomChoice"] + label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 20vh;
+	height: 20vh;
+}
+.roomChoice {
+	width: 15vh;
+	height: 15vh;
+	box-sizing: border-box;
+	border: thick solid black;
+	padding: 5px;
+	background: yellow;
+	object-fit: contain;
+}
 		</style>
 		<script src="MazeLib.js"></script>
 	</head>
@@ -86,6 +130,10 @@ button {
 <div id="screen_left">
 	<div id="maze">
 		<canvas id="canvas_maze">Maze</canvas>
+	</div>
+	<div id="roomAnswer">
+		<canvas id="canvasAnswer">Maze</canvas>
+		<img id="guess" alt="Guess"/>
 	</div>
 </div>
 <div id="screen_right">
@@ -95,9 +143,47 @@ button {
 		<button id="button_back" class="moveButton">&darr; <br> Turn<br>Around</button>
 		<button id="button_right" class="moveButton">&rarr; <br> Turn<br>Right</button>
 	</div>
+	<div id="roomChoices">
+		<input type="radio" name="roomChoice" id="the arts and crafts room"/>
+		<label for="the arts and crafts room"><img src="icons/art.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the classroom"/>
+		<label for="the classroom"><img src="icons/classroom.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the computer room"/>
+		<label for="the computer room"><img src="icons/computer.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the cooking room"/>
+		<label for="the cooking room"><img src="icons/cooking.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the entrance"/>
+		<label for="the entrance"><img src="icons/entrance.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the gym"/>
+		<label for="the gym"><img src="icons/gym.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the library"/>
+		<label for="the library"><img src="icons/library.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the lunch room"/>
+		<label for="the lunch room"><img src="icons/lunch.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the music room"/>
+		<label for="the music room"><img src="icons/music.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the school nurse's office"/>
+		<label for="the school nurse's office"><img src="icons/nurse.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the school office"/>
+		<label for="the school office"><img src="icons/office.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the playground"/>
+		<label for="the playground"><img src="icons/playground.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the school principal's office"/>
+		<label for="the school principal's office"><img src="icons/principals_office_sad.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the restroom"/>
+		<label for="the restroom"><img src="icons/restroom.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the science room"/>
+		<label for="the science room"><img src="icons/science.png" class="roomChoice"/></label>
+		<input type="radio" name="roomChoice" id="the teacher's office"/>
+		<label for="the teacher's office"><img src="icons/teachers_room.png" class="roomChoice"/></label>
+	</div>
 </div>
 	</body>
-	<script>
+	<script type="module">
+import HatDraw from "../js_modules/HatDraw.mjs";
+import Loader from "../js_modules/Loader.mjs";
+import fitText from "../js_modules/fitText.mjs";
+import fitImage from "../js_modules/fitImage.mjs";
 class School {
 	#tiles;
 	#goal;
@@ -130,7 +216,7 @@ class School {
 			if (this.#isGoodDistance(hall, wall)) {
 				this.#goal = {
 					"x": wall.x,
-					"y": wall.y
+					"y": wall.y,
 				}
 				//pick a valid direction for the student to face
 				let validFacingNumbers = [];
@@ -147,6 +233,7 @@ class School {
 				break;
 			}
 		}
+		this.room = hdRoom.drawOne()
 		console.log("GOAL:", this.#goal, ", STUDENT:", this.#student);
 	}
 
@@ -325,14 +412,11 @@ class School {
 			setTimeout(function () {
 				divLeft.style.background = "";
 				divRight.style.background = "";
-				let tmp = divRight.removeChild(divRight.firstElementChild);
-				let tmp2 = divLeft.removeChild(divLeft.firstElementChild);
-					console.log(tmp, tmp2);
-				divRight.appendChild(tmp2);
-				divLeft.appendChild(tmp);
-				school = new School();
-				school.render();
-			}, 2000);
+				divMaze.style.display = "none";
+				divRoomAnswer.style.display = "flex";
+				divRoomChoices.style.display = "grid";
+				divControls.style.display = "none";
+			}, 1000);
 		}
 	}
 
@@ -379,21 +463,124 @@ class School {
 				context.translate(this.#goal.x, this.#goal.y);
 				context.fillStyle = "lime";
 				context.fillRect(0, 0, 1, 1);
+				context.fillStyle = "black";
+				//context.drawImage(this.#goal.room.img, 0, 0, 1, 1);
+				fitText(context, "?", 0, 0, 1, 1);
 			context.restore();
 		context.restore();
+		contextAnswer.clearRect(0, 0, canvasAnswer.width, canvasAnswer.height);
+		fitText(contextAnswer, "This is my favorite place!", 0, 0, canvasAnswer.width, canvasAnswer.height*1/4);
+		fitImage(contextAnswer, this.room.img, 0, canvasAnswer.height*1/4, canvasAnswer.width, canvasAnswer.height*2/4);
+		fitText(contextAnswer, this.room.english, 0, canvasAnswer.height*3/4, canvasAnswer.width, canvasAnswer.height*1/4);
 	}
 }
 
+const loader = new Loader("./icons/");
+let SCHOOL_ROOMS = [
+{
+	"src": "art.png",
+		"english": "the arts and crafts room",
+		"katakana": "アート ルーム"
+},
+{
+	"src": "classroom.png",
+	"english": "the classroom",
+	"katakana": "クラスルーム"
+},
+{
+	"src": "cooking.png",
+	"english": "the cooking room",
+	"katakana": "クッキング ルーム"
+},
+{
+	"src": "entrance.png",
+	"english": "the entrance",
+	"katakana": "エントランス"
+},
+{
+	"src": "gym.png",
+	"english": "the gym",
+	"katakana": "ジム"
+},
+{
+	"src": "library.png",
+	"english": "the library",
+	"katakana": "ライブラリー"
+},
+{
+	"src": "lunch.png",
+	"english": "the lunch room",
+	"katakana": "ランチ ルーム"
+},
+{
+	"src": "music.png",
+	"english": "the music room",
+	"katakana": "ミュージック ルーム"
+},
+{
+	"src": "nurse.png",
+	"english": "the school nurse's office",
+	"katakana": "スクール ナースズ オフィス"
+},
+{
+	"src": "office.png",
+	"english": "the school office",
+	"katakana": "スクール オフィス"
+},
+{
+	"src": "playground.png",
+	"english": "the playground",
+	"katakana": "プレイグラウンド"
+},
+{
+	"src": "principals_office_sad.png",
+	"english": "the school principal's office",
+	"katakana": "スクール プリンシパルズ オフィス"
+},
+{
+	"src": "restroom.png",
+	"english": "the restroom",
+	"katakana": "レストルーム"
+},
+{
+	"src": "science.png",
+	"english": "the science room",
+	"katakana": "サイエンス ルーム"
+},
+{
+	"src": "teachers_room.png",
+	"english": "the teacher's office",
+	"katakana": "ティーチャーズ オフィス"
+},
+{
+	"src": "computer.png",
+	"english": "the computer room",
+	"katakana": "コンピュータールーム"
+}
+]
+const hdRoom = new HatDraw(SCHOOL_ROOMS);
 const divLeft = document.getElementById("screen_left");
 const divRight = document.getElementById("screen_right");
 const divMaze = document.getElementById("maze");
+const divRoomAnswer = document.getElementById("roomAnswer");
+const canvasAnswer = document.getElementById("canvasAnswer");
+const contextAnswer = canvasAnswer.getContext("2d");
 const divControls = document.getElementById("controls");
 const buttonStraight = document.getElementById("button_straight");
 const buttonRight = document.getElementById("button_right");
 const buttonLeft = document.getElementById("button_left");
 const buttonBack = document.getElementById("button_back");
+const divRoomChoices = document.getElementById("roomChoices");
+const imgGuess = document.getElementById("guess");
+
 let school = new School();
-school.render();
+SCHOOL_ROOMS.forEach(function (o) {
+	o.img = loader.newImageAsset(o.src, function () {
+		if (loader.assetsLoaded) {
+			school.render();
+		}
+	});
+});
 
 addEventListener("resize", function () {
 	school.render();
@@ -409,6 +596,42 @@ buttonLeft.addEventListener("click", function (ev) {
 });
 buttonBack.addEventListener("click", function (ev) {
 	school.turnAround();
+});
+window.addEventListener("keydown", function (ev) {
+	if (ev.key === "ArrowUp") {
+		school.moveStraight();
+	} else if (ev.key === "ArrowRight") {
+		school.turnRight();
+	} else if (ev.key === "ArrowLeft") {
+		school.turnLeft();
+	} else if (ev.key === "ArrowDown") {
+		school.turnAround();
+	}
+});
+Array.from(document.getElementsByClassName("roomChoice")).forEach(function (label) {
+	label.addEventListener("click", function (ev) {
+		imgGuess.src = ev.target.src;
+		if (ev.target.parentElement.htmlFor === school.room.english) {
+			divLeft.style.background = "lime";
+			divRight.style.background = "lime";
+			setTimeout(function () {
+				divLeft.style.background = "";
+				divRight.style.background = "";
+				divMaze.style.display = "grid";
+				divRoomAnswer.style.display = "none";
+				divRoomChoices.style.display = "none";
+				divControls.style.display = "grid";
+				imgGuess.src = "";
+				let tmp = divRight.removeChild(divRight.firstElementChild);
+				let tmp2 = divLeft.removeChild(divLeft.firstElementChild);
+					console.log(tmp, tmp2);
+				divRight.appendChild(tmp2);
+				divLeft.appendChild(tmp);
+				school = new School();
+				school.render();
+			}, 2000);
+		}
+	});
 });
 	</script>
 </html>
