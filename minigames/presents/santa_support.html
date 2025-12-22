@@ -464,14 +464,14 @@ function resizeHander(ev) {
 	console.log(canvasWriting);
 }
 
-function houseClickHandler(ev) {
+function housePointerdownHandler(ev) {
 	contextHouse.clearRect(0, 0, canvasHouse.width, canvasHouse.height);
 	contextHouse.drawImage(ev.target, 0, 0, canvasHouse.width, canvasHouse.height);
 	choicesHouses.forEach(button => button.disabled = true);
 	buttonsConfirmHouse.forEach(button => button.disabled = false);
 }
 
-function choiceClickHandler(ev) {
+function choicePointerdownHandler(ev) {
 	imgChoice.src = ev.target.src;
 	choices.forEach(button => button.disabled = true);
 	buttonsConfirmPresent.forEach(button => button.disabled = false);
@@ -557,17 +557,17 @@ const divP1 = document.getElementById("p1");
 const divP2 = document.getElementById("p2");
 const divElf = document.getElementById("elf");
 const divSanta = document.getElementById("santa");
-choicesHouses.forEach(button => button.addEventListener("click", houseClickHandler));
-choices.forEach(button => button.addEventListener("click", choiceClickHandler));
+choicesHouses.forEach(button => button.addEventListener("pointerdown", housePointerdownHandler));
+choices.forEach(button => button.addEventListener("pointerdown", choicePointerdownHandler));
 window.addEventListener("keydown", function (ev) {
 	if (ev.key === " ") {setup();}
 });
-document.getElementById("acceptHouse").addEventListener("click", acceptHouseHandler);
-document.getElementById("rejectHouse").addEventListener("click", rejectHouseHandler);
-document.getElementById("acceptPresent").addEventListener("click", acceptPresentHandler);
-document.getElementById("rejectPresent").addEventListener("click", rejectPresentHandler);
-document.getElementById("acceptWriting").addEventListener("click", acceptWritingHandler);
-document.getElementById("rejectWriting").addEventListener("click", rejectWritingHandler);
+document.getElementById("acceptHouse").addEventListener("pointerdown", acceptHouseHandler);
+document.getElementById("rejectHouse").addEventListener("pointerdown", rejectHouseHandler);
+document.getElementById("acceptPresent").addEventListener("pointerdown", acceptPresentHandler);
+document.getElementById("rejectPresent").addEventListener("pointerdown", rejectPresentHandler);
+document.getElementById("acceptWriting").addEventListener("pointerdown", acceptWritingHandler);
+document.getElementById("rejectWriting").addEventListener("pointerdown", rejectWritingHandler);
 canvasWriting.addEventListener("pointerdown", canvasTouchHandler);
 canvasWriting.addEventListener("pointermove", canvasTouchHandler);
 	</script>
