@@ -585,16 +585,16 @@ SCHOOL_ROOMS.forEach(function (o) {
 addEventListener("resize", function () {
 	school.render();
 });
-buttonStraight.addEventListener("click", function (ev) {
+buttonStraight.addEventListener("pointerdown", function (ev) {
 	school.moveStraight();
 });
-buttonRight.addEventListener("click", function (ev) {
+buttonRight.addEventListener("pointerdown", function (ev) {
 	school.turnRight();
 });
-buttonLeft.addEventListener("click", function (ev) {
+buttonLeft.addEventListener("pointerdown", function (ev) {
 	school.turnLeft();
 });
-buttonBack.addEventListener("click", function (ev) {
+buttonBack.addEventListener("pointerdown", function (ev) {
 	school.turnAround();
 });
 window.addEventListener("keydown", function (ev) {
@@ -609,7 +609,7 @@ window.addEventListener("keydown", function (ev) {
 	}
 });
 Array.from(document.getElementsByClassName("roomChoice")).forEach(function (label) {
-	label.addEventListener("click", function (ev) {
+	label.addEventListener("pointerdown", function (ev) {
 		imgGuess.src = ev.target.src;
 		if (ev.target.parentElement.htmlFor === school.room.english) {
 			divLeft.style.background = "lime";
