@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+	<head>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C5MPB2T6KH"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-C5MPB2T6KH');
+		</script>
+		<meta charset="utf-8">
+		<style>
+:root {
+	--pw: 100vh;
+	--ph: 48vw;
+}
+@font-face: {
+	font-family: mext;
+	src: url("./mext.otf") format("opentype")
+}
+body {
+	display: grid; grid-template-columns: 48vw 4vw 48vw; grid-template-rows: 100vh;
+	margin: 0px; overflow: hidden;
+	touch-action: none; user-select: none;
+	}
+#p1 {
+	transform-origin: top left; transform: rotate(90deg) translate(0, -48vw);
+	width: var(--pw); height: var(--ph);
+	background: yellow;
+}
+.prompt {
+	display: flex;
+	justify-content: center;
+	font-family: mext, sans-serif;
+	font-size: 36pt;
+	color: blue;
+}
+#staffPrompt {
+}
+#touchMenu {
+	display: grid; grid-template-columns: repeat(5, calc(var(--pw)/5)); grid-template-rows: repeat(2, calc(var(--ph)/4));
+	justify-items: center;
+}
+input[type="radio"] {
+	display: none;
+}
+input[type="radio"] + label {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: skyblue;
+	border: thick inset black;
+	border-radius: 10%;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+}
+input[type="radio"]:checked + label {
+	background: lime;
+}
+input[type="radio"]:disabled + label {
+	opacity: 75%;
+}
+.item > img {
+	width: 80%;
+	max-height: 60%;
+	object-fit: contain;
+}
+.item > span {
+	font-family: mext, sans-serif;
+	font-size: 16pt;
+	font-weight: bolder;
+	text-align: center;
+	hyphens: auto;
+}
+#bill {
+	display: none;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	align-items: center;
+	justify-content: center;
+	font-size: 36pt;
+}
+#amount {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	grid-area: 1/1/3/2;
+}
+#confirmBillYes {
+	display: none;
+	grid-area: 2/2/3/3;
+	justify-content: center;
+}
+#confirmBillNo {
+	display: none;
+	grid-area: 2/3/3/4;
+	justify-content: center;
+}
+.payInput {
+	grid-area: 1/2/2/4;
+	text-align: center;
+	font: 48pt monospace;
+}
+#border {background: black;}
+#p2 {
+	transform-origin: top left; transform: rotate(-90deg) translate(-100vh);
+	width: 100vh; height: 48vw;
+	background: green;
+}
+#menuTitle {
+	display: flex;
+	justify-content: center;
+	background: white;
+	font-size: 24pt;
+	font-family: cursive;
+}
+#menu {
+	display: grid; grid-template-columns: repeat(5, calc(var(--pw)/5)); grid-template-rows: repeat(2, calc(var(--ph)/4));
+	justify-items: center;
+	background: white;
+}
+.menuItem {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+}
+.menuItem > img {
+	width: 80%;
+	max-height: 60%;
+	object-fit: contain;
+}
+.menuItem > span {
+	font-family: mext, sans-serif;
+	font-size: 16pt;
+	font-weight: bolder;
+	text-align: center;
+	hyphens: auto;
+}
+#confirmItem {
+	display: none;
+	justify-content: space-around;
+	font-size: 36pt;
+	padding: 10px;
+}
+#pay {
+	display: none;
+	grid-template-columns: repeat(11, 1fr);
+	align-items: center;
+	font-size: 24pt;
+}
+#payInputCustomer {
+	grid-area: 1/1/2/12;
+	font: 48pt monospace;
+}
+button {
+	font-size: inherit;
+}
+		</style>
+	</head>
+	<body>
+		<div id="p1">
+			<div id="staff">
+				<div id="staffPrompt" class="prompt">What would you like?</div>
+				<div id="touchMenu">
+				</div>
+				<div id="bill">
+					<span id="amount">￥990</span>
+					<span id="payInputStaff" class="payInput">￥..0</span>
+					<button id="confirmBillYes">Yes ○</button>
+					<button id="confirmBillNo">No ☓</button>
+				</div>
+			</div>
+		</div>
+		<div id="border"></div>
+		<div id="p2">
+			<div id="customer">
+				<div id="menuTitle">MENU</div>
+				<div id="menu"></div>
+				<div id="likePrompt" class="prompt">I'd like ...</div>
+				<div id="pricePrompt" class="prompt">How much is it?</div>
+				<div id="confirmItem">
+					<button id="confirmItemYes">Yes ○</button>
+					<button id="confirmItemNo">No ☓</button>
+				</div>
+				<div id="pay">
+					<span id="payInputCustomer" class="payInput">￥..0</span>
+					<button id="pay1" class="numberButton" value="1">1</button>
+					<button id="pay2" class="numberButton" value="2">2</button>
+					<button id="pay3" class="numberButton" value="3">3</button>
+					<button id="pay4" class="numberButton" value="4">4</button>
+					<button id="pay5" class="numberButton" value="5">5</button>
+					<button id="pay6" class="numberButton" value="6">6</button>
+					<button id="pay7" class="numberButton" value="7">7</button>
+					<button id="pay8" class="numberButton" value="8">8</button>
+					<button id="pay9" class="numberButton" value="9">9</button>
+					<button id="pay0" class="numberButton" value="0">0</button>
+					<button id="payX" style="background: red;">X</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="module">
+import IMAGE_LIBRARY from "../image_library/image_library.mjs"
+import Loader from "../js_modules/Loader.mjs"
+import HatDraw from "../js_modules/HatDraw.mjs"
+import fitImage from "../js_modules/fitImage.mjs"
+
+const BLACKLIST = ["vinegar"];
+const FOODS = IMAGE_LIBRARY.filter(o => o.tags.includes("food") && !BLACKLIST.includes(o.text))
+const DRINKS = IMAGE_LIBRARY.filter(o => o.tags.includes("drink") && !BLACKLIST.includes(o.text))
+//const DESSERTS = IMAGE_LIBRARY.filter(o => o.tags.includes("dessert") && !BLACKLIST.includes(o.text))
+const LOADER = new Loader("../image_library/images/");
+const HATDRAW_FOODS = new HatDraw(FOODS);
+const HATDRAW_DRINKS = new HatDraw(DRINKS);
+
+let menuItems = [];
+class Item {
+	constructor(ilo) { //ilo is image_library object
+		let img = document.createElement("img");
+		let button = document.createElement("input");
+		let label = document.createElement("label");
+		let labelText = document.createElement("span");
+		let spanMenu = document.createElement("span");
+		button.id = ilo.text;
+		button.type = "radio";
+		button.name = "foods";
+		button.menuCounterpart = spanMenu;
+		button.addEventListener("change", function (ev) {
+			Array.from(document.getElementsByClassName("menuItem")).forEach(el => el.style.background = "");
+			Array.from(document.getElementById("touchMenu").children).forEach(el => el.disabled = true);
+			this.menuCounterpart.style.background = "hotpink";
+			document.getElementById("confirmItem").style.display = "flex";
+		});
+		label.htmlFor = ilo.text;
+		label.classList.add("item");
+		label.lang = "en";
+		labelText.innerHTML = ilo.text;
+		label.appendChild(img);
+		label.appendChild(labelText);
+		document.getElementById("touchMenu").appendChild(button);
+		document.getElementById("touchMenu").appendChild(label);
+		img.src = "../image_library/images/" + ilo.src;
+		spanMenu.classList.add("menuItem");
+		spanMenu.appendChild(img.cloneNode(true));
+		spanMenu.appendChild(labelText.cloneNode(true));
+		document.getElementById("menu").appendChild(spanMenu);
+		this.text = ilo.text;
+		this.img = img;
+		this.button = button;
+		this.spanMenu = spanMenu;
+	}
+}
+function setup() {
+	menuItems = [];
+	let touchMenu = document.getElementById("touchMenu");
+	while (touchMenu.firstChild) {
+		touchMenu.removeChild(touchMenu.firstChild);
+	}
+	while (menu.firstChild) {
+		menu.removeChild(menu.firstChild);
+	}
+	for (let i=0;i<10;i++) {
+		let item = new Item(HATDRAW_FOODS.drawOne());
+		menuItems.push(item);
+	}
+	document.getElementById("amount").innerHTML = "￥"+Math.floor(Math.random()*9+1)+Math.floor(Math.random()*9+1)+"0";
+	document.getElementById("confirmItem").style.display = "";
+	document.getElementById("pay").style.display = "";
+	document.getElementById("bill").style.display = "";
+	document.getElementById("payInputCustomer").innerHTML = "￥..0";
+	document.getElementById("payInputStaff").innerHTML = "￥..0";
+	document.getElementById("confirmBillYes").style.display = "";
+	document.getElementById("confirmBillNo").style.display = "";
+}
+
+setup();
+//addEventListener("keydown", function (ev) {
+//	if (ev.key === "Enter") {setup();}
+//});
+document.getElementById("confirmItemYes").addEventListener("pointerdown", function () {
+	document.getElementById("confirmItem").style.display = "";
+	document.getElementById("pay").style.display = "grid";
+	document.getElementById("bill").style.display = "grid";
+});
+document.getElementById("confirmItemNo").addEventListener("pointerdown", function () {
+	Array.from(document.getElementsByClassName("menuItem")).forEach(el => el.style.background = "");
+	Array.from(document.getElementById("touchMenu").children).forEach(el => {el.disabled = false; el.checked = false;});
+	document.getElementById("confirmItem").style.display = ""
+});
+Array.from(document.getElementsByClassName("numberButton")).forEach(el => el.addEventListener("pointerdown", function (ev) {
+	let inputString = document.getElementById("payInputCustomer").innerHTML;
+	let newString = inputString.replace(".", ev.target.value);
+	document.getElementById("payInputCustomer").innerHTML = newString;
+	document.getElementById("payInputStaff").innerHTML = newString;
+	if (newString.indexOf(".") === -1) {
+		document.getElementById("confirmBillYes").style.display = "flex";
+		document.getElementById("confirmBillNo").style.display = "flex";
+	}
+}));
+document.getElementById("payX").addEventListener("pointerdown", function () {
+	document.getElementById("payInputCustomer").innerHTML = "￥..0";
+	document.getElementById("payInputStaff").innerHTML = "￥..0";
+	document.getElementById("confirmBillYes").style.display = "";
+	document.getElementById("confirmBillNo").style.display = "";
+})
+document.getElementById("confirmBillYes").addEventListener("pointerdown", function () {
+	window.setTimeout(function() {
+		document.getElementById("p1").appendChild(document.getElementById("p2").children[0]);
+		document.getElementById("p2").appendChild(document.getElementById("p1").children[0]);
+		setup();
+	}, 500);
+});
+document.getElementById("confirmBillNo").addEventListener("pointerdown", function () {
+	document.getElementById("payInputCustomer").innerHTML = "￥..0";
+	document.getElementById("payInputStaff").innerHTML = "￥..0";
+	document.getElementById("confirmBillYes").style.display = "";
+	document.getElementById("confirmBillNo").style.display = "";
+});
+	</script>
+</html>
