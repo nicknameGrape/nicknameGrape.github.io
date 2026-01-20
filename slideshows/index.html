@@ -1,0 +1,93 @@
+<html>
+	<meta charset="utf-8">
+	<head>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-C5MPB2T6KH"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-C5MPB2T6KH');
+		</script>
+		<!-- End Google tag -->
+		<title>Slideshows</title>
+		<link rel="icon" type="image/png" href="favicon.png">
+		<style>
+figure {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10px;
+}
+figcaption {
+	text-align: center;
+}
+#slideshows {
+	display: flex;
+	flex-wrap: wrap;
+}
+#slideshows img {
+	height: 15vh;
+}
+.song {
+	background: silver;
+}
+figure.song::before {
+	content: "♫ Song ♫";
+	font-size: large;
+	font-weight: bold;
+}
+.story {
+	background: steelblue;
+}
+figure.story::before {
+	content: "📖 Story";
+	font-size: large;
+	font-weight: bold;
+}
+		</style>
+	</head>
+	<body>
+		<a href="../">Back to "the Back Room"</a>
+		<h1>Slideshows</h1>
+		<p>These slideshows are my original work.  There are (or will be) <span class="song">songs</span>, chants, pattern practice, and <span class="story">stories</span>, usually intended to be funny.
+		<div id="slideshows">
+			<figure class="song">
+				<a href="memories_song_sports_day.pdf">
+					<img src="memories_song_sports_day.png"/>
+				</a>
+				<figcaption>My Best Memory: Sports Day</figcaption>
+				<figcaption><em>Sing to the tune of: My Grandfather's Clock</em></figcaption>
+			</figure>
+			<figure class="song">
+				<a href="memories_song_field_trip.pdf">
+					<img src="memories_song_field_trip.png"/>
+				</a>
+				<figcaption>My Best Memory: Field Trip</figcaption>
+				<figcaption><em>Sing to the tune of: My Grandfather's Clock</em></figcaption>
+			</figure>
+			<figure class="song">
+				<a href="memories_song_volunteer_day.pdf">
+					<img src="memories_song_volunteer_day.png"/>
+				</a>
+				<figcaption>My Best Memory: Volunteer Day</figcaption>
+				<figcaption><em>Sing to the tune of: My Grandfather's Clock</em></figcaption>
+			</figure>
+			<figure class="song">
+				<a href="memories_song_hiking.pdf">
+					<img src="memories_song_hiking.png"/>
+				</a>
+				<figcaption>My Best Memory: Hiking</figcaption>
+				<figcaption><em>Sing to the tune of: My Grandfather's Clock</em></figcaption>
+			</figure>
+			<figure class="story">
+				<a href="my_day_ronald_mcdonald.pdf">
+					<img src="my_day_ronald_mcdonald.png"/>
+				</a>
+				<figcaption>My Day: Ronald McDonald</figcaption>
+				<figcaption>A parody of Let's Try 2, Unit 9 "My Day"</figcaption>
+			</figure>
+		</div>
+	</body>
+</html>
