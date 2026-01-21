@@ -1,0 +1,317 @@
+<html>
+<head>
+	<style>
+		body {
+			margin:0;
+		}
+		canvas {
+			background-color: LightGreen;
+			width: 100vw;
+			height: 100vh;
+			margin: auto;
+			position: absolute;
+			top: 0; bottom: 0;
+			left: 0; right: 0;
+		}
+	</style>
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+<script>
+	//draw image to fit given area, keeping image aspect ratio
+	function fitText(context, text, x, y, w, h) {
+			var canvas = context.canvas;
+
+			if ( typeof x === "undefined" ){
+				x = 0;
+			}
+			if ( typeof y === "undefined" ){
+				y = 0;
+			}
+			if ( typeof w === "undefined" ){
+				w = canvas.width - x;
+			}
+			if ( typeof h === "undefined" ){
+				h = canvas.height - y;
+			}
+
+			var prevFont = context.font;
+			var fontSize = h;
+			context.font = fontSize + "px Arial";
+			while (context.measureText(text).width > w) {
+				fontSize = fontSize * .9;
+				context.font = fontSize + "px Arial";
+			}
+
+			var prevAlign = context.textAlign;
+			var prevLineWidth = context.lineWidth;
+
+			context.textAlign = "center";
+			context.lineWidth = fontSize / 25;
+			context.strokeText(text, x + w / 2, y + fontSize * .8 + (h - fontSize) / 2);
+			context.fillText(text, x + w / 2, y + fontSize * .8 + (h - fontSize) / 2);
+			context.textAlign = prevAlign;
+
+			context.font = prevFont;
+			context.lineWidth = prevLineWidth;
+	}
+</script>
+<script>
+	//draw image to fit given area, keeping image aspect ratio
+	//usage 1: drawFit(context, img)
+	//usage 2: drawFit(context, img, x, y, w, h)
+	//usage 3: drawFit(context, subx, suby, subw, subh, img, x, y, w, h)
+	function drawFit() {
+		var context;
+		var img;
+		var subx;
+		var suby;
+		var subw;
+		var subh;
+		var x;
+		var y;
+		var w;
+		var h;
+		if (arguments.length === 2) {
+			context = arguments[0];
+			img = arguments[1];
+			subx = 0;
+			suby = 0;
+			subw = img.width;
+			subh = img.height;
+			x = 0;
+			y = 0;
+			w = context.canvas.width;
+			h = context.canvas.height;
+		} else if (arguments.length === 6) {
+			context = arguments[0];
+			img = arguments[1];
+			subx = 0;
+			suby = 0;
+			subw = img.width;
+			subh = img.height;
+			x = arguments[2];
+			y = arguments[3];
+			w = arguments[4];
+			h = arguments[5];
+		} else if (arguments.length === 10) {
+			context = arguments[0];
+			img = arguments[1];
+			subx = arguments[2];
+			suby = arguments[3];
+			subw = arguments[4];
+			subh = arguments[5];
+			x = arguments[6];
+			y = arguments[7];
+			w = arguments[8];
+			h = arguments[9];
+		} else {
+		console.log("2, 6 or 10 arguments")}
+
+		var fitWidth = subw/subh > w/h ? w : h * subw/subh;
+		var fitHeight = fitWidth * subh/subw;
+		var fitX = (w - fitWidth) / 2 + x;
+		var fitY = (h - fitHeight) / 2 + y;
+
+		context.drawImage(img, subx, suby, subw, subh, fitX, fitY, fitWidth, fitHeight);
+	}
+</script>
+<script>
+	function Loader(defaultPath) {
+		if (typeof defaultPath === "undefined") {
+			defaultPath = "";
+		}
+		this.path = defaultPath;
+		this.assetsToLoad = 0;
+		this.assetsCount = 0;
+		this.assetsLoaded = true;
+		this.newImageAsset = function (source, onload) {
+			this.assetsLoaded = false;
+			this.assetsToLoad++;
+
+			var img = new Image();
+			if (arguments.length === 1) {
+				onload = function () {};
+			}
+			img.onload = function () {
+				this.assetsToLoad--;
+				this.assetsCount++;
+				console.log("img: " + img.src + " loaded");
+				if (this.assetsToLoad === 0) {
+					this.assetsLoaded = true;
+				}
+				onload();
+			}.bind(this);
+			img.src = this.path + source;
+
+			return img;
+		};
+		this.newAudioAsset = function (source, onload) {
+			this.assetsLoaded = false;
+			this.assetsToLoad++;
+
+			var audio = new Audio();
+			if (arguments.length === 1) {
+				onload = function () {};
+			}
+			audio.oncanplaythrough = function () {
+				this.assetsToLoad--;
+				this.assetsCount++;
+				console.log("audio: " + audio.src + " loaded");
+				if (this.assetsToLoad === 0) {
+					this.assetsLoaded = true;
+				}
+				onload();
+			}.bind(this);
+			audio.src = this.path + source;
+
+			return audio;
+		};
+		this.newVideoAsset = function (source, onload) {
+			this.assetsLoaded = false;
+			this.assetsToLoad++;
+
+			var vid = document.createElement("video");
+			if (arguments.length === 1) {
+				onload = function () {};
+			}
+			vid.onload = function () {
+				this.assetsToLoad--;
+				this.assetsCount++;
+				console.log("vid: " + vid.src + " loaded");
+				if (this.assetsToLoad === 0) {
+					this.assetsLoaded = true;
+				}
+				onload();
+			}.bind(this);
+			vid.src = source;
+
+			return vid;
+		};
+	}
+</script>
+<script>
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+
+var players = prompt("How many choices?");
+
+var loader = new Loader("img/");
+var onload = function () {
+	if (loader.assetsLoaded) {
+		makeBushes();
+		draw();
+	}
+};
+var fruits = [];
+var basket = fruits.slice(0);
+var bush = loader.newImageAsset("bush.png", onload);
+var lion = loader.newImageAsset("lion.png", onload);
+var banana = loader.newImageAsset("banana.png", onload);
+var canTouch = false;
+
+var sources = [
+"cherry.png",
+"pineapple.png",
+"peach.png",
+"grapes.png",
+"orange.png",
+"apple.png",
+//"banana.png",
+"strawberry.png",
+"watermelon.png",
+"melon.png"
+];
+function pickFruit() {
+	if (basket.length < 1) {
+		basket = fruits.slice(0);
+	}
+	return basket.splice(Math.floor(Math.random() * basket.length), 1)[0]
+}
+sources.forEach(function (e) {
+	//var img = document.createElement("img");
+	var img = loader.newImageAsset(e, onload);
+	//img.src = e;
+	fruits.push(img);
+});
+
+var places = [];
+function makeBushes() {
+	places = [];
+	for (var i=1; i<= players; i++) {
+		var place = {};
+		place.img = pickFruit();
+		place.picked = false;
+		place.key = places.length + 1;
+		place.lion = false;
+		places.push(place)
+	};
+	places[Math.floor(Math.random() * places.length)].img = banana;
+	places[Math.floor(Math.random() * places.length)].lion = true;
+}
+
+function draw() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	//context.fillStyle = "LightGreen";
+	//context.fillRect(0, 0, canvas.width, canvas.height);
+	context.fillStyle = "white";
+	places.forEach(function (el, index, arr) {
+		drawFit(context, bush, canvas.width / arr.length * index, 0, canvas.width / arr.length, canvas.height);
+		if (!el.picked) {
+			drawFit(context, el.img, canvas.width / arr.length * index, 0, canvas.width / arr.length, canvas.height);
+		} else {
+			if (el.lion) {
+				drawFit(context, lion, canvas.width / arr.length * index, 0, canvas.width / arr.length, canvas.height);
+			}
+		}
+		context.fillStyle = "LightGreen";
+		//fitText(context, "(" + el.key + ")", ( canvas.width / arr.length) * (index + .3), 0, canvas.width / arr.length * .4, canvas.height / 4);
+		fitText(context, "Press \"Enter\" to play again.", canvas.width * .2, canvas.height * .7, canvas.width * .6, canvas.height * .3);
+	});
+}
+
+window.addEventListener("resize", function (e) {
+	draw();
+});
+
+window.oncontextmenu = function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+	return false;
+};
+
+canvas.addEventListener("touchstart", function (e) {
+	e.preventDefault();
+	var columnWidth = canvas.width/places.length;
+	var column = parseInt(e.touches[0].clientX / columnWidth);
+	console.log("touchstart", columnWidth, column);
+	if (canTouch) {
+		canTouch = false;
+		places[column].picked = true;
+		draw();
+	}
+});
+
+window.addEventListener("keyup", function (e) {
+	if (e.key === " ") {
+		canTouch = false;
+	}
+});
+
+window.addEventListener("keydown", function (e) {
+	if (e.key >= 1 && e.key <= places.length) {
+		places[e.key - 1].picked = true;
+	} else if (e.key === " ") {
+		if (!e.repeat) {
+			canTouch = true;
+		}
+	} else if (e.key === "Enter") {
+		makeBushes();
+	}
+	draw();
+});
+
+</script>
+</body>
+</html>
