@@ -132,5 +132,42 @@ They've got hundreds of great books for beginning readers.
 				</a>
 			</figure>
 		</div>
+		<script>
+function addBook(book) {
+	let divLibrary = document.getElementById("library");
+	let figure = document.createElement("figure");
+	let anchor = document.createElement("a");
+	let img = document.createElement("img");
+	figure.classList.add("book");
+	anchor.href = book.pdf;
+	img.src = book.coverImg;
+	figure.appendChild(anchor);
+	anchor.appendChild(img);
+	divLibrary.appendChild(figure);
+}
+const BOOKS = [
+	{"title": "Baby Animals", "pdf": "baby_animals.pdf", "coverImg": "baby_animals_poster.jpg", "pageCount": null},
+	{"title": "But I Like You", "pdf": "but_i_like_you.pdf", "coverImg": "but_i_like_you_poster.jpg", "pageCount": null},
+	{"title": "A Beautiful Butterfly", "pdf": "beautiful_butterfly.pdf", "coverImg": "beautiful_butterfly_poster.jpg", "pageCount": null},
+	{"title": "Carlos Counts Kittens", "pdf": "carlos-counts_kittens.pdf", "coverImg": "carlos-counts_kittens_poster.jpg", "pageCount": null},
+	{"title": "In the Toy Shop", "pdf": "in_the_toy_shop.pdf", "coverImg": "in_the_toy_shop_poster.jpg", "pageCount": null},
+	{"title": "Owliver", "pdf": "owliver.pdf", "coverImg": "owliver_poster.jpg", "pageCount": null},
+	{"title": "Pig at Work", "pdf": "pig_at_work.pdf", "coverImg": "pig_at_work_poster.jpg", "pageCount": null},
+	{"title": "Railroad Toad", "pdf": "railroad_toad.pdf", "coverImg": "railroad_toad_poster.jpg", "pageCount": null},
+	{"title": "Space Dog Jack", "pdf": "space_dog_jack.pdf", "coverImg": "space_dog_jack_poster.jpg", "pageCount": null},
+	{"title": "Summer", "pdf": "summer.pdf", "coverImg": "summer_poster.png", "pageCount": null},
+	{"title": "The Saggy Baggy Elephant", "pdf": "saggy_baggy_elephant.pdf", "coverImg": "saggy_baggy_elephant_poster.jpg", "pageCount": null},
+	{"title": "A Teddy Bear", "pdf": "teddy_bear.pdf", "coverImg": "teddy_bear_poster.jpg", "pageCount": null},
+	{"title": "The Mitton", "pdf": "the_mitton.pdf", "coverImg": "the_mitton_poster.jpg", "pageCount": null},
+	{"title": "The Garden", "pdf": "the_garden.pdf", "coverImg": "the_garden_poster.png", "pageCount": null},
+	{"title": "The Purple Train", "pdf": "the_purple_train.pdf", "coverImg": "the_purple_train_poster.jpg", "pageCount": null},
+	{"title": "Tiny Boppers", "pdf": "tiny_boppers.pdf", "coverImg": "tiny_boppers_poster.jpg", "pageCount": null},
+	{"title": "Toad Eats Out", "pdf": "toat_eats_out.pdf", "coverImg": "toad_eats_out_poster.jpg", "pageCount": null},
+	{"title": "Toad on the Road", "pdf": "toad_on_the_road.pdf", "coverImg": "toad_on_the_road_poster.jpg", "pageCount": null},
+	{"title": "Yellow", "pdf": "yellow.pdf", "coverImg": "yellow_poster.png", "pageCount": null}
+];
+BOOKS.forEach(b => addBook(b));
+		</script>
+		</script>
 	</body>
 </html>
