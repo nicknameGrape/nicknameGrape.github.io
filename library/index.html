@@ -32,6 +32,7 @@ figcaption {
 #library img {
 	height: 200px;
 	border: thin solid gray;
+	box-shadow: -1px 1px gray, -2px 2px gray, -3px 3px gray, -4px 4px gray, -5px 5px gray;
 }
 .book {
 }
@@ -44,97 +45,15 @@ figure.story::before {
 	</head>
 	<body>
 		<h1>Library</h1>
+		<!--
 		<p>
-These books are from the website ReadingA-Z and my own collection of picture books for children.
-Those from ReadingA-Z will be the easiest for beginning readers.
-The Apricot books ("A Beautiful Butterfly" and "Tiny Boppers") are good for reading to a young class and lend themselves to activities.
+These books are from the website ReadingA-Z and my own collection of picture books for children.<br>
+Those from ReadingA-Z will be the easiest for beginning readers.<br>
+The Apricot books ("A Beautiful Butterfly" and "Tiny Boppers") are good for reading to a young class and lend themselves to activities.<br>
+The Schade/Buller books are my favorites!
 		</p>
+		-->
 		<div id="library">
-			<figure class="book">
-				<a href="all_kinds_of_faces.pdf">
-					<img src="all_kinds_of_faces_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="at_the_lake.pdf">
-					<img src="at_the_lake_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="big.pdf">
-					<img src="big_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="bird_colors.pdf">
-					<img src="bird_colors_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="black.pdf">
-					<img src="black_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="blue.pdf">
-					<img src="blue_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="carlos_goes_to_school.pdf">
-					<img src="carlos_goes_to_school_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="go_fly_a_kite.pdf">
-					<img src="go_fly_a_kite_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="going_places.pdf">
-					<img src="going_places_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="halloween_pumpkins.pdf">
-					<img src="halloween_pumpkins_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="hamster_home.pdf">
-					<img src="hamster_home_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="i_dream.pdf">
-					<img src="i_dream_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="in_and_out.pdf">
-					<img src="in_and_out_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="spring_and_fall.pdf">
-					<img src="spring_and_fall_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="the_backyard.pdf">
-					<img src="the_backyard_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="the_baseball_game.pdf">
-					<img src="the_baseball_game_poster.jpg"/>
-				</a>
-			</figure>
-			<figure class="book">
-				<a href="the_chicken.pdf">
-					<img src="the_chicken_poster.jpg"/>
-				</a>
-			</figure>
 		</div>
 		<script>
 function addBook(book) {
@@ -150,25 +69,41 @@ function addBook(book) {
 	divLibrary.appendChild(figure);
 }
 const BOOKS = [
-	{"title": "Baby Animals", "pdf": "../baby_animals.pdf", "coverImg": "../baby_animals_poster.jpg", "pageCount": null},
-	{"title": "But I Like You", "pdf": "../but_i_like_you.pdf", "coverImg": "../but_i_like_you_poster.jpg", "pageCount": null},
-	{"title": "A Beautiful Butterfly", "pdf": "../beautiful_butterfly.pdf", "coverImg": "../beautiful_butterfly_poster.jpg", "pageCount": null},
-	{"title": "Carlos Counts Kittens", "pdf": "../carlos-counts_kittens.pdf", "coverImg": "../carlos-counts_kittens_poster.jpg", "pageCount": null},
-	{"title": "In the Toy Shop", "pdf": "../in_the_toy_shop.pdf", "coverImg": "../in_the_toy_shop_poster.jpg", "pageCount": null},
-	{"title": "Owliver", "pdf": "owliver.pdf", "coverImg": "owliver_poster.jpg", "pageCount": null},
+	{"title": "Black", "pdf": "black.pdf", "coverImg": "black_poster.jpg"},
+	{"title": "Blue", "pdf": "blue.pdf", "coverImg": "blue_poster.jpg"},
+	{"title": "Yellow", "pdf": "yellow.pdf", "coverImg": "yellow_poster.png", "pageCount": null},
+	{"title": "Bird Colors", "pdf": "bird_colors.pdf", "coverImg": "bird_colors_poster.jpg"},
+	{"title": "Summer", "pdf": "summer.pdf", "coverImg": "summer_poster.png", "pageCount": null},
+	{"title": "Spring and Fall", "pdf": "spring_and_fall.pdf", "coverImg": "spring_and_fall_poster.jpg"},
+	{"title": "Big", "pdf": "big.pdf", "coverImg": "big_poster.jpg"},
+	{"title": "The Garden", "pdf": "the_garden.pdf", "coverImg": "the_garden_poster.png", "pageCount": null},
+	{"title": "In and Out", "pdf": "in_and_out.pdf", "coverImg": "in_and_out_poster.jpg"},
+	{"title": "All Kinds of Faces", "pdf": "all_kinds_of_faces.pdf", "coverImg": "all_kinds_of_faces_poster.jpg"},
+	{"title": "The Backyard", "pdf": "the_backyard.pdf", "coverImg": "the_backyard_poster.jpg"},
+	{"title": "The Baseball Game", "pdf": "the_baseball_game.pdf", "coverImg": "the_baseball_game_poster.jpg"},
+	{"title": "The Chicken", "pdf": "the_chicken.pdf", "coverImg": "the_chicken_poster.jpg"},
+	{"title": "Go Fly a Kite", "pdf": "go_fly_a_kite.pdf", "coverImg": "go_fly_a_kite_poster.jpg"},
+	{"title": "Hamster Home", "pdf": "hamster_home.pdf", "coverImg": "hamster_home_poster.jpg"},
+	{"title": "Going Places", "pdf": "going_places.pdf", "coverImg": "going_places_poster.jpg"},
+	{"title": "Halloween Pumpkins", "pdf": "halloween_pumpkins.pdf", "coverImg": "halloween_pumpkins_poster.jpg"},
+	{"title": "I Dream", "pdf": "i_dream.pdf", "coverImg": "i_dream_poster.jpg"},
+	{"title": "The Purple Train", "pdf": "the_purple_train.pdf", "coverImg": "the_purple_train_poster.jpg", "pageCount": null},
+	{"title": "In the Toy Shop", "pdf": "in_the_toy_shop.pdf", "coverImg": "in_the_toy_shop_poster.jpg", "pageCount": null},
+	{"title": "Carlos Counts Kittens", "pdf": "carlos-counts_kittens.pdf", "coverImg": "carlos-counts_kittens_poster.jpg", "pageCount": null},
+	{"title": "Carlos Goes to School", "pdf": "carlos_goes_to_school.pdf", "coverImg": "carlos_goes_to_school_poster.jpg"},
+	{"title": "A Beautiful Butterfly", "pdf": "beautiful_butterfly.pdf", "coverImg": "beautiful_butterfly_poster.jpg", "pageCount": null},
+	{"title": "A Teddy Bear", "pdf": "teddy_bear.pdf", "coverImg": "teddy_bear_poster.jpg", "pageCount": null},
+	{"title": "Tiny Boppers", "pdf": "tiny_boppers.pdf", "coverImg": "tiny_boppers_poster.jpg", "pageCount": null},
+	{"title": "But I Like You", "pdf": "but_i_like_you.pdf", "coverImg": "but_i_like_you_poster.jpg", "pageCount": null},
+	{"title": "The Saggy Baggy Elephant", "pdf": "saggy_baggy_elephant.pdf", "coverImg": "saggy_baggy_elephant_poster.jpg", "pageCount": null},
+	{"title": "Space Dog Jack", "pdf": "space_dog_jack.pdf", "coverImg": "space_dog_jack_poster.jpg", "pageCount": null},
 	{"title": "Pig at Work", "pdf": "pig_at_work.pdf", "coverImg": "pig_at_work_poster.jpg", "pageCount": null},
 	{"title": "Railroad Toad", "pdf": "railroad_toad.pdf", "coverImg": "railroad_toad_poster.jpg", "pageCount": null},
-	{"title": "Space Dog Jack", "pdf": "space_dog_jack.pdf", "coverImg": "space_dog_jack_poster.jpg", "pageCount": null},
-	{"title": "Summer", "pdf": "summer.pdf", "coverImg": "summer_poster.png", "pageCount": null},
-	{"title": "The Saggy Baggy Elephant", "pdf": "saggy_baggy_elephant.pdf", "coverImg": "saggy_baggy_elephant_poster.jpg", "pageCount": null},
-	{"title": "A Teddy Bear", "pdf": "teddy_bear.pdf", "coverImg": "teddy_bear_poster.jpg", "pageCount": null},
-	{"title": "The Mitton", "pdf": "the_mitton.pdf", "coverImg": "the_mitton_poster.jpg", "pageCount": null},
-	{"title": "The Garden", "pdf": "the_garden.pdf", "coverImg": "the_garden_poster.png", "pageCount": null},
-	{"title": "The Purple Train", "pdf": "the_purple_train.pdf", "coverImg": "the_purple_train_poster.jpg", "pageCount": null},
-	{"title": "Tiny Boppers", "pdf": "tiny_boppers.pdf", "coverImg": "tiny_boppers_poster.jpg", "pageCount": null},
 	{"title": "Toad Eats Out", "pdf": "toat_eats_out.pdf", "coverImg": "toad_eats_out_poster.jpg", "pageCount": null},
 	{"title": "Toad on the Road", "pdf": "toad_on_the_road.pdf", "coverImg": "toad_on_the_road_poster.jpg", "pageCount": null},
-	{"title": "Yellow", "pdf": "yellow.pdf", "coverImg": "yellow_poster.png", "pageCount": null}
+	{"title": "The Mitton", "pdf": "the_mitton.pdf", "coverImg": "the_mitton_poster.jpg", "pageCount": null},
+	{"title": "Owliver", "pdf": "owliver.pdf", "coverImg": "owliver_poster.jpg", "pageCount": null},
+	{"title": "Baby Animals", "pdf": "baby_animals.pdf", "coverImg": "baby_animals_poster.jpg", "pageCount": null}
 ];
 BOOKS.forEach(b => addBook(b));
 		</script>
