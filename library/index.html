@@ -18,6 +18,7 @@ figure {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin: 0px;
 	padding: 10px;
 }
 figcaption {
@@ -26,9 +27,11 @@ figcaption {
 #library {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-around;
 }
 #library img {
 	height: 200px;
+	border: thin solid gray;
 }
 .book {
 }
@@ -42,8 +45,9 @@ figure.story::before {
 	<body>
 		<h1>Library</h1>
 		<p>
-These books are from the website ReadingA-Z.
-They've got hundreds of great books for beginning readers.
+These books are from the website ReadingA-Z and my own collection of picture books for children.
+Those from ReadingA-Z will be the easiest for beginning readers.
+The Apricot books ("A Beautiful Butterfly" and "Tiny Boppers") are good for reading to a young class and lend themselves to activities.
 		</p>
 		<div id="library">
 			<figure class="book">
@@ -146,11 +150,11 @@ function addBook(book) {
 	divLibrary.appendChild(figure);
 }
 const BOOKS = [
-	{"title": "Baby Animals", "pdf": "baby_animals.pdf", "coverImg": "baby_animals_poster.jpg", "pageCount": null},
-	{"title": "But I Like You", "pdf": "but_i_like_you.pdf", "coverImg": "but_i_like_you_poster.jpg", "pageCount": null},
-	{"title": "A Beautiful Butterfly", "pdf": "beautiful_butterfly.pdf", "coverImg": "beautiful_butterfly_poster.jpg", "pageCount": null},
-	{"title": "Carlos Counts Kittens", "pdf": "carlos-counts_kittens.pdf", "coverImg": "carlos-counts_kittens_poster.jpg", "pageCount": null},
-	{"title": "In the Toy Shop", "pdf": "in_the_toy_shop.pdf", "coverImg": "in_the_toy_shop_poster.jpg", "pageCount": null},
+	{"title": "Baby Animals", "pdf": "../baby_animals.pdf", "coverImg": "../baby_animals_poster.jpg", "pageCount": null},
+	{"title": "But I Like You", "pdf": "../but_i_like_you.pdf", "coverImg": "../but_i_like_you_poster.jpg", "pageCount": null},
+	{"title": "A Beautiful Butterfly", "pdf": "../beautiful_butterfly.pdf", "coverImg": "../beautiful_butterfly_poster.jpg", "pageCount": null},
+	{"title": "Carlos Counts Kittens", "pdf": "../carlos-counts_kittens.pdf", "coverImg": "../carlos-counts_kittens_poster.jpg", "pageCount": null},
+	{"title": "In the Toy Shop", "pdf": "../in_the_toy_shop.pdf", "coverImg": "../in_the_toy_shop_poster.jpg", "pageCount": null},
 	{"title": "Owliver", "pdf": "owliver.pdf", "coverImg": "owliver_poster.jpg", "pageCount": null},
 	{"title": "Pig at Work", "pdf": "pig_at_work.pdf", "coverImg": "pig_at_work_poster.jpg", "pageCount": null},
 	{"title": "Railroad Toad", "pdf": "railroad_toad.pdf", "coverImg": "railroad_toad_poster.jpg", "pageCount": null},
