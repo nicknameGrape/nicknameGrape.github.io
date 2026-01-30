@@ -32,10 +32,10 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #yes + label {background: lime;}
 #no + label {background: red;}
 #imgCanYou {height: 50vh;}
-#menu {display: flex; flex-wrap: wrap; justify-content: center;}
-.menuItem {display: flex; flex-direction: column; height: 10vh;}
-.menuItem img {object-fit: contain; height: 70%;}
-.menuItem span {font-size: 20%;}
+#orderFoodMenu {display: flex; flex-wrap: wrap; justify-content: center;}
+.orderFoodItem {display: flex; flex-direction: column; height: 20vh;}
+.orderFoodItem img {object-fit: contain; height: 70%;}
+.orderFoodItem span {font-size: 20%;}
 		</style>
 	</head>
 	<body>
@@ -108,7 +108,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 <div id="order_food" class="view" style="display: none;">
 	<div id="orderFoodTitle" class="title">What would you like?</div>
 	<div style="display:flex;">
-		<div id="menu"></div>
+		<div id="orderFoodMenu"></div>
 		<div id="price"></div>
 	</div>
 </div>
