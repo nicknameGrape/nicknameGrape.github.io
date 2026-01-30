@@ -220,7 +220,7 @@ for (let i=0; i<10; i++) {
 	let item = hdFoods.drawOne();
 	img.src = "../image_library/images/"+item.src;
 	text.innerHTML = item.text;
-	button.classList.add("menuItem");
+	button.classList.add("orderFoodItem");
 	button.appendChild(img);
 	button.appendChild(text);
 	document.getElementById("orderFoodMenu").appendChild(button);
