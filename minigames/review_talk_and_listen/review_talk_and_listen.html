@@ -213,7 +213,7 @@ DATES.forEach(function (text) {
 const hdFoods = new HatDraw(images.filter(function (obj) {
 	return obj.tags.includes("food") || obj.tags.includes("drink")
 }));
-while (document.getElementById("menu").children.length < 10) {
+while (document.getElementById("orderFoodMenu").children.length < 10) {
 	let button = document.createElement("button");
 	let img = document.createElement("img");
 	let text = document.createElement("span");
