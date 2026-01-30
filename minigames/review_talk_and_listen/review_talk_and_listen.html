@@ -32,6 +32,10 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #yes + label {background: lime;}
 #no + label {background: red;}
 #imgCanYou {height: 50vh;}
+#menu {display: flex; flex-wrap: wrap; justify-content: center;}
+.menuItem {display: flex; flex-direction: column; height: 10vh;}
+.menuItem img {object-fit: contain; height: 70%;}
+.menuItem span {font-size: 20%;}
 		</style>
 	</head>
 	<body>
@@ -42,6 +46,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		<button class="menuButton" value="subject">What subject do you like?</button>
 		<button class="menuButton" value="birthday">When is your birthday?</button>
 		<button class="menuButton" value="can_you" id="menuButtonCan">Can you do it?</button>
+		<button class="menuButton" value="order_food">What would you like?</button>
 	</div>
 </div>
 <div id="spellName" class="view" style="display: none;">
@@ -100,11 +105,19 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		</div>
 	</div>
 </div>
+<div id="order_food" class="view" style="display: none;">
+	<div id="orderFoodTitle" class="title">What would you like?</div>
+	<div style="display:flex;">
+		<div id="menu"></div>
+		<div id="price"></div>
+	</div>
+</div>
 	</body>
 	<script type="module">
 import Loader from "../js_modules/Loader.mjs"
 import images from "../image_library/image_library.mjs"
 import can_do from "./images_can/can_do.mjs"
+import HatDraw from "../js_modules/HatDraw.mjs"
 
 function menuButtonClickHandler(ev) {
 	console.log("Switching to", ev.target.value);
@@ -197,6 +210,21 @@ DATES.forEach(function (text) {
 	div.appendChild(label);
 	divDateButtons.appendChild(div);
 });
+const hdFoods = new HatDraw(images.filter(function (obj) {
+	return obj.tags.includes("food") || obj.tags.includes("drink")
+}));
+while (document.getElementById("menu").children.length < 10) {
+	let button = document.createElement("button");
+	let img = document.createElement("img");
+	let text = document.createElement("span");
+	let item = hdFoods.drawOne();
+	img.src = "../image_library/images/"+item.src;
+	text.innerHTML = item.text;
+	button.classList.add("menuItem");
+	button.appendChild(img);
+	button.appendChild(text);
+	document.getElementById("menu").appendChild(button);
+}
 document.getElementById("backspace").addEventListener("click", backspaceButtonClickHandler);
 document.getElementById("menuButtonCan").addEventListener("click", function () {
 	let randomCanDo = can_do[Math.floor(Math.random()*can_do.length)];
