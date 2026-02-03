@@ -15,6 +15,15 @@ figure {
 figcaption {
 	text-align: center;
 }
+#linksExternal {
+	display: flex;
+	align-items: end;
+}
+.textOverLink {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 #new_horizon_5 {
 	background: orange;
 	color: black;
@@ -23,6 +32,11 @@ figcaption {
 #new_horizon_6 {
 	background: skyblue;
 	color: black;
+	padding: 10px;
+}
+#kumamoto {
+	background: green;
+	color: white;
 	padding: 10px;
 }
 #minigames {
@@ -98,11 +112,21 @@ padding: 2px 4px;
 			<ul>
 				<li><a href="https://nicknameGrape.github.io/smartboard/">The ALT Tools Hub</a> aims to provide convenient tools for ESL classrooms.</li>
 				<li>
-					<p>
-						Official Textbooks Online:
-						<a id="new_horizon_5" href="https://ww5.tsho.jp/r6/eig/000/gr5/top/index.html?g=5">New Horizon G5</a>
-						<a id="new_horizon_6" href="https://ww5.tsho.jp/r6/eig/000/gr6/top/index.html?g=6">New Horizon G6</a>
-					</p>
+					<div id="linksExternal">
+						<div class="textOverLink">
+							<span>Digital Textbooks Online:</span>
+							<span>
+								<a id="new_horizon_5" href="https://ww5.tsho.jp/r6/eig/000/gr5/top/index.html?g=5">New Horizon G5</a>
+								<a id="new_horizon_6" href="https://ww5.tsho.jp/r6/eig/000/gr6/top/index.html?g=6">New Horizon G6</a>
+							</span>
+						</div>
+						<div class="textOverLink">
+							<span>Tablet Activities<br>by Kumamoto City Education Center:</span>
+							<span>
+								<a id="kumamoto" href="https://www.kumamoto-kmm.ed.jp/kyouzai/web/tab_menu1.htm#eigo">Tablet Activities</a>
+							</span>
+						</div>
+					</div>
 				</li>
 				<li><a href="printables/">Printables</a> such as Bingo cards, Word Searches, Game cards, and more.
 				<li><a href="slideshows/">Slideshows</a> include songs, chants, and stories.
