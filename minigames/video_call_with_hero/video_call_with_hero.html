@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<style>
 body {
 	margin: 0px;
@@ -26,24 +27,26 @@ body {
 }
 #suggested > img {
 	height: 33vh;
+	max-width: 40vw;
 	object-fit: contain;
 }
 #live {
 	display: none;
+	align-items: center;
 	justify-content: center;
 }
 #canvas {
 	background: lime;
 }
 #end_call {
-	position: fixed;
-	top: 10px;
-	right: 10px;
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
 	font-size: 18px;
 	padding: 10px;
 }
 #reset_lips {
-	position: fixed;
+	position: absolute;
 	bottom: 10px;
 	right: 10px;
 	font-size: 18px;
@@ -80,8 +83,13 @@ body {
 function resizeHandler() {
 	if (img !== null) {
 		console.log(img);
-		CANVAS.height = window.innerHeight;
-		CANVAS.width = CANVAS.height * img.width/img.height;
+		if (window.innerWidth > window.innerHeight) {
+			CANVAS.height = window.innerHeight;
+			CANVAS.width = CANVAS.height * img.width/img.height;
+		} else {
+			CANVAS.width = window.innerWidth;
+			CANVAS.height = CANVAS.width * img.height/img.width;
+		}
 		render();
 	}
 }
@@ -91,10 +99,11 @@ function render() {
 	CONTEXT.save();
 	CONTEXT.scale(CANVAS.width/img.width, CANVAS.height/img.height);
 	CONTEXT.drawImage(img, 0, 0, img.width, img.height);
-	CONTEXT.fillStyle = "red";
+	//CONTEXT.fillStyle = "red";
+	CONTEXT.strokeStyle = "red";
 	if (lipsLeft === null || lipsRight === null) {
 		if (lipsLeft !== null) {
-			CONTEXT.fillRect(lipsLeft.x, lipsLeft.y, 10, 10);
+			CONTEXT.strokeRect(lipsLeft.x-10, lipsLeft.y-10, 20, 20);
 		}
 		if (lipsRight !== null) {
 			CONTEXT.fillRect(lipsRight.x, lipsRight.y, 10, 10);
@@ -124,25 +133,25 @@ function startCallWith(imageOfCaller) {
 	img = imageOfCaller;
 	resizeHandler();
 	let divFixed = document.getElementById("fixed");
-	divFixed.style.position = "fixed";
+	divFixed.style.position = "absolute";
 	divFixed.style.background = "rgba(0 0 0 / 50%)";
 	document.getElementById("title").style = "display: none;";
 	document.getElementById("suggested").style.display = "none";
 	document.getElementById("live").style.display = "flex";
 	document.getElementById("instructions").innerHTML = "Click or tap the left corner of the person's mouth.";
-	CANVAS.addEventListener("pointerdown", locateLips);
+	CANVAS.addEventListener("click", locateLips);
 }
 
 function locateLips(ev) {
 	console.log(ev.offsetX, ev.offsetY);
 	if (lipsLeft === null) {
 		lipsLeft = {"x": ev.offsetX*img.width/CANVAS.width, "y": ev.offsetY*img.height/CANVAS.height};
+		//document.getElementById("instructions").style = "position: absolute; left: 20px; bottom: 0px;";
 		document.getElementById("instructions").innerHTML = "Click or tap the <em>right</em> corner of the person's mouth.";
 	} else {
 		lipsRight = {"x": ev.offsetX*img.width/CANVAS.width, "y": ev.offsetY*img.height/CANVAS.height};
-		document.getElementById("instructions").style = "position: fixed; left: 20px; bottom: 0px;";
 		document.getElementById("instructions").innerHTML = "Click or tap the person or press and release the spacebar to move the mouth.";
-		CANVAS.removeEventListener("pointerdown", locateLips);
+		CANVAS.removeEventListener("click", locateLips);
 		window.addEventListener("keydown", function (ev) {
 			if (ev.key === " " && !ev.repeat) {
 				isOpen = true;
@@ -172,7 +181,7 @@ function resetLips(ev) {
 	lipsLeft = null;
 	lipsRight = null;
 	document.getElementById("instructions").innerHTML = "Click or tap the left corner of the person's mouth.";
-	CANVAS.addEventListener("pointerdown", locateLips);
+	CANVAS.addEventListener("click", locateLips);
 	render();
 }
 
@@ -212,7 +221,7 @@ let lipsRight = null;
 IMG_LIPS.src = "lips.png";
 let isOpen = false;
 
-Array.from(document.getElementsByClassName("person")).forEach(person => person.addEventListener("pointerdown", ev => startCallWith(ev.target)))
+Array.from(document.getElementsByClassName("person")).forEach(person => person.addEventListener("click", ev => startCallWith(ev.target)))
 window.addEventListener("resize", resizeHandler);
 document.getElementById("end_call").addEventListener("click", function (ev) {
 	resetLips();
