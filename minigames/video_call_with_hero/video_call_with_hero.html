@@ -152,26 +152,10 @@ function locateLips(ev) {
 		lipsRight = {"x": ev.offsetX*img.width/CANVAS.width, "y": ev.offsetY*img.height/CANVAS.height};
 		document.getElementById("instructions").innerHTML = "Click or tap the person or press and release the spacebar to move the mouth.";
 		CANVAS.removeEventListener("click", locateLips);
-		window.addEventListener("keydown", function (ev) {
-			if (ev.key === " " && !ev.repeat) {
-				isOpen = true;
-				render();
-			}
-		});
-		window.addEventListener("keyup", function (ev) {
-			if (ev.key === " ") {
-				isOpen = false;
-				render();
-			}
-		});
-		window.addEventListener("pointerdown", function (ev) {
-			isOpen = true;
-			render();
-		});
-		window.addEventListener("pointerup", function (ev) {
-			isOpen = false;
-			render();
-		});
+		window.addEventListener("keydown", toggleMouth);
+		window.addEventListener("keyup", toggleMouth);
+		window.addEventListener("pointerdown", toggleMouth);
+		window.addEventListener("pointerup", toggleMouth);
 	}
 	console.log(lipsLeft, lipsRight);
 	render();
@@ -180,8 +164,13 @@ function locateLips(ev) {
 function resetLips(ev) {
 	lipsLeft = null;
 	lipsRight = null;
+	document.getElementById("instructions").style.display = "block";;
 	document.getElementById("instructions").innerHTML = "Click or tap the left corner of the person's mouth.";
 	CANVAS.addEventListener("click", locateLips);
+	window.removeEventListener("keydown", toggleMouth);
+	window.removeEventListener("keyup", toggleMouth);
+	window.removeEventListener("pointerdown", toggleMouth);
+	window.removeEventListener("pointerup", toggleMouth);
 	render();
 }
 
@@ -198,6 +187,21 @@ function dropHandler(ev) {
 			startCallWith(this);
 		};
 		img.src = reader.result; // Set the image source to the data URL
+	}
+}
+
+function toggleMouth(ev) {
+	if (ev.type === "keydown" || ev.type === "keyup") {
+		if (ev.key === " ") {
+			isOpen = !isOpen;
+			render();
+			document.getElementById("instructions").style.display = "none";;
+		}
+	}
+	if (ev.type === "pointerdown" || ev.type === "pointerup") {
+		isOpen = !isOpen;
+		render();
+		document.getElementById("instructions").style.display = "none";;
 	}
 }
 
