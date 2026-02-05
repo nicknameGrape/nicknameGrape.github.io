@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+body {
+	margin: 0px;
+	background: black;
+	color: white;
+}
+#fixed {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: static;
+	width: 100vw;
+}
+#title {
+}
+#instructions {
+	background: rgba(0 0 0 / 50%);
+}
+#suggested {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+#suggested > img {
+	height: 33vh;
+	object-fit: contain;
+}
+#live {
+	display: none;
+	justify-content: center;
+}
+#canvas {
+	background: lime;
+}
+#end_call {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	font-size: 18px;
+	padding: 10px;
+}
+#reset_lips {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	font-size: 18px;
+	padding: 10px;
+}
+		</style>
+	</head>
+	<body>
+		<div id="fixed">
+			<h1 id="title">Video Call with Hero</h1>
+			<p id="instructions">Choose one of the persons below, or drag-and-drop a picture.</p>
+		</div>
+		<div id="suggested">
+			<img class="person" src="anpanman.jpg"/>
+			<img class="person" src="edison.jpg"/>
+			<img class="person" src="hanyu.jpg"/>
+			<img class="person" src="messi.jpg"/>
+			<img class="person" src="momotaro.jpg"/>
+			<img class="person" src="moon_rabbit1.png"/>
+			<img class="person" src="musk.jpg"/>
+			<img class="person" src="ohtani.webp"/>
+			<img class="person" src="perry.JPG"/>
+			<img class="person" src="sanae_takaichi.jpg"/>
+			<img class="person" src="santa.jpg"/>
+			<img class="person" src="trump.jpg"/>
+		</div>
+		<div id="live">
+			<button id="end_call">End Call</button>
+			<button id="reset_lips">Reset Lips</button>
+			<canvas id="canvas">Call Area</canvas>
+		</div>
+	</body>
+	<script>
+function resizeHandler() {
+	if (img !== null) {
+		console.log(img);
+		CANVAS.height = window.innerHeight;
+		CANVAS.width = CANVAS.height * img.width/img.height;
+		render();
+	}
+}
+
+function render() {
+	console.log("rendering");
+	CONTEXT.save();
+	CONTEXT.scale(CANVAS.width/img.width, CANVAS.height/img.height);
+	CONTEXT.drawImage(img, 0, 0, img.width, img.height);
+	CONTEXT.fillStyle = "red";
+	if (lipsLeft === null || lipsRight === null) {
+		if (lipsLeft !== null) {
+			CONTEXT.fillRect(lipsLeft.x, lipsLeft.y, 10, 10);
+		}
+		if (lipsRight !== null) {
+			CONTEXT.fillRect(lipsRight.x, lipsRight.y, 10, 10);
+		}
+	} else {
+		let lipsPoints = null;
+		if (isOpen) {
+			let rIndex = Math.floor(Math.random()*LIPS_OPEN.length);
+			lipsPoints = LIPS_OPEN[rIndex];
+		} else {
+			let rIndex = Math.floor(Math.random()*LIPS_CLOSED.length);
+			lipsPoints = LIPS_CLOSED[rIndex];
+		}
+		let lipsPointsWidth = lipsPoints.right.x - lipsPoints.left.x;
+		let lipsPointsHeight = lipsPoints.bottom - lipsPoints.top;
+		CONTEXT.translate(lipsLeft.x, lipsLeft.y);
+		CONTEXT.scale((lipsRight.x - lipsLeft.x)/lipsPointsWidth, (lipsRight.x - lipsLeft.x)/lipsPointsWidth);
+		CONTEXT.rotate(-(lipsLeft.y - lipsRight.y)/(lipsRight.x - lipsLeft.x));
+		CONTEXT.drawImage(IMG_LIPS,
+			lipsPoints.left.x, lipsPoints.top, lipsPointsWidth, lipsPointsHeight,
+			0, -(lipsPoints.left.y - lipsPoints.top), lipsPointsWidth, lipsPointsHeight);
+	}
+	CONTEXT.restore();
+}
+
+function startCallWith(imageOfCaller) {
+	img = imageOfCaller;
+	resizeHandler();
+	let divFixed = document.getElementById("fixed");
+	divFixed.style.position = "fixed";
+	divFixed.style.background = "rgba(0 0 0 / 50%)";
+	document.getElementById("title").style = "display: none;";
+	document.getElementById("suggested").style.display = "none";
+	document.getElementById("live").style.display = "flex";
+	document.getElementById("instructions").innerHTML = "Click or tap the left corner of the person's mouth.";
+	CANVAS.addEventListener("pointerdown", locateLips);
+}
+
+function locateLips(ev) {
+	console.log(ev.offsetX, ev.offsetY);
+	if (lipsLeft === null) {
+		lipsLeft = {"x": ev.offsetX*img.width/CANVAS.width, "y": ev.offsetY*img.height/CANVAS.height};
+		document.getElementById("instructions").innerHTML = "Click or tap the <em>right</em> corner of the person's mouth.";
+	} else {
+		lipsRight = {"x": ev.offsetX*img.width/CANVAS.width, "y": ev.offsetY*img.height/CANVAS.height};
+		document.getElementById("instructions").style = "position: fixed; left: 20px; bottom: 0px;";
+		document.getElementById("instructions").innerHTML = "Click or tap the person or press and release the spacebar to move the mouth.";
+		CANVAS.removeEventListener("pointerdown", locateLips);
+		window.addEventListener("keydown", function (ev) {
+			if (ev.key === " " && !ev.repeat) {
+				isOpen = true;
+				render();
+			}
+		});
+		window.addEventListener("keyup", function (ev) {
+			if (ev.key === " ") {
+				isOpen = false;
+				render();
+			}
+		});
+	}
+	console.log(lipsLeft, lipsRight);
+	render();
+}
+
+function resetLips(ev) {
+	lipsLeft = null;
+	lipsRight = null;
+	document.getElementById("instructions").innerHTML = "Click or tap the left corner of the person's mouth.";
+	CANVAS.addEventListener("pointerdown", locateLips);
+	render();
+}
+
+function dropHandler(ev) {
+	ev.preventDefault();
+	const files = [...ev.dataTransfer.items]
+		.map((item) => item.getAsFile())
+		.filter((file) => file);
+	const reader = new FileReader();
+	reader.readAsDataURL(files[0]); // Read file as a data URL
+	reader.onloadend = function() {
+		img = document.createElement('img');
+		img.onload = function () {
+			startCallWith(this);
+		};
+		img.src = reader.result; // Set the image source to the data URL
+	}
+}
+
+const LIPS_CLOSED = [
+	{"left": {"x": 29, "y": 29}, "right": {"x": 81, "y": 28}, "top": 19, "bottom": 48},
+	//{"left": {"x": 185, "y": 31}, "right": {"x": 240, "y": 30}, "top": 13, "bottom": 51}, //#3 biting lip
+	{"left": {"x": 108, "y": 84}, "right": {"x": 166, "y": 84}, "top": 76, "bottom": 111}, //#5, smile
+	//{"left": {"x": 27, "y": 150}, "right": {"x": 81, "y": 151}, "top": 136, "bottom": 179} //#7, licking lips
+];
+const LIPS_OPEN = [
+	{"left": {"x": 108, "y": 36}, "right": {"x": 161, "y": 35}, "top": 13, "bottom": 55},//#2 small open top teeth only
+	{"left": {"x": 28, "y": 89}, "right": {"x": 81, "y": 89}, "top": 67, "bottom": 119},//#4 open wide with teeth top and bottom
+	{"left": {"x": 187, "y": 82}, "right": {"x": 238, "y": 83}, "top": 76, "bottom": 112}
+];
+const IMG_LIPS = document.createElement("img");
+const CANVAS = document.getElementById("canvas");
+const CONTEXT = CANVAS.getContext("2d");
+let img = null;
+let lipsLeft = null;
+let lipsRight = null;
+IMG_LIPS.src = "lips.png";
+let isOpen = false;
+
+Array.from(document.getElementsByClassName("person")).forEach(person => person.addEventListener("pointerdown", ev => startCallWith(ev.target)))
+window.addEventListener("resize", resizeHandler);
+document.getElementById("end_call").addEventListener("click", function (ev) {
+	resetLips();
+	document.getElementById("title").style.display = "flex";
+	let divFixed = document.getElementById("fixed");
+	divFixed.style.position = "static";
+	document.getElementById("suggested").style.display = "flex";
+	document.getElementById("live").style.display = "none";
+	document.getElementById("instructions").innerHTML = "Choose one of the persons below, or drag-and-drop a picture.";
+	document.getElementById("instructions").style.position = "static";
+});
+document.getElementById("reset_lips").addEventListener("click", resetLips);
+
+window.addEventListener("drop", dropHandler);
+
+window.addEventListener("dragover", (e) => {
+	const fileItems = [...e.dataTransfer.items].filter(
+		(item) => item.kind === "file",
+	);
+	if (fileItems.length > 0) {
+		e.preventDefault();
+	}
+});
+	</script>
+</html>
