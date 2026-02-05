@@ -155,6 +155,14 @@ function locateLips(ev) {
 				render();
 			}
 		});
+		window.addEventListener("pointerdown", function (ev) {
+			isOpen = true;
+			render();
+		});
+		window.addEventListener("pointerup", function (ev) {
+			isOpen = false;
+			render();
+		});
 	}
 	console.log(lipsLeft, lipsRight);
 	render();
@@ -230,3 +238,4 @@ window.addEventListener("dragover", (e) => {
 });
 	</script>
 </html>
+
