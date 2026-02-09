@@ -192,7 +192,7 @@ function dropHandler(ev) {
 
 function toggleMouth(ev) {
 	if (ev.type === "keydown" || ev.type === "keyup") {
-		if (ev.key === " ") {
+		if (ev.key === " " && !ev.repeat) {
 			isOpen = !isOpen;
 			render();
 			document.getElementById("instructions").style.display = "none";;
@@ -208,12 +208,12 @@ function toggleMouth(ev) {
 const LIPS_CLOSED = [
 	{"left": {"x": 29, "y": 29}, "right": {"x": 81, "y": 28}, "top": 19, "bottom": 48},
 	//{"left": {"x": 185, "y": 31}, "right": {"x": 240, "y": 30}, "top": 13, "bottom": 51}, //#3 biting lip
-	{"left": {"x": 108, "y": 84}, "right": {"x": 166, "y": 84}, "top": 76, "bottom": 111}, //#5, smile
+	{"left": {"x": 108, "y": 81}, "right": {"x": 166, "y": 81}, "top": 76, "bottom": 111}, //#5, smile
 	//{"left": {"x": 27, "y": 150}, "right": {"x": 81, "y": 151}, "top": 136, "bottom": 179} //#7, licking lips
 ];
 const LIPS_OPEN = [
-	{"left": {"x": 108, "y": 36}, "right": {"x": 161, "y": 35}, "top": 13, "bottom": 55},//#2 small open top teeth only
-	{"left": {"x": 28, "y": 89}, "right": {"x": 81, "y": 89}, "top": 67, "bottom": 119},//#4 open wide with teeth top and bottom
+	{"left": {"x": 108, "y": 36}, "right": {"x": 163, "y": 35}, "top": 13, "bottom": 55},//#2 small open top teeth only
+	{"left": {"x": 28, "y": 89}, "right": {"x": 83, "y": 89}, "top": 67, "bottom": 119},//#4 open wide with teeth top and bottom
 	{"left": {"x": 187, "y": 82}, "right": {"x": 238, "y": 83}, "top": 76, "bottom": 112}
 ];
 const IMG_LIPS = document.createElement("img");
@@ -251,4 +251,5 @@ window.addEventListener("dragover", (e) => {
 });
 	</script>
 </html>
+
 
