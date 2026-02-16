@@ -36,6 +36,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 .orderFoodItem {display: flex; flex-direction: column; height: 25vh;}
 .orderFoodItem > img {object-fit: contain; height: 70%;}
 .orderFoodItem > span {font-size: 7vh;}
+#price {font-size: 20vh;}
 		</style>
 	</head>
 	<body>
@@ -218,11 +219,18 @@ for (let i=0; i<12; i++) {
 	let img = document.createElement("img");
 	let text = document.createElement("span");
 	let item = hdFoods.drawOne();
+	let price = "￥"+(Math.floor(Math.random()*9+1)*100+Math.floor(Math.random()*9+1)*10).toString();
 	img.src = "../image_library/images/"+item.src;
 	text.innerHTML = item.text;
 	button.classList.add("orderFoodItem");
+	button.value = price;
 	button.appendChild(img);
 	button.appendChild(text);
+	button.onclick = function (ev) {
+		Array.from(document.getElementsByClassName("orderFoodItem")).forEach(b => b.style.background = "");
+		this.style.background = "lime";
+		document.getElementById("price").innerHTML = this.value;
+	};
 	document.getElementById("orderFoodMenu").appendChild(button);
 }
 document.getElementById("backspace").addEventListener("click", backspaceButtonClickHandler);
