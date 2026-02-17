@@ -34,9 +34,24 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #yes + label {background: lime;}
 #no + label {background: red;}
 #imgCanYou {height: 50vh;}
+#thisIsWrapper {display: flex;}
+#thisIsCharacterChoices {display: grid; grid-template-columns: repeat(5, 20vw); grid-template-rows: repeat(2, 40vh);}
+.character {display: flex; flex-direction: column; align-items: center;}
+.character img {height: 100%; object-fit: contain; background: pink;}
+.character span {display: flex; font-size: 5vh;}
+#thisIsCharacterChoice {display: flex; flex-direction: column; justify-content: center; height: 80vh;}
+#thisIsCharacterChoice img {height: 100%; object-fit: contain; background: pink;}
+#thisIsCharacterChoice span {display: flex; font-size: 10vh;}
+#thisIsPersonalityChoices {display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 40vh);}
+.personality {display: flex; flex-direction: column; align-items: center;}
+.personality img {height: 100%; object-fit: contain; background: pink;}
+.personality span {display: flex; font-size: 5vh;}
+#thisIsPersonalityChoice {display: flex; flex-direction: column; justify-content: center; height: 80vh;}
+#thisIsPersonalityChoice img {width: 100%; object-fit: contain; background: pink;}
+#thisIsPersonalityChoice span {display: flex; font-size: 10vh;}
 #myTownMap {display: grid; grid-template-columns: repeat(4, calc(25vw - 15px)); grid-template-rows: repeat(4, calc(20vh - 15px)); gap: 20px; background: gray;}
 .mapTile {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; background: green;}
-.mapTile img {height: calc(100% - 3vh); object-fit: contain;}
+.mapTile img {height: calc(100% - (1.5 * 3vh)); object-fit: contain;}
 .mapTile span {font-size: 3vh; color: white;}
 #mapArrow {display: none; position: absolute; left: 50%; transform: translate(-50%, -50%); top:80%; text-align: center; color: red; font-size: 10vh; background: pink;}
 #orderFoodWrapper {display:flex; flex-direction: column; align-items: center;}
@@ -56,6 +71,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		<button class="menuButton" value="subject">What subject do you like?</button>
 		<button class="menuButton" value="birthday">When is your birthday?</button>
 		<button class="menuButton" value="can_you" id="menuButtonCan">Can you do it?</button>
+		<button class="menuButton" value="this_is" id="menuButtonCan">Who is this?</button>
 		<button class="menuButton" value="my_town">What do you have in your town?</button>
 		<button class="menuButton" value="order_food">What would you like?</button>
 	</div>
@@ -116,6 +132,15 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		</div>
 	</div>
 </div>
+<div id="this_is" class="view" style="display: none;">
+	<div id="thisIsTitle" class="title">Who is this?</div>
+	<div id="thisIsWrapper">
+		<div id="thisIsCharacterChoices" ></div>
+		<div id="thisIsCharacterChoice" ></div>
+		<div id="thisIsPersonalityChoices" ></div>
+		<div id="thisIsPersonalityChoice" ></div>
+	</div>
+</div>
 <div id="my_town" class="view" style="display: none;">
 	<div id="myTownTitle" class="title">What do you have in your town?</div>
 	<div id="myTownMap" ></div>
@@ -132,6 +157,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 	<script type="module">
 import Loader from "../js_modules/Loader.mjs"
 import images from "../image_library/image_library.mjs"
+import popular from "../image_library/characters/popular.mjs"
 import can_do from "./images_can/can_do.mjs"
 import HatDraw from "../js_modules/HatDraw.mjs"
 
@@ -141,13 +167,11 @@ function backToMenu(ev) {
 	document.getElementById("menu").style.display = "";
 }
 function menuButtonClickHandler(ev) {
-	console.log("Switching to", ev.target.value);
 	viewMenu.style.display = "none";
 	document.getElementById("back").style.visibility = "visible";
 	window[ev.target.value].style.display = "flex";
 }
 function letterButtonClickHandler(ev) {
-	console.log("Letter is", ev.target.value);
 	viewSpellNameTitle.value += ev.target.value;
 }
 function backspaceButtonClickHandler(ev) {
@@ -162,6 +186,16 @@ const SUBJECTS = ["Japanese", "math", "art", "English", "social studies", "P.E."
 const divSubjectButtons = document.getElementById("subjectButtons");
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const DATES = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st"];
+const PERSONALITY = [
+	{"src": "images_personality\personality_01_active.png", "text": "active"},
+	{"src": "images_personality\personality_02_brave.png", "text": "brave"},
+	{"src": "images_personality\personality_03_friendly.png", "text": "friendly"},
+	{"src": "images_personality\personality_04_funny.png", "text": "funny"},
+	{"src": "images_personality\personality_05_kind.png", "text": "kind"},
+	{"src": "images_personality\personality_06_shy.png", "text": "shy"},
+	{"src": "images_personality\personality_07_smart.png", "text": "smart"},
+	{"src": "images_personality\personality_08_strong.png", "text": "strong"}
+];
 const divMonthButtons = document.getElementById("monthButtons");
 const divDateButtons = document.getElementById("dateButtons");
 let birthMonth = "";
@@ -228,6 +262,45 @@ DATES.forEach(function (text) {
 	div.appendChild(label);
 	divDateButtons.appendChild(div);
 });
+const hdCharacters = new HatDraw(popular);
+for (let i=0; i<10; i++) {
+	let button = document.createElement("button");
+	let img = document.createElement("img");
+	let text = document.createElement("span");
+	let item = hdCharacters.drawOne();
+	img.src = "../image_library/popular/"+item.src;
+	text.innerHTML = item.name;
+	button.classList.add("character");
+	button.value = item.name;
+	button.appendChild(img);
+	button.appendChild(text);
+	button.onclick = function (ev) {
+		document.getElementById("thisIsCharacterChoice").appendChild(this.children[0]);
+		document.getElementById("thisIsCharacterChoice").appendChild(this.children[0]);
+		document.getElementById("thisIsCharacterChoices").style.display = "none";
+		document.getElementById("thisIsCharacterChoice").style.display = "flex";
+		document.getElementById("thisIsPersonalityChoices").style.display = "flex";
+	};
+	document.getElementById("thisIsCharacterChoices").appendChild(button);
+}
+PERSONALITY.forEach(function (obj) {
+	let button = document.createElement("button");
+	let img = document.createElement("img");
+	let text = document.createElement("span");
+	img.src = obj.src;
+	text.innerHTML = obj.text;
+	button.classList.add("personality");
+	button.value = obj.text;
+	button.appendChild(img);
+	button.appendChild(text);
+	button.onclick = function (ev) {
+		document.getElementById("thisIsPersonalityChoice").appendChild(this.children[0]);
+		document.getElementById("thisIsPersonalityChoice").appendChild(this.children[0]);
+		document.getElementById("thisIsPersonalityChoices").style.display = "none";
+		document.getElementById("thisIsPersonalityChoice").style.display = "flex";
+	};
+	document.getElementById("thisIsPersonalityChoices").appendChild(button);
+});
 const hdFoods = new HatDraw(images.filter(function (obj) {
 	return obj.tags.includes("food") || obj.tags.includes("drink")
 }));
@@ -261,7 +334,6 @@ for (let i=0; i<16; i++) {
 	let text = document.createElement("span");
 	let img = document.createElement("img");
 	let item = hdTown.drawOne();
-	console.log(item);
 	radio.value = item.text;
 	radio.data = item;
 	radio.id = "mapTile"+item.text;
@@ -272,7 +344,6 @@ for (let i=0; i<16; i++) {
 	label.appendChild(text)
 	label.classList.add("mapTile");
 	radio.onclick = function (ev) {
-		console.log("clicked", this.value.text);
 		document.getElementById("mapArrow").style.display = "flex";
 		let article = null;
 		switch (this.data.article) {
