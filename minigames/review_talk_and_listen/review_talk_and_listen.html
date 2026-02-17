@@ -12,10 +12,12 @@
 		<link rel="icon" type="image/png" href="/favicon.png">
 		<style>
 body {margin: 0; touch-action: none;}
+#back {visibility: hidden; position: absolute; height: 10vh; width: 10vh; left: 5vh; top: 5vh;}
 .view {display: flex; flex-direction: column;}
 .title {display: flex; align-items: center; justify-content: center; height: 20vh; font-size: 10vh; background: yellow;}
 #menuContents {display: flex; flex-direction: column; align-items: center; gap: 3vh;}
 .menuButton {font-size: 5vh;}
+#spellNameTitle {text-align: center;}
 #alphabet {display: grid; grid-template-columns: repeat(7, 1fr); gap: 3%; margin: 2.5%;}
 .letter {font-size: 7vh; height: 14vh;}
 #subjectButtons {display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 1fr); gap: 2vh;}
@@ -32,14 +34,16 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #yes + label {background: lime;}
 #no + label {background: red;}
 #imgCanYou {height: 50vh;}
-#orderFoodMenu {display: flex; flex-wrap: wrap; justify-content: center;}
+#orderFoodWrapper {display:flex; flex-direction: column; align-items: center;}
+#orderFoodMenu {display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;}
 .orderFoodItem {display: flex; flex-direction: column; height: 25vh;}
 .orderFoodItem > img {object-fit: contain; height: 70%;}
 .orderFoodItem > span {font-size: 7vh;}
-#price {font-size: 20vh;}
+#price {font-size: 15vh;}
 		</style>
 	</head>
 	<body>
+<button id="back">Back</button>
 <div id="menu" class="view">
 	<div class="title">Review: Talk and Listen</div>
 	<div id="menuContents">
@@ -51,7 +55,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 	</div>
 </div>
 <div id="spellName" class="view" style="display: none;">
-	<div class="title" id="spellNameTitle">How do you spell your name?</div>
+	<input type="text" placeholder="How do you spell your name?" class="title" id="spellNameTitle"></input>
 	<div id="alphabet">
 		<button class="letter" value="A">A</button>
 		<button class="letter" value="B">B</button>
@@ -108,7 +112,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 </div>
 <div id="order_food" class="view" style="display: none;">
 	<div id="orderFoodTitle" class="title">What would you like?</div>
-	<div style="display:flex; flex-direction: column;">
+	<div id="orderFoodWrapper" >
 		<div id="orderFoodMenu"></div>
 		<div id="price"></div>
 	</div>
@@ -120,22 +124,24 @@ import images from "../image_library/image_library.mjs"
 import can_do from "./images_can/can_do.mjs"
 import HatDraw from "../js_modules/HatDraw.mjs"
 
+function backToMenu(ev) {
+	document.getElementById("back").style.visibility = "hidden";
+	Array.from(document.getElementsByClassName("view")).forEach(el => el.style.display = "none");
+	document.getElementById("menu").style.display = "";
+}
 function menuButtonClickHandler(ev) {
 	console.log("Switching to", ev.target.value);
 	viewMenu.style.display = "none";
+	document.getElementById("back").style.visibility = "visible";
 	window[ev.target.value].style.display = "flex";
 }
 function letterButtonClickHandler(ev) {
 	console.log("Letter is", ev.target.value);
-	if (viewSpellNameTitle.innerHTML === "How do you spell your name?") {
-		viewSpellNameTitle.innerHTML = ev.target.value;
-	} else {
-		viewSpellNameTitle.innerHTML += ev.target.value;
-	}
+	viewSpellNameTitle.value += ev.target.value;
 }
 function backspaceButtonClickHandler(ev) {
-	let name = viewSpellNameTitle.innerHTML;
-	viewSpellNameTitle.innerHTML = name.slice(0, name.length-1);
+	let name = viewSpellNameTitle.value;
+	viewSpellNameTitle.value = name.slice(0, name.length-1);
 }
 const PATH_TO_IMAGES = "../image_library/images/";
 const viewMenu = document.getElementById("menu");
@@ -233,6 +239,10 @@ for (let i=0; i<12; i++) {
 	};
 	document.getElementById("orderFoodMenu").appendChild(button);
 }
+document.getElementById("back").addEventListener("click", backToMenu);
+document.getElementById("spellNameTitle").addEventListener("input", function (ev) {
+	this.value = this.value.toUpperCase();
+});
 document.getElementById("backspace").addEventListener("click", backspaceButtonClickHandler);
 document.getElementById("menuButtonCan").addEventListener("click", function () {
 	let randomCanDo = can_do[Math.floor(Math.random()*can_do.length)];
@@ -240,6 +250,13 @@ document.getElementById("menuButtonCan").addEventListener("click", function () {
 	document.getElementById("canYouTitle").innerHTML = randomCanDo.english;
 	document.getElementById("yes").checked = false;
 	document.getElementById("no").checked = false;
+});
+window.addEventListener("keydown", function (ev) {
+	if (ev.key === "Escape") {
+		backToMenu();
+	}
+	if (document.getElementById("spellName").style.display !== "none") {
+	}
 });
 	</script>
 </html>
