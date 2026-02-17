@@ -187,14 +187,14 @@ const divSubjectButtons = document.getElementById("subjectButtons");
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const DATES = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st"];
 const PERSONALITY = [
-	{"src": "images_personality\personality_01_active.png", "text": "active"},
-	{"src": "images_personality\personality_02_brave.png", "text": "brave"},
-	{"src": "images_personality\personality_03_friendly.png", "text": "friendly"},
-	{"src": "images_personality\personality_04_funny.png", "text": "funny"},
-	{"src": "images_personality\personality_05_kind.png", "text": "kind"},
-	{"src": "images_personality\personality_06_shy.png", "text": "shy"},
-	{"src": "images_personality\personality_07_smart.png", "text": "smart"},
-	{"src": "images_personality\personality_08_strong.png", "text": "strong"}
+	{"src": "images_personality/personality_01_active.png", "text": "active"},
+	{"src": "images_personality/personality_02_brave.png", "text": "brave"},
+	{"src": "images_personality/personality_03_friendly.png", "text": "friendly"},
+	{"src": "images_personality/personality_04_funny.png", "text": "funny"},
+	{"src": "images_personality/personality_05_kind.png", "text": "kind"},
+	{"src": "images_personality/personality_06_shy.png", "text": "shy"},
+	{"src": "images_personality/personality_07_smart.png", "text": "smart"},
+	{"src": "images_personality/personality_08_strong.png", "text": "strong"}
 ];
 const divMonthButtons = document.getElementById("monthButtons");
 const divDateButtons = document.getElementById("dateButtons");
@@ -268,7 +268,7 @@ for (let i=0; i<10; i++) {
 	let img = document.createElement("img");
 	let text = document.createElement("span");
 	let item = hdCharacters.drawOne();
-	img.src = "../image_library/popular/"+item.src;
+	img.src = "../image_library/characters/popular/"+item.src;
 	text.innerHTML = item.name;
 	button.classList.add("character");
 	button.value = item.name;
