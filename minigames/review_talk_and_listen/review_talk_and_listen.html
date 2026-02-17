@@ -36,8 +36,9 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #imgCanYou {height: 50vh;}
 #myTownMap {display: grid; grid-template-columns: repeat(4, calc(25vw - 15px)); grid-template-rows: repeat(4, calc(20vh - 15px)); gap: 20px; background: gray;}
 .mapTile {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; background: green;}
-.mapTile img {height: 50%; object-fit: contain;}
-.mapTile span {font-size: 4vh; color: white;}
+.mapTile img {height: calc(100% - 3vh); object-fit: contain;}
+.mapTile span {font-size: 3vh; color: white;}
+#mapArrow {display: none; position: absolute; left: 50%; transform: translate(-50%, -50%); top:80%; text-align: center; color: red; font-size: 10vh; background: pink;}
 #orderFoodWrapper {display:flex; flex-direction: column; align-items: center;}
 #orderFoodMenu {display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;}
 .orderFoodItem {display: flex; flex-direction: column; height: 25vh;}
@@ -117,8 +118,8 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 </div>
 <div id="my_town" class="view" style="display: none;">
 	<div id="myTownTitle" class="title">What do you have in your town?</div>
-	<div id="myTownMap" >
-	</div>
+	<div id="myTownMap" ></div>
+	<span id="mapArrow">↑</span>
 </div>
 <div id="order_food" class="view" style="display: none;">
 	<div id="orderFoodTitle" class="title">What would you like?</div>
@@ -260,7 +261,9 @@ for (let i=0; i<16; i++) {
 	let text = document.createElement("span");
 	let img = document.createElement("img");
 	let item = hdTown.drawOne();
+	console.log(item);
 	radio.value = item.text;
+	radio.data = item;
 	radio.id = "mapTile"+item.text;
 	label.htmlFor = "mapTile"+item.text;
 	img.src = "../image_library/images/"+item.src;
@@ -269,7 +272,24 @@ for (let i=0; i<16; i++) {
 	label.appendChild(text)
 	label.classList.add("mapTile");
 	radio.onclick = function (ev) {
-		console.log("clicked", this.value);
+		console.log("clicked", this.value.text);
+		document.getElementById("mapArrow").style.display = "flex";
+		let article = null;
+		switch (this.data.article) {
+			case undefined:
+				article = " a "; break;
+			case "None":
+				article = " "; break;
+			case "a":
+				article = " a "; break;
+			case "an":
+				article = " an "; break;
+			case "":
+				article = " a "; break;
+			default:
+				article = " a "; break;
+		}
+		document.getElementById("myTownTitle").innerHTML = `We have${article}${this.data.text}.`;
 	};
 	document.getElementById("myTownMap").appendChild(radio);
 	document.getElementById("myTownMap").appendChild(label);
