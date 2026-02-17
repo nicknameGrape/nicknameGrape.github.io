@@ -37,10 +37,10 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #thisIsWrapper {display: flex;}
 #thisIsCharacterChoices {display: grid; grid-template-columns: repeat(5, 20vw); grid-template-rows: repeat(2, 40vh);}
 .character {display: flex; flex-direction: column; align-items: center;}
-.character img {height: 100%; object-fit: contain; background: pink;}
+.character img {height: calc(100% - 6vh); object-fit: contain;}
 .character span {display: flex; font-size: 5vh;}
 #thisIsCharacterChoice {display: flex; flex-direction: column; justify-content: center; height: 80vh;}
-#thisIsCharacterChoice img {height: 100%; object-fit: contain; background: pink;}
+#thisIsCharacterChoice img {height: 100%; object-fit: contain;}
 #thisIsCharacterChoice span {display: flex; font-size: 10vh;}
 #thisIsPersonalityChoices {display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 40vh);}
 .personality {display: flex; flex-direction: column; align-items: center;}
@@ -279,7 +279,7 @@ for (let i=0; i<10; i++) {
 		document.getElementById("thisIsCharacterChoice").appendChild(this.children[0]);
 		document.getElementById("thisIsCharacterChoices").style.display = "none";
 		document.getElementById("thisIsCharacterChoice").style.display = "flex";
-		document.getElementById("thisIsPersonalityChoices").style.display = "flex";
+		document.getElementById("thisIsPersonalityChoices").style.display = "grid";
 	};
 	document.getElementById("thisIsCharacterChoices").appendChild(button);
 }
