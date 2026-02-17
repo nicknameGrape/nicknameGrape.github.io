@@ -34,6 +34,10 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 #yes + label {background: lime;}
 #no + label {background: red;}
 #imgCanYou {height: 50vh;}
+#myTownMap {display: grid; grid-template-columns: repeat(4, calc(25vw - 15px)); grid-template-rows: repeat(4, calc(20vh - 15px)); gap: 20px; background: gray;}
+.mapTile {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; background: green;}
+.mapTile img {height: 50%; object-fit: contain;}
+.mapTile span {font-size: 4vh; color: white;}
 #orderFoodWrapper {display:flex; flex-direction: column; align-items: center;}
 #orderFoodMenu {display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;}
 .orderFoodItem {display: flex; flex-direction: column; height: 25vh;}
@@ -51,6 +55,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		<button class="menuButton" value="subject">What subject do you like?</button>
 		<button class="menuButton" value="birthday">When is your birthday?</button>
 		<button class="menuButton" value="can_you" id="menuButtonCan">Can you do it?</button>
+		<button class="menuButton" value="my_town">What do you have in your town?</button>
 		<button class="menuButton" value="order_food">What would you like?</button>
 	</div>
 </div>
@@ -108,6 +113,11 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 			<input id="no" type="radio" name="can"/>
 			<label for="no">No, I can't.</label>
 		</div>
+	</div>
+</div>
+<div id="my_town" class="view" style="display: none;">
+	<div id="myTownTitle" class="title">What do you have in your town?</div>
+	<div id="myTownMap" >
 	</div>
 </div>
 <div id="order_food" class="view" style="display: none;">
@@ -238,6 +248,31 @@ for (let i=0; i<12; i++) {
 		document.getElementById("price").innerHTML = this.value;
 	};
 	document.getElementById("orderFoodMenu").appendChild(button);
+}
+const hdTown = new HatDraw(images.filter(function (obj) {
+	return obj.tags.includes("building") || obj.tags.includes("place")
+}));
+for (let i=0; i<16; i++) {
+	let radio = document.createElement("input");
+	radio.type = "radio";
+	radio.name = "map";
+	let label = document.createElement("label");
+	let text = document.createElement("span");
+	let img = document.createElement("img");
+	let item = hdTown.drawOne();
+	radio.value = item.text;
+	radio.id = "mapTile"+item.text;
+	label.htmlFor = "mapTile"+item.text;
+	img.src = "../image_library/images/"+item.src;
+	text.innerHTML = item.text;
+	label.appendChild(img)
+	label.appendChild(text)
+	label.classList.add("mapTile");
+	radio.onclick = function (ev) {
+		console.log("clicked", this.value);
+	};
+	document.getElementById("myTownMap").appendChild(radio);
+	document.getElementById("myTownMap").appendChild(label);
 }
 document.getElementById("back").addEventListener("click", backToMenu);
 document.getElementById("spellNameTitle").addEventListener("input", function (ev) {
