@@ -30,7 +30,7 @@ export default [
 	{"src": "sign_language.png","katakana": "キャン ユー ユース サイン ランゲージ？", "english": "Can you use sign language?", "japanese": "手話はできますか？"},
 	{"src": "sing.png","katakana": "キャン ユー シング？", "english": "Can you sing?", "japanese": "歌はできますか？"},
 	{"src": "skiing_7jj8atz_.png","katakana": "キャン ユー スキー？", "english": "Can you ski?", "japanese": "スキーはできますか？"},
-	{"src": "soroban.jpg","katakana": "キャン ユー ドゥー ソロバン？", "english": "Can you do soroban?", "japanese": "そろばんはできますか？"},
+	{"src": "soroban.png","katakana": "キャン ユー ドゥー ソロバン？", "english": "Can you do soroban?", "japanese": "そろばんはできますか？"},
 	//{"src": "speak_english.jpg","katakana": "キャン ユー スピーク イングリッシュ？", "english": "Can you speak English?", "japanese": "英語は話せますか？"},
 	{"src": "swim_b07iclvo.png","katakana": "キャン ユー スイム？", "english": "Can you swim?", "japanese": "泳げますか？"},
 	{"src": "tennis_z9g7luke.png","katakana": "キャン ユー プレイ テニス？", "english": "Can you play tennis?", "japanese": "テニスはできますか？"},
