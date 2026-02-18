@@ -60,6 +60,8 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 .orderFoodItem > img {object-fit: contain; height: 70%;}
 .orderFoodItem > span {font-size: 7vh;}
 #price {font-size: 15vh;}
+#goJapanMap {height: 80vh; max-width: 100vw; object-fit: contain;}
+#goJapanPin {position: absolute; right: 100px; top: 25vh; transform: translate(-50%, -100%); height: 5vh;}
 		</style>
 	</head>
 	<body>
@@ -74,6 +76,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		<button class="menuButton" value="this_is" id="menuButtonCan">Who is this?</button>
 		<button class="menuButton" value="my_town">What do you have in your town?</button>
 		<button class="menuButton" value="order_food">What would you like?</button>
+		<button class="menuButton" value="go_japan">Where do you want to go in Japan?</button>
 	</div>
 </div>
 <div id="spellName" class="view" style="display: none;">
@@ -152,6 +155,11 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 		<div id="orderFoodMenu"></div>
 		<div id="price"></div>
 	</div>
+</div>
+<div id="go_japan" class="view" style="display: none;">
+	<div id="goJapanTitle" class="title">Where do you want to go in Japan?</div>
+	<img id="goJapanMap" src="japan_map_todofuken.png"/>
+	<img id="goJapanPin" src="pin.png"/>
 </div>
 	</body>
 	<script type="module">
