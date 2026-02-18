@@ -61,7 +61,7 @@ input[name="can"]:checked + label {border: thick solid black; font-size: 10vh; o
 .orderFoodItem > span {font-size: 7vh;}
 #price {font-size: 15vh;}
 #goJapanMap {height: 80vh; max-width: 100vw; object-fit: contain;}
-#goJapanPin {position: absolute; right: 100px; top: 25vh; transform: translate(-50%, -100%); height: 5vh;}
+#goJapanPin {position: absolute; right: 100px; top: 30vh; transform: translate(-50%, -100%); height: 10vh;}
 		</style>
 	</head>
 	<body>
@@ -392,6 +392,10 @@ window.addEventListener("keydown", function (ev) {
 	}
 	if (document.getElementById("spellName").style.display !== "none") {
 	}
+});
+document.getElementById("goJapanMap").addEventListener("pointerdown", function (ev) {
+	document.getElementById("goJapanPin").style.left = ev.clientX;
+	document.getElementById("goJapanPin").style.top = ev.clientY;
 });
 	</script>
 </html>
