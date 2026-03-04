@@ -140,6 +140,7 @@ function resize() {
 function onload() {
 	if (loader.assetsLoaded) {
 		state.loaded();
+		state.order();
 	}
 }
 var canvas = document.getElementById("myCanvas");
@@ -316,11 +317,8 @@ var MEIBUTSU = [
 	"0492_gloves_01.png",
 	"0493_handkerchief_01.png",
 	"0573_flower_01.png",
-	"0573_flower_01.png",
-	"0574_morningglory_01.png",
 	"0574_morningglory_01.png",
 	"0575_sunflower_01.png",
-	"0576_dandelion_01.png",
 	"0576_dandelion_01.png",
 	"0577_rose_01.png",
 	"0586_car_01.png",
@@ -401,9 +399,9 @@ var state = new StateMachine({
 				});
 			};
 			render();
-			Mousetrap.bind("enter", function () {
-				state.reset();
-			});
+			//Mousetrap.bind("enter", function () {
+			//	state.reset();
+			//});
 		}
 	}
 });
@@ -420,4 +418,8 @@ window.addEventListener("keydown", function (e) {
 		players = keyAsInt;
 		render();
 	}
+});
+document.getElementById("buttonAgain").addEventListener("click", function (ev) {
+	state.reset();
+	state.order();
 });
