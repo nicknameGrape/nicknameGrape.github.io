@@ -18,12 +18,20 @@
 			justify-content: center;
 			height: 100vh;
 		}
+		#buttonAgain {
+			position: absolute;
+			top: 10px;
+			left: 50%;
+			transform: translate(-50%, 0);
+			font-size: 10vh;
+		}
 		canvas {
 			background: red;
 		}
 	</style>
 </head>
 <body>
+<button id="buttonAgain">Again!</button>
 <canvas id="myCanvas"></canvas>
 <script src="../js_modules/state-machine3.js"></script>
 <script src="mousetrap.min.js"></script>
