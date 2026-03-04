@@ -149,7 +149,7 @@ var loader = new Loader("./img_gifts/");
 var meibutsu, presents;
 var restaurants = [];
 //var startTime = null;
-var players = 6;
+var players = 5;
 var render = function () {};
 var COLORS = [
 	"pink",
@@ -385,7 +385,7 @@ var state = new StateMachine({
 				var rWidth = canvas.width/colors.length;
 				restaurants = [];
 				colors.forEach(function (c, i) {
-					restaurants.push(new Restaurant(c, i*rWidth, canvas.height*.3, rWidth, canvas.height*.7, i));
+					restaurants.push(new Restaurant(c, i*rWidth, canvas.height*.2, rWidth, canvas.height*.8, i));
 				});
 				console.log(restaurants);
 			}
