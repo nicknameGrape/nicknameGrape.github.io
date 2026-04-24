@@ -59,8 +59,13 @@ function mapPointerdownHander(e) {
 	var zoomY = sign.y1*tween;
 	var zoomW = (sign.x2 - sign.x1)*tween + img.width*(1-tween);
 	var zoomH =  (sign.y2 - sign.y1)*tween + img.height*(1-tween);
-	var mh = REFS.map.canvas.height;
-	var mw = mh*zoomW/zoomH;
+	if (REFS.map.canvas.width/REFS.map.canvas.height > img.width/img.height) { //narrower displays can cause touches to miss
+		var mh = REFS.map.canvas.height;
+		var mw = mh*zoomW/zoomH;
+	} else {
+		var mw = REFS.map.canvas.width;
+		var mh = mw*zoomH/zoomW;
+	}
 	var x = zoomX + e.offsetX/mw*zoomW;
 	var y = zoomY + e.offsetY/mh*zoomH;
 	console.log(x, y, sign.x1, sign.y1);
@@ -87,7 +92,7 @@ function mapPointerdownHander(e) {
 	} else {
 		console.log("wrong!");
 		wrong.pause();
-		wrong.currentTime = .7;
+		wrong.currentTime = 0;
 		wrong.play();
 		mistakes += 1;
 	}

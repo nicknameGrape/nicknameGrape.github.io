@@ -1,0 +1,182 @@
+body {
+	margin: 0px;
+}
+#title {
+	display: flex;
+}
+#textbooks {
+	display: grid;
+	grid-template-columns: repeat(5, max-content);
+	place-items: center;
+	column-gap: 10px;
+}
+#textbooks > a {
+	color: white;
+	font-weight: bold;
+	padding: 10px;
+}
+#content {
+	display: flex;
+}
+#sidebar {
+	display: flex;
+	flex-direction: column;
+	font-size: large;
+	position: sticky;
+	top: 0px;
+	width: 25%;
+	height: 100vh;
+	padding: 20px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background: tan;
+}
+#materials {
+	padding: 20px;
+	margin-top: -20px;
+}
+#materials h2 {
+	margin-top: 0px;
+	padding-top: 20px;
+}
+#materials h3 {
+	margin-left: 20px;
+}
+.theme {
+	display: flex;
+	flex-direction: column;
+	width: 70vw;
+}
+#about {
+}
+video {
+	height: 20vh;
+}
+figure {
+	display: flex;
+	align-items: start;
+}
+figure img {
+	height: 15vh;
+	margin-right: 10px;
+	border: thin solid black;
+}
+figure video {
+	height: 20vh;
+	margin-right: 10px;
+}
+figure video::after {
+	content: "Video";
+}
+figcaption {
+}
+details {
+	margin-left: 20px;
+}
+.material {
+	display: flex;
+}
+.description {
+	white-space: pre-line;
+}
+.videos {
+	display: flex;
+	overflow: auto;
+	overflow-y: hidden;
+}
+.videos figure {
+	flex-direction: column;
+	align-items: center;
+}
+.videos video {
+	margin: revert;
+}
+#lets_try_1 {
+	background: #e9518e;
+}
+#lets_try_2 {
+	background: #09a859;
+}
+#new_horizon_5 {
+	background: orange;
+}
+#new_horizon_6 {
+	background: skyblue;
+}
+#kumamoto {
+	background: green;
+	color: white;
+	padding: 10px;
+}
+#hamsters {
+	display: flex;
+	overflow: scroll;
+	overflow-y: hidden;
+}
+.hamster {
+}
+#heroes {
+	display: flex;
+	overflow: scroll;
+}
+kbd {
+	background-color: #eee;
+	border-radius: 3px;
+border: 1px solid #b4b4b4;
+				box-shadow:
+					0 1px 1px rgba(0, 0, 0, 0.2),
+						0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+color: #333;
+display: inline-block;
+				 font-size: 0.85em;
+				 font-weight: 700;
+				 line-height: 1;
+padding: 2px 4px;
+				 white-space: nowrap;
+}
+#pdfs {
+	display: flex;
+	flex-wrap: wrap;
+}
+#pdfs img {
+	height: 15vh;
+}
+#slideshows {
+	display: flex;
+	flex-wrap: wrap;
+}
+#slideshows img {
+	height: 15vh;
+}
+.song {
+	background: silver;
+}
+.pdf::after {
+	color: gray;
+	content: " (pdf)"
+}
+.zip::after {
+	color: gray;
+	content: " (zip)"
+}
+figcaption.song::before {
+	content: "♫ Song ♫";
+	font-size: large;
+	font-weight: bold;
+}
+.story {
+	background: steelblue;
+}
+figure.story::before {
+	content: "📖 Story";
+	font-size: large;
+	font-weight: bold;
+}
+.quiz {
+	background: aqua;
+}
+figure.quiz::before {
+	content: "Quiz";
+	font-size: large;
+	font-weight: bold;
+}
