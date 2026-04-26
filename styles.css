@@ -148,9 +148,6 @@ padding: 2px 4px;
 #slideshows img {
 	height: 15vh;
 }
-.song {
-	background: silver;
-}
 .pdf::after {
 	color: gray;
 	content: " (pdf)"
@@ -160,7 +157,14 @@ padding: 2px 4px;
 	content: " (zip)"
 }
 figcaption.song::before {
-	content: "♫ Song ♫";
+	content: "♫ ";
+	color: gray;
+	font-size: large;
+	font-weight: bold;
+}
+figcaption.song::after {
+	content: " ♫";
+	color: gray;
 	font-size: large;
 	font-weight: bold;
 }

@@ -143,6 +143,7 @@
 				onload();
 			}.bind(this);
 			img.src = this.path + source;
+			console.log(this.assetsToLoad, img);
 
 			return img;
 		};
@@ -194,7 +195,7 @@
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
 
-var players = prompt("How many choices?");
+var players = parseInt(prompt("How many choices?"));
 
 var loader = new Loader("img/");
 var onload = function () {
@@ -208,7 +209,6 @@ var basket = fruits.slice(0);
 var bush = loader.newImageAsset("bush.png", onload);
 var lion = loader.newImageAsset("lion.png", onload);
 var banana = loader.newImageAsset("banana.png", onload);
-var canTouch = false;
 
 var sources = [
 "cherry.png",
@@ -230,7 +230,7 @@ function pickFruit() {
 }
 sources.forEach(function (e) {
 	//var img = document.createElement("img");
-	var img = loader.newImageAsset(e, onload);
+	let img = loader.newImageAsset(e, onload);
 	//img.src = e;
 	fruits.push(img);
 });
@@ -265,9 +265,11 @@ function draw() {
 				drawFit(context, lion, canvas.width / arr.length * index, 0, canvas.width / arr.length, canvas.height);
 			}
 		}
-		context.fillStyle = "LightGreen";
+		context.fillStyle = "white";
 		//fitText(context, "(" + el.key + ")", ( canvas.width / arr.length) * (index + .3), 0, canvas.width / arr.length * .4, canvas.height / 4);
-		fitText(context, "Press \"Enter\" to play again.", canvas.width * .2, canvas.height * .7, canvas.width * .6, canvas.height * .3);
+		fitText(context, "Grab a fruit, but watch out for the lion!", canvas.width * .2, canvas.height * .1, canvas.width * .6, canvas.height * .15);
+		context.fillStyle = "green";
+		fitText(context, "Press \"Enter\" to play again.", canvas.width * .2, canvas.height * .9, canvas.width * .6, canvas.height * .05);
 	});
 }
 
@@ -281,37 +283,23 @@ window.oncontextmenu = function(event) {
 	return false;
 };
 
-canvas.addEventListener("touchstart", function (e) {
+canvas.addEventListener("pointerdown", function (e) {
 	e.preventDefault();
 	var columnWidth = canvas.width/places.length;
-	var column = parseInt(e.touches[0].clientX / columnWidth);
-	console.log("touchstart", columnWidth, column);
-	if (canTouch) {
-		canTouch = false;
-		places[column].picked = true;
-		draw();
-	}
-});
-
-window.addEventListener("keyup", function (e) {
-	if (e.key === " ") {
-		canTouch = false;
-	}
+	//var column = parseInt(e.touches[0].clientX / columnWidth);
+	var column = Math.floor(e.clientX / columnWidth);
+	places[column].picked = true;
+	draw();
 });
 
 window.addEventListener("keydown", function (e) {
 	if (e.key >= 1 && e.key <= places.length) {
 		places[e.key - 1].picked = true;
-	} else if (e.key === " ") {
-		if (!e.repeat) {
-			canTouch = true;
-		}
 	} else if (e.key === "Enter") {
 		makeBushes();
 	}
 	draw();
 });
-
 </script>
 </body>
 </html>
