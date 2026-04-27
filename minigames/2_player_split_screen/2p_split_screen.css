@@ -1,0 +1,32 @@
+:root {
+	--pw: 100vh;
+	--ph: 48vw;
+}
+@font-face: {
+	font-family: mext;
+	src: url("./mext.otf") format("opentype")
+}
+body {
+	display: grid; grid-template-columns: 48vw 4vw 48vw; grid-template-rows: 100vh;
+	margin: 0px; overflow: hidden;
+	touch-action: none; user-select: none;
+	font-family: mext;
+}
+#p1 {
+	transform-origin: top left; transform: rotate(90deg) translate(0, -48vw);
+	width: var(--pw); height: var(--ph);
+	background: yellow;
+}
+#border {background: black;}
+#p2 {
+	transform-origin: top left; transform: rotate(-90deg) translate(-100vh);
+	width: 100vh; height: 48vw;
+	background: green;
+}
+.prompt {
+	display: flex;
+	justify-content: center;
+	font-family: mext, sans-serif;
+	font-size: 36pt;
+	color: blue;
+}

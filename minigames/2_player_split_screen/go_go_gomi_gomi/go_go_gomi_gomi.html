@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+#garbageman {
+	display: grid;
+	background: darkgreen;
+	grid-template-rows: calc(var(--ph)*0.2) 1fr;
+	height: 100%;
+}
+#garbagemanPrompt {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+#garbagemanPromptText {
+	display: flex;
+	font-size: calc(var(--ph)*0.07);
+	font-weight: bold;
+	color: white;
+}
+#imgLogo {
+	height: 100%;
+	object-fit: contain;
+	align-self: start;
+}
+#chooseBuilding {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+#chooseBuilding img {
+	height: 100px;
+}
+#caller {
+	display: grid;
+	background: brown;
+	grid-template-rows: calc(var(--ph)*0.2) 1fr;
+}
+#callerPrompt {
+	display: flex;
+	align-items: center;
+}
+#callerPromptText {
+	display: flex;
+	font-size: calc(var(--ph)*0.05);
+	font-weight: bold;
+	color: white;
+	align-self: space-around;
+}
+#imgCaller {
+	height: 100%;
+	object-fit: contain;
+}
+#confirmBuilding img {
+	height: 200px;
+}
+	</style>
+</head>
+<body>
+	<div id="p1">
+		<div id="garbageman">
+			<div id="garbagemanPrompt">
+				<img id="imgLogo" src="garbage_truck_logo.png"/>
+				<span id="garbagemanPromptText">Where is the ごみ?"</span>
+			</div>
+			<div id="chooseBuilding"></div>
+		</div>
+	</div>
+	<div id="border"></div>
+	<div id="p2">
+		<div id="caller">
+			<div id="callerPrompt">
+				<img id="imgCaller" src="caller.png"/>
+				<span id="callerPromptText">Please come to the *.</span>
+			</div>
+			<div id="confirmBuilding"></div>
+		</div>
+	</div>
+</body>
+<script type="module">
+	import Split_Screen from "../2p_split_screen.mjs";
+	import HatDraw from "../../js_modules/HatDraw.mjs";
+	import Loader from "../../js_modules/Loader.mjs";
+	import image_library from "../../image_library/image_library.mjs";
+	class Place {
+		constructor(stringName, sourceScene, canOn) {
+			let loaderImageLibrary = new Loader("../../image_library/images/");
+			let loaderScene = new Loader("scenes/");
+			let ilo = image_library.find(o => o.text === stringName);
+			let icon = loaderImageLibrary.newImageAsset(ilo.src);
+			let scene = loaderScene.newImageAsset(sourceScene);
+			let garbageOnInUnderBy = [true, true, true, true];
+			if (!canOn) {
+				console.log("no garbage on the", stringName);
+				garbageOnInUnderBy[0] = false;
+				let rIndex = Math.floor(Math.random()*3);
+				garbageOnInUnderBy[1+rIndex] = false;
+			} else {
+				let possible = [0, 1, 2, 3];
+				while (possible.length > 2) {
+					possible.splice(Math.floor(Math.random()*possible.length), 1);
+				}
+				possible.forEach(function (i) {
+						garbageOnInUnderBy[i] = false;
+				});
+			}
+			this.name = stringName;
+			this.icon = icon;
+			this.scene = scene;
+			this.canOn = canOn;
+		}
+	}
+	const PLACES = [
+		["park", "park_interior.jpg", false],
+		["restaurant", "restaurant_interior.jpg", true],
+		["hospital", "hospital_interior.jpg", true],
+		//["library", "library_interior.jpg", true],
+		["station", "station_interior.jpg", true],
+		["fire station", "fire_station_interior.jpg", true],
+		["police station", "police_station_interior.jpg", true],
+		["convenience store", "convenience_store_interior.jpg", true],
+		["supermarket", "supermarket_interior.jpg", true],
+		["house", "house_interior.jpg", true],
+		["flower shop", "flower_shop_interior.jpg", false],
+		["school", "school_interior.png", true]
+	];
+	const TRASH = [
+		"trash/banana_peel.png",
+		"trash/bicycle_broken.png",
+		"trash/cigarette_butt_single.png",
+		"trash/coffee_can_spill.png",
+		"trash/game_card_single.png",
+		"trash/hair_clip_pink.png",
+		"trash/key_holder.png",
+		"trash/pocket_tissue.png",
+		"trash/poop.png",
+		"trash/potato_chips_bag.png",
+		"trash/shoe_lost_single.png",
+		"trash/skeleton.png",
+		"trash/spicy_manga.png",
+		"trash/umbrella_broken.png",
+		"trash/wallet_lost.png",
+		"trash/work_glove.png"
+	];
+	const GAME = new Split_Screen(document.getElementById("p1"), document.getElementById("p2"));
+	GAME.places = [];
+	PLACES.forEach(function (place) {
+		console.log(place);
+		GAME.places.push(new Place(...place));
+	});
+	GAME.hdPlaces = new HatDraw(GAME.places);
+	let place = GAME.hdPlaces.drawOne();
+	document.getElementById("confirmBuilding").appendChild(place.icon.cloneNode(true));
+	GAME.places.forEach(function (place) {
+		document.getElementById("chooseBuilding").appendChild(place.icon);
+	});
+	window.addEventListener("keydown", function (ev) {
+		if (ev.key === " ") {
+			GAME.swap();
+		}
+	});
+</script>
+</html>
