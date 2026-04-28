@@ -1,3 +1,7 @@
 [submodule "image_library"]
 	path = minigames/image_library
 	url = https://github.com/nicknameGrape/image_library.git
+
+[submodule "firstname-database"]
+	path = minigames/2_player_split_screen/spell_name/firstname-database
+	url = https://github.com/nicknameGrape/minigames/2_player_split_screen/spell_name/firstname-database/firstname-database.git
