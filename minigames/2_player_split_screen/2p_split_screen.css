@@ -2,15 +2,15 @@
 	--pw: 100vh;
 	--ph: 48vw;
 }
-@font-face: {
-	font-family: mext;
+@font-face {
+	font-family: "mext";
 	src: url("./mext.otf") format("opentype")
 }
 body {
 	display: grid; grid-template-columns: 48vw 4vw 48vw; grid-template-rows: 100vh;
 	margin: 0px; overflow: hidden;
 	touch-action: none; user-select: none;
-	font-family: mext;
+	font-family: "mext";
 }
 #p1 {
 	transform-origin: top left; transform: rotate(90deg) translate(0, -48vw);
