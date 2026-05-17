@@ -156,13 +156,18 @@ padding: 2px 4px;
 	color: gray;
 	content: " (zip)"
 }
-figcaption.song::before {
+.slideshow::before {
+	content: "Slideshow: ";
+	color: gray;
+	font-size: large;
+}
+.song::before {
 	content: "♫ ";
 	color: gray;
 	font-size: large;
 	font-weight: bold;
 }
-figcaption.song::after {
+.song::after {
 	content: " ♫";
 	color: gray;
 	font-size: large;
