@@ -21,7 +21,6 @@ body {
 #sidebar {
 	display: flex;
 	flex-direction: column;
-	font-size: large;
 	position: sticky;
 	top: 0px;
 	width: 25%;
@@ -188,4 +187,8 @@ figure.quiz::before {
 	content: "Quiz";
 	font-size: large;
 	font-weight: bold;
+}
+.split_screen::before {
+	content: "2P Split Screen: ";
+	color: gray;
 }
