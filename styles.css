@@ -51,12 +51,20 @@ body {
 video {
 	height: 20vh;
 }
-figure {
+figure, .link {
 	display: flex;
 	align-items: start;
+	position: relative;
 }
-figure img {
+.link > div {
+	background: lime;
+	position: absolute;
+	left: 15vw;
+	top: 2em;
+}
+figure img, .link img {
 	height: 15vh;
+	max-width: 15vw;
 	margin-right: 10px;
 	border: thin solid black;
 }
