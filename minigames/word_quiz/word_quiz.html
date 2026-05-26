@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+@font-face {
+    font-family: 'MEXT';
+    src: url('mext.otf') format("opentype");
+}
+body {}
+#mode {
+	display: none;
+}
+#seeWordChoosePicture {
+}
+#results {
+	display: none;
+}
+#word {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-family: "MEXT", sans-serif;
+	font-size: 10vh;
+}
+.speaker {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	width: 12vh;
+	height: 12vh;
+	font-size: inherit;
+	color: gray;
+}
+#pictures {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+#pictures button {padding: 10px; box-sizing: border-box;}
+#pictures button img {height: 20vh; max-width: 20vw; object-fit: contain;}
+		</style>
+	</head>
+	<body>
+		<div id="mode">TODO: choose mode</div>
+		<div id="seeWordChoosePicture">
+			<h1>See Word, Choose Picture</h1>
+			<div id="results">Results</div>
+			<div id="word">
+				<button class="speaker" style="transform: scale(-1,1);">🕨</button>
+				<div id="seeWord"></div>
+				<button class="speaker">🕨</button>
+			</div>
+			<div id="pictures"></div>
+		</div>
+	</body>
+	<script type="module">
+import il from "./image_library.mjs";
+import HatDraw from "../js_modules/HatDraw.mjs";
+import shuffle from "../js_modules/shuffle.mjs";
+
+function speak(text) {
+	Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕪");
+	synth.cancel();
+	const utterThis = new SpeechSynthesisUtterance(text);
+	console.log(hdVoices);
+	utterThis.voice = hdVoices.drawOne();
+	utterThis.addEventListener("end", function () {
+			Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕨");
+			});
+	//utterThis.lang = "en-US";
+	synth.speak(utterThis);
+	console.log(synth, utterThis);
+}
+
+function createHdVoices() {
+	let voices = synth.getVoices();
+	let voiceChoices = voices.filter(v => v.lang.includes("en"));
+	console.log(voiceChoices);
+	hdVoices = new HatDraw(voiceChoices);
+}
+
+const hd = new HatDraw(il);
+let word = hd.drawOne();
+let choices = [];
+let hdVoices;
+document.getElementById("seeWord").innerHTML = word.text;
+choices.push(word);
+choices.push(hd.drawOne());
+choices.push(hd.drawOne());
+choices.push(hd.drawOne());
+shuffle(choices);
+Array.from(choices).forEach(function (ilo) {
+		const img = document.createElement("img");
+		const button = document.createElement("button");
+		img.src = "https://nicknamegrape.github.io/image_library/images/"+ilo.src;
+		button.appendChild(img);
+		document.getElementById("pictures").appendChild(button);
+});
+
+//speech
+const synth = window.speechSynthesis;
+createHdVoices();
+if (synth.getVoices().length == 0) {
+	console.log("CHROME");
+	synth.addEventListener("voiceschanged", createHdVoices);
+} else {
+	createHdVoices();
+}
+document.getElementById("word").addEventListener("pointerdown", function () {
+	speak(document.getElementById("seeWord").innerHTML);
+});
+	</script>
+</html>
