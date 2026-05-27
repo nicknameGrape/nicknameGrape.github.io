@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 	<head>
+		<link rel="stylesheet" href="https://unpkg.com/keyboard-css@1.2.4/dist/css/main.min.css" />
 		<style>
 @font-face {
     font-family: 'MEXT';
     src: url('mext.otf') format("opentype");
 }
-body {}
+body {
+	user-select: none;
+	margin-left: 30px;
+	margin-right: 30px;
+	overflow-y: scroll;
+}
 #mode {
 	display: none;
 }
 #seeWordChoosePicture {
-}
-#results {
-	display: none;
+	display: grid;
+	grid-template-rows: auto 30vh auto;
+	gap: 10px;
 }
 #word {
 	display: flex;
-	align-items: center;
 	justify-content: space-between;
 	font-family: "MEXT", sans-serif;
 	font-size: 10vh;
+	font-weight: bold;
+	height: 15vh;
+	align-items: center;
+	background: gray;
+	color: white;
+}
+#seeWord {
+	padding-left: 10px;
+	padding-right: 10px;
 }
 .speaker {
 	display: flex;
@@ -31,82 +45,253 @@ body {}
 	color: gray;
 }
 #pictures {
-	display: flex;
+	display: grid;
+	grid-template-rows: repeat(2, auto);
+	grid-template-columns: repeat(4, auto);
 	justify-content: center;
 	gap: 10px;
 }
-#pictures button {padding: 10px; box-sizing: border-box;}
+#pictures button {height: 100%; padding: 10px; box-sizing: border-box;}
 #pictures button img {height: 20vh; max-width: 20vw; object-fit: contain;}
+kbd {
+	justify-self: center;
+}
+#report {
+	display: grid;
+	grid-template-rows: repeat(2, auto);
+	grid-template-columns: repeat(4, auto);
+	align-items: start;
+	justify-content: center;
+	gap: 20px;
+}
+#date::before {
+	content: "DATE: ";
+	color: gray;
+}
+#date {
+	grid-area: 1/1/2/5;
+	text-align: center;
+}
+#attempts::before {
+	content: "ATTEMPTS: ";
+	color: gray;
+}
+#attempts {
+}
+#points::before {
+	content: "POINTS: ";
+	color: gray;
+}
+#points {
+}
+#accuracy::before {
+	content: "ACCURACY: ";
+	color: gray;
+}
+#accuracy {
+}
+#score::before {
+	content: "SCORE: ";
+	color: gray;
+}
+#score {
+}
+#missed {
+	display: flex;
+	flex-wrap: wrap;
+}
+.missed {
+	display: inline-flex;
+	gap: 10px;
+	align-items: end;
+	padding: 5px;
+	border: thin gray dashed;
+}
+.missed img {
+	height: 9vh;
+	object-fit: contain;
+}
+.missed span {
+	font-size: 32pt;
+	font-family: "MEXT", sans-serif;
+}
 		</style>
 	</head>
 	<body>
+		<h1>Word Quiz</h1>
 		<div id="mode">TODO: choose mode</div>
 		<div id="seeWordChoosePicture">
-			<h1>See Word, Choose Picture</h1>
-			<div id="results">Results</div>
 			<div id="word">
 				<button class="speaker" style="transform: scale(-1,1);">🕨</button>
-				<div id="seeWord"></div>
+				<div id="seeWord" translate="no"></div>
 				<button class="speaker">🕨</button>
 			</div>
 			<div id="pictures"></div>
+			<h2 id="reportTitle">Report</h2>
+			<div id="report">
+				<div id="date"></div>
+				<div id="attempts">0</div>
+				<div id="points">0</div>
+				<div id="accuracy">0%</div>
+				<div id="score">0</div>
+			</div>
+			<div id="missed"></div>
 		</div>
 	</body>
 	<script type="module">
-import il from "./image_library.mjs";
+import il from "../image_library/image_library.mjs";
 import HatDraw from "../js_modules/HatDraw.mjs";
 import shuffle from "../js_modules/shuffle.mjs";
+import Loader from "../js_modules/loader.mjs";
+
+class QuizPicture {
+	constructor() {
+		let answer = hd.drawOne();
+		let choices = [];
+		choices.push(answer);
+		choices.push(hd.drawOne());
+		choices.push(hd.drawOne());
+		choices.push(hd.drawOne());
+		shuffle(choices);
+		//update global variable "quiz"
+		this.loader = new Loader("https://nicknamegrape.github.io/image_library/images/");
+		this.word = answer.text;
+		this.image = this.loader.newImageAsset(answer.src, this.onload.bind(this));
+		this.completed = false;
+		this.buttons = choices.map(function (ilo, index) {
+			const button = document.createElement("button");
+			const img = this.loader.newImageAsset(ilo.src, this.onload.bind(this));
+			button.value = ilo.text;
+			button.addEventListener("click", checkGuessPicture);
+			button.appendChild(img);
+			return button;
+		}.bind(this));
+		this.tries = 0;
+	}
+	attempt() {
+		let divPictures = document.getElementById("pictures");
+		attempts += 1;
+		//display the new word
+		document.getElementById("seeWord").style.color = "";
+		document.getElementById("seeWord").style.background = "";
+		document.getElementById("seeWord").innerHTML = quiz.word;
+		//remove old buttons
+		while (divPictures.firstChild) {divPictures.removeChild(divPictures.firstChild);}
+		//make new buttons
+		this.buttons.forEach(button => divPictures.appendChild(button));
+		//and kbd elements to show the shortcut for each button
+		["A", "S", "D", "F"].forEach(function (letter) {
+			let kbd = document.createElement("kbd");
+			kbd.innerHTML = letter;
+			kbd.classList.add("kbc-button");
+			divPictures.appendChild(kbd);
+		});
+	}
+	onload() {
+		if (this === quiz && this.loader.assetsLoaded) {
+			this.attempt();
+		}
+	}
+}
+
+function makeReportPicture() {
+	document.getElementById("attempts").innerHTML = attempts;
+	document.getElementById("points").innerHTML = points;
+	document.getElementById("accuracy").innerHTML = parseInt(points/(attempts*4)*100)+"%";
+	document.getElementById("score").innerHTML = parseInt(points*points/(attempts*4));
+}
+
+function checkGuessPicture() {
+	if (this.value === quiz.word) {
+		this.style.background = "lime";
+		document.getElementById("seeWord").style.color = "lime";
+		this.removeEventListener("click", checkGuessPicture);
+		quiz.buttons.forEach(button => button.removeEventListener("click", checkGuessPicture));
+		let award = 4-quiz.tries; //will award 4 points if they got it right on the first try
+		points += award;
+		//update report
+		makeReportPicture();
+		//add an element to #missed if they didn't get it right on the first guess
+		if (quiz.tries > 0) {
+			let span = document.createElement("span");
+			let img = document.createElement("img");
+			let text = document.createElement("span");
+			span.classList.add("missed");
+			img.src = quiz.image.src;
+			text.innerHTML = quiz.word;
+			span.appendChild(img);
+			span.appendChild(text);
+			document.getElementById("missed").appendChild(span);
+		}
+		setTimeout(function () {
+			quiz = nextQuiz;
+			quiz.attempt();
+			nextQuiz = new QuizPicture();
+		}, 1000);
+	} else {
+		this.style.background = "red";
+		this.removeEventListener("click", checkGuessPicture);
+		quiz.tries += 1;
+	}
+}
 
 function speak(text) {
 	Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕪");
 	synth.cancel();
 	const utterThis = new SpeechSynthesisUtterance(text);
-	console.log(hdVoices);
 	utterThis.voice = hdVoices.drawOne();
 	utterThis.addEventListener("end", function () {
 			Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕨");
 			});
 	//utterThis.lang = "en-US";
 	synth.speak(utterThis);
-	console.log(synth, utterThis);
 }
 
 function createHdVoices() {
 	let voices = synth.getVoices();
 	let voiceChoices = voices.filter(v => v.lang.includes("en"));
-	console.log(voiceChoices);
 	hdVoices = new HatDraw(voiceChoices);
 }
 
 const hd = new HatDraw(il);
-let word = hd.drawOne();
-let choices = [];
 let hdVoices;
-document.getElementById("seeWord").innerHTML = word.text;
-choices.push(word);
-choices.push(hd.drawOne());
-choices.push(hd.drawOne());
-choices.push(hd.drawOne());
-shuffle(choices);
-Array.from(choices).forEach(function (ilo) {
-		const img = document.createElement("img");
-		const button = document.createElement("button");
-		img.src = "https://nicknamegrape.github.io/image_library/images/"+ilo.src;
-		button.appendChild(img);
-		document.getElementById("pictures").appendChild(button);
-});
+let quiz = null;
+let nextQuiz = null;
+let attempts = 0; //tracks how many quizzes they have attempted
+let points = 0;
 
 //speech
 const synth = window.speechSynthesis;
 createHdVoices();
 if (synth.getVoices().length == 0) {
-	console.log("CHROME");
 	synth.addEventListener("voiceschanged", createHdVoices);
 } else {
 	createHdVoices();
 }
 document.getElementById("word").addEventListener("pointerdown", function () {
 	speak(document.getElementById("seeWord").innerHTML);
+});
+
+document.addEventListener("keydown", function (ev) {
+	if (ev.key === "Enter") {
+		makeQuizPicture();
+	}
+});
+
+quiz = new QuizPicture();
+nextQuiz = new QuizPicture();
+let today = new Date();
+document.getElementById("date").innerHTML = today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日";
+window.addEventListener("keydown", function (ev) {
+	if (ev.key.toUpperCase() === "A") {
+		quiz.buttons[0].click();
+	} else if (ev.key.toUpperCase() === "S") {
+		quiz.buttons[1].click();
+	} else if (ev.key.toUpperCase() === "D") {
+		quiz.buttons[2].click();
+	} else if (ev.key.toUpperCase() === "F") {
+		quiz.buttons[3].click();
+	}
 });
 	</script>
 </html>
