@@ -39,9 +39,9 @@ body {
 .speaker {
 	display: flex;
 	justify-content: end;
-	align-items: center;
-	width: 12vh;
-	height: 12vh;
+	height: 100%;
+	width: 1.2em;
+	aspect-ratio: 1/1;
 	font-size: inherit;
 	color: gray;
 }
@@ -98,13 +98,14 @@ kbd {
 #missed {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 10px;
 }
 .missed {
-	display: inline-flex;
+	display: flex;
 	gap: 10px;
 	align-items: end;
 	padding: 5px;
-	border: thin gray dashed;
+	/*border: thin gray dashed;*/
 }
 .missed img {
 	height: 9vh;
@@ -155,6 +156,7 @@ class QuizPicture {
 		shuffle(choices);
 		//update global variable "quiz"
 		this.loader = new Loader("/image_library/images/");
+		//this.loader = new Loader("https://nicknamegrape.github.io/image_library/images/");
 		this.word = answer.text;
 		this.image = this.loader.newImageAsset(answer.src, this.onload.bind(this));
 		this.completed = false;
@@ -213,15 +215,23 @@ function checkGuessPicture() {
 		makeReportPicture();
 		//add an element to #missed if they didn't get it right on the first guess
 		if (quiz.tries > 0) {
-			let span = document.createElement("span");
+			let button = document.createElement("button");
 			let img = document.createElement("img");
 			let text = document.createElement("span");
-			span.classList.add("missed");
+			let speaker = document.createElement("span");
+			speaker.innerHTML = "🕨";
+			speaker.classList.add("speaker");
+			button.value = quiz.word;
+			button.classList.add("missed");
 			img.src = quiz.image.src;
-			text.innerHTML = quiz.word;
-			span.appendChild(img);
-			span.appendChild(text);
-			document.getElementById("missed").appendChild(span);
+			text.innerHTML = quiz.word;//🕪
+			button.appendChild(img);
+			button.appendChild(text);
+			button.appendChild(speaker);
+			button.addEventListener("click", function (ev) {
+				speak(this.value, this);
+			});
+			document.getElementById("missed").appendChild(button);
 		}
 		setTimeout(function () {
 			quiz = nextQuiz;
@@ -235,13 +245,13 @@ function checkGuessPicture() {
 	}
 }
 
-function speak(text) {
-	Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕪");
+function speak(text, element) {
+	Array.from(element.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕪");
 	synth.cancel();
 	const utterThis = new SpeechSynthesisUtterance(text);
 	utterThis.voice = hdVoices.drawOne();
 	utterThis.addEventListener("end", function () {
-			Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕨");
+			Array.from(element.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕨");
 			});
 	//utterThis.lang = "en-US";
 	synth.speak(utterThis);
@@ -268,8 +278,8 @@ if (synth.getVoices().length == 0) {
 } else {
 	createHdVoices();
 }
-document.getElementById("word").addEventListener("pointerdown", function () {
-	speak(document.getElementById("seeWord").innerHTML);
+document.getElementById("word").addEventListener("pointerdown", function (ev) {
+	speak(document.getElementById("seeWord").innerHTML, this);
 });
 
 document.addEventListener("keydown", function (ev) {
