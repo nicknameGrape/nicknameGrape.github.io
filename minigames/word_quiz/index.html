@@ -263,7 +263,16 @@ function createHdVoices() {
 	hdVoices = new HatDraw(voiceChoices);
 }
 
-const hd = new HatDraw(il);
+const tag = new URLSearchParams(window.location.search).get("tag");
+console.log(tag);
+let hd;
+if (tag !== null) {
+	let il_filtered = il.filter(o => o.tags.includes(tag));
+	console.log(il_filtered);
+	hd = new HatDraw(il_filtered);
+} else {
+	hd = new HatDraw(il);
+}
 let hdVoices;
 let quiz = null;
 let nextQuiz = null;
