@@ -453,6 +453,8 @@ if (tag !== null) {
 let hdVoices;
 let quiz = null;
 let nextQuiz = null;
+let savedQuizSeeWordChoosePicture = null; //these savedQuizzes will save the "abandoned" quiz when the game mode is changed before trying to answer
+let savedQuizSeePictureChooseWord = null; //the savedQuiz will be served again if ever the player returns to the same mode
 let attemptsSeeWordChoosePicture = 0; //tracks how many quizzes they have attempted
 let pointsSeeWordChoosePicture = 0;
 let attemptsSeePictureChooseWord = 0; //tracks how many quizzes they have attempted
@@ -490,17 +492,34 @@ window.addEventListener("keydown", function (ev) {
 
 function setup() {
 		if (mode === "seeWordChoosePicture") {
-			quiz = new QuizWord2Picture();
+			if (savedQuizSeeWordChoosePicture !== null) {
+				quiz = savedQuizSeeWordChoosePicture;
+				quiz.attempt()
+			} else {
+				quiz = new QuizWord2Picture();
+			}
 			nextQuiz = new QuizWord2Picture();
 			document.getElementById("seePictureChooseWord").style.visiblity = "none";
 		} else if (mode === "seePictureChooseWord") {
-			quiz = new QuizPicture2Word();
+			if (savedQuizSeePictureChooseWord !== null) {
+				quiz = savedQuizSeePictureChooseWord;
+				quiz.attempt()
+			} else {
+				quiz = new QuizPicture2Word();
+			}
 			nextQuiz = new QuizPicture2Word();
 			document.getElementById("seeWordChoosePicture").style.visiblity = "none";
 		}
 }
 
 Array.from(document.getElementsByName("mode")).forEach(el => el.addEventListener("input", function (ev) {
+		//save quiz before changing modes
+		if (mode === "seeWordChoosePicture") {
+			savedQuizSeeWordChoosePicture = quiz;
+		}
+		if (mode === "seePictureChooseWord") {
+			savedQuizSeePictureChooseWord = quiz;
+		}
 		mode = this.value;
 		setup();
 	})
