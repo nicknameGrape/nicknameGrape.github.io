@@ -480,10 +480,10 @@ if (synth.getVoices().length == 0) {
 } else {
 	createHdVoices();
 }
-document.getElementById("word").addEventListener("pointerdown", function (ev) {
+document.getElementById("word").addEventListener("click", function (ev) {
 	speak(document.getElementById("seeWord").innerHTML, this);
 });
-document.getElementById("picture").addEventListener("pointerdown", function (ev) {
+document.getElementById("picture").addEventListener("click", function (ev) {
 	speak(quiz.word, this);
 });
 
