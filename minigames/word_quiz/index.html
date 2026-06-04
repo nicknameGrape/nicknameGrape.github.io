@@ -434,15 +434,19 @@ function checkGuessPicture() {
 }
 
 function speak(text, element) {
-	Array.from(element.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕪");
+	//cancel current speech
 	synth.cancel();
+	//change all speaker symbols in document to "off"
+	Array.from(document.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕨");
 	const utterThis = new SpeechSynthesisUtterance(text);
 	utterThis.voice = hdVoices.drawOne();
 	utterThis.addEventListener("end", function () {
 			Array.from(element.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕨");
-			});
+	});
 	//utterThis.lang = "en-US";
 	synth.speak(utterThis);
+	//turn speaker symbols in clicked element to "on"
+	Array.from(element.getElementsByClassName("speaker")).forEach(el => el.innerHTML = "🕪");
 }
 
 function createHdVoices() {
