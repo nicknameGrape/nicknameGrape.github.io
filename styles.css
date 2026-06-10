@@ -84,7 +84,7 @@ details {
 	gap: 10px;
 	font-size: larger;
 }
-.image_and_link img {
+.image_and_link img, .poster {
 	width: 15vw;
 	max-height: calc(1.8*15vw);
 	object-fit: contain;
@@ -172,8 +172,8 @@ padding: 2px 4px;
 .pdf::after {
 	content: " (pdf)"
 }
-.zip::after {
-	content: " (zip)"
+.printable::after {
+	content: " [Printable]"
 }
 .slideshow::after {
 	content: " [Slideshow]";
