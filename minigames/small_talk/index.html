@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<head>
+	<link rel="stylesheet" href="small_talk_styles.css"/>
+</head>
+<body>
+	<h1 id="title">Small Talk</h1>
+	<div id="chooseBook">
+		<div class="instructions">
+			<h2>Choose a Book:</h2>
+		</div>
+		<button id="button_new_horizon_1" value="new_horizon_1">New Horizon 1</button>
+		<button id="button_new_horizon_2" value="new_horizon_2">New Horizon 2</button>
+		<button id="button_new_horizon_3" value="new_horizon_3">New Horizon 3</button>
+	</div>
+	<div id="chooseQuestion">
+		<button id="back2Book" class="buttonBack">&larr; Back</button>
+		<div class="instructions">
+			<h2>Choose a Question:</h2>
+			<div id="questions">
+			</div>
+		</div>
+	</div>
+	<div id="examples">
+		<button id="back2Question" class="buttonBack">&larr; Back</button>
+		<div id="example">
+			<div id="example_num"></div>
+			<div id="example_theme"></div>
+			<div id="example_question"></div>
+			<ul id="example_responses"></ul>
+		</div>
+	</div>
+	<script type="module">
+import small_talk_nh1 from "./new_horizon_1_small_talk_cards_data.mjs";
+let choice = null;
+document.getElementById("button_new_horizon_1").addEventListener("click", function (ev) {
+	small_talk_nh1.forEach(function (o, index) {
+		let num = document.createElement("span");
+		let theme = document.createElement("span");
+		let question = document.createElement("span");
+		let button = document.createElement("button");
+		num.innerHTML = (index+1).toString() + ".";
+		num.classList.add("num");
+		theme.innerHTML = o.theme_jp;
+		theme.classList.add("theme");
+		question.innerHTML = o.question_en;
+		button.value = index;
+		button.classList.add("question");
+		button.appendChild(num);
+		button.appendChild(theme);
+		button.appendChild(question);
+		button.addEventListener("click", function (ev) {
+			let ul_reponses = document.getElementById("example_responses");
+			choice = small_talk_nh1[this.value];
+			document.getElementById("example_num").innerHTML = parseInt(this.value)+1;
+			document.getElementById("example_theme").innerHTML = choice.theme_jp;
+			document.getElementById("example_question").innerHTML = choice.question_en;
+			console.log(choice.responses);
+			while(ul_reponses.firstChild) {
+				ul_reponses.removeChild(ul_reponses.firstChild);
+			}
+			choice.responses.forEach(function (text) {
+				let li = document.createElement("li");
+				li.innerHTML = text;
+				ul_reponses.appendChild(li);
+			});
+			document.getElementById("chooseQuestion").style.display = "none";
+			document.getElementById("examples").style.display = "block";
+		});
+		document.getElementById("questions").appendChild(button);
+	});
+	document.getElementById("chooseBook").style.display = "none";
+	document.getElementById("chooseQuestion").style.display = "block";
+});
+document.getElementById("back2Book").addEventListener("click", function (ev) {
+	document.getElementById("chooseBook").style.display = "";
+	document.getElementById("chooseQuestion").style.display = "none";
+});
+document.getElementById("back2Question").addEventListener("click", function (ev) {
+	document.getElementById("chooseQuestion").style.display = "block";
+	document.getElementById("examples").style.display = "none";
+});
+	</script>
+</body>
+</html>
