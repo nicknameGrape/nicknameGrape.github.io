@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" href="/favicon.png"/>
 	<meta charset="utf-8">
 </head>
 <body>
@@ -11,7 +12,7 @@
 	</div>
 </body>
 <script type="module">
-	import Split_Screen from "./2p_split_screen.mjs";
+	import Split_Screen from "../2p_split_screen.mjs";
 	const GAME = new Split_Screen(document.getElementById("p1"), document.getElementById("p2"));
 	window.addEventListener("keydown", function (ev) {
 		if (ev.key === " ") {

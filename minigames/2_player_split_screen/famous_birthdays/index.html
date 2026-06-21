@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="icon" href="/favicon.png"/>
+	<meta charset="utf-8">
+	<style>
+input[type=radio] {
+	display: none;
+}
+label {
+	display: flex;
+	align-items: end;
+	justify-content: center;
+	gap: 5px;
+	background: lightblue;
+	padding: 5px;
+	font-size: 14pt;
+	border: 5px lightblue outset;
+	border-radius: 10px;
+}
+#p1 {
+}
+#p1wrapper {
+	display: grid;
+	grid-template-columns: 80vh 20vh;
+	grid-template-rows: auto auto auto;
+}
+#p1prompt {
+	grid-area: 1/1/2/3;
+}
+#p1personality {
+	grid-area: 2/2/3/3;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+#p1personalityPhoto {
+	width: calc(15vh);
+	object-fit: contain;
+}
+#p1personalityName {
+	text-align: center;
+	font-size: 16pt;
+}
+#p1month {
+	grid-area: 2/1/3/2;
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-template-rows: auto auto auto auto;
+	gap: 10px;
+	margin: 10px;
+	margin-top: 30px;
+}
+.month:checked + label {
+	background: lime;
+	border-color: lime;
+}
+.jp {
+	color: gray;
+}
+#p1date {
+	grid-area: 3/1/4/3;
+	display: grid;
+	grid-template-columns: repeat(7, auto);
+	gap: 10px;
+	margin: 10px;
+}
+.date:checked + label {
+	background: orange;
+	border-color: orange;
+}
+#p2 {
+}
+#p2wrapper {
+}
+#p2personality {
+	display: grid;
+	grid-template-columns: 30vh 60vh;
+	grid-template-rows: repeat(4, auto);
+	align-items: center;
+	justify-content: center;
+	font-size: 24pt;
+	font-weight: bold;
+}
+#p2personalityPhoto {
+	grid-area: 1/1/4/2;
+	width: 30vh;
+	object-fit: contain;
+}
+#p2personalityMonth {
+	grid-area: 1/2/2/3;
+	width: 30vh;
+	object-fit: contain;
+	text-align: center;
+}
+#p2personalityPronunciation {
+	grid-area: 2/2/3/3;
+	width: 30vh;
+	object-fit: contain;
+	text-align: center;
+	font-size: 14pt;
+	font-weight: normal;
+}
+#p2personalityDate {
+	grid-area: 3/2/4/3;
+	width: 30vh;
+	object-fit: contain;
+	text-align: center;
+}
+#p2personalityName {
+	grid-area: 4/1/5/3;
+}
+	</style>
+</head>
+<body>
+	<div id="p1">
+		<div id="p1wrapper">
+			<div id="p1prompt" class="prompt speech-bubble">When is your birthday?</div>
+			<div id="p1personality">
+				<img id="p1personalityPhoto"/>
+				<div id="p1personalityName"></div>
+			</div>
+			<div id="p1month">
+				<input type="radio" name="months" id="jan" class="month" value="January"></input>
+				<label for="jan"><span class="jp">1月</span>January</label>
+				<input type="radio" name="months" id="feb" value="February" class="month"></input>
+				<label for="feb"><span class="jp">2月</span>February</label>
+				<input type="radio" name="months" id="mar" class="month" value="March"></input>
+				<label for="mar"><span class="jp">3月</span>March</label>
+				<input type="radio" name="months" id="apr" class="month" value="April"></input>
+				<label for="apr"><span class="jp">4月</span>April</label>
+				<input type="radio" name="months" id="may" class="month" value="May"></input>
+				<label for="may"><span class="jp">5月</span>May</label>
+				<input type="radio" name="months" id="jun" class="month" value="June"></input>
+				<label for="jun"><span class="jp">6月</span>June</label>
+				<input type="radio" name="months" id="jul" class="month" value="July"></input>
+				<label for="jul"><span class="jp">7月</span>July</label>
+				<input type="radio" name="months" id="aug" class="month" value="August"></input>
+				<label for="aug"><span class="jp">8月</span>August</label>
+				<input type="radio" name="months" id="sep" class="month" value="September"></input>
+				<label for="sep"><span class="jp">9月</span>September</label>
+				<input type="radio" name="months" id="oct" class="month" value="October"></input>
+				<label for="oct"><span class="jp">10月</span>October</label>
+				<input type="radio" name="months" id="nov" class="month" value="November"></input>
+				<label for="nov"><span class="jp">11月</span>November</label>
+				<input type="radio" name="months" id="dec" class="month" value="December"></input>
+				<label for="dec"><span class="jp">12月</span>December</label>
+			</div>
+			<div id="p1date">
+				<input type="radio" id="1st" name="dates" class="date" value="1st"></input>
+				<label for="1st">1st</label>
+				<input type="radio" id="2nd" name="dates" class="date" value="2nd"></input>
+				<label for="2nd">2nd</label>
+				<input type="radio" id="3rd" name="dates" class="date" value="3rd"></input>
+				<label for="3rd">3rd</label>
+				<input type="radio" id="4th" name="dates" class="date" value="4th"></input>
+				<label for="4th">4th</label>
+				<input type="radio" id="5th" name="dates" class="date" value="5th"></input>
+				<label for="5th">5th</label>
+				<input type="radio" id="6th" name="dates" class="date" value="6th"></input>
+				<label for="6th">6th</label>
+				<input type="radio" id="7th" name="dates" class="date" value="7th"></input>
+				<label for="7th">7th</label>
+				<input type="radio" id="8th" name="dates" class="date" value="8th"></input>
+				<label for="8th">8th</label>
+				<input type="radio" id="9th" name="dates" class="date" value="9th"></input>
+				<label for="9th">9th</label>
+				<input type="radio" id="10th" name="dates" class="date" value="10th"></button>
+				<label for="10th">10th</label>
+				<input type="radio" id="11th" name="dates" class="date" value="11th"></button>
+				<label for="11th">11th</label>
+				<input type="radio" id="12th" name="dates" class="date" value="12th"></button>
+				<label for="12th">12th</label>
+				<input type="radio" id="13th" name="dates" class="date" value="13th"></button>
+				<label for="13th">13th</label>
+				<input type="radio" id="14th" name="dates" class="date" value="14th"></button>
+				<label for="14th">14th</label>
+				<input type="radio" id="15th" name="dates" class="date" value="15th"></button>
+				<label for="15th">15th</label>
+				<input type="radio" id="16th" name="dates" class="date" value="16th"></button>
+				<label for="16th">16th</label>
+				<input type="radio" id="17th" name="dates" class="date" value="17th"></button>
+				<label for="17th">17th</label>
+				<input type="radio" id="18th" name="dates" class="date" value="18th"></button>
+				<label for="18th">18th</label>
+				<input type="radio" id="19th" name="dates" class="date" value="19th"></button>
+				<label for="19th">19th</label>
+				<input type="radio" id="20th" name="dates" class="date" value="20th"></button>
+				<label for="20th">20th</label>
+				<input type="radio" id="21st" name="dates" class="date" value="21st"></button>
+				<label for="21st">21st</label>
+				<input type="radio" id="22nd" name="dates" class="date" value="22nd"></button>
+				<label for="22nd">22nd</label>
+				<input type="radio" id="23rd" name="dates" class="date" value="23rd"></button>
+				<label for="23rd">23rd</label>
+				<input type="radio" id="24th" name="dates" class="date" value="24th"></button>
+				<label for="24th">24th</label>
+				<input type="radio" id="25th" name="dates" class="date" value="25th"></button>
+				<label for="25th">25th</label>
+				<input type="radio" id="26th" name="dates" class="date" value="26th"></button>
+				<label for="26th">26th</label>
+				<input type="radio" id="27th" name="dates" class="date" value="27th"></button>
+				<label for="27th">27th</label>
+				<input type="radio" id="28th" name="dates" class="date" value="28th"></button>
+				<label for="28th">28th</label>
+				<input type="radio" id="29th" name="dates" class="date" value="29th"></button>
+				<label for="29th">29th</label>
+				<input type="radio" id="30th" name="dates" class="date" value="30th"></button>
+				<label for="30th">30th</label>
+				<input type="radio" id="31st" name="dates" class="date" value="31st"></button>
+				<label for="31st">31st</label>
+			</div>
+		</div>
+	</div>
+	<div id="border"></div>
+	<div id="p2">
+		<div id="p2wrapper">
+			<div id="p2prompt" class="prompt speech-bubble">My birthday is ...</div>
+			<div id="p2personality">
+				<img id="p2personalityPhoto"/>
+				<div id="p2personalityMonth"></div>
+				<div id="p2personalityPronunciation"></div>
+				<div id="p2personalityName"></div>
+				<div id="p2personalityDate"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="module">
+	import Split_Screen from "../2p_split_screen.mjs";
+	import HatDraw from "../../js_modules/HatDraw.mjs";
+	import famous_birthdays from "./famous_birthdays.mjs";
+	const GAME = new Split_Screen(document.getElementById("p1"), document.getElementById("p2"));
+	const hd = new HatDraw(famous_birthdays);
+	const pronunciation_guide = {
+		"January": "ジャニュアリー (1月)",
+		"February": "フェブラリー (2月)",
+		"March": "マーチ (3月)",
+		"April": "エイプリル (4月)",
+		"May": "メイ (5月)",
+		"June": "ジューン (6月)",
+		"July": "ジュライ (7月)",
+		"August": "オーガスト (8月)",
+		"September": "セプテンバー (9月)",
+		"October": "オクトーバー (10月)",
+		"November": "ノーヴェンバー (11月)",
+		"December": "ディセンバー (12月)"
+	}
+
+	class Quiz {
+		constructor() {
+			let personality = hd.drawOne();
+			document.getElementById("p1").style.background = "";
+			document.getElementById("p2").style.background = "";
+			document.getElementById("p1personalityPhoto").src = personality.photo;
+			document.getElementById("p1personalityName").innerHTML = personality.name;
+			document.getElementById("p2personalityPhoto").src = personality.photo;
+			document.getElementById("p2personalityName").innerHTML = personality.name;
+			document.getElementById("p2personalityMonth").innerHTML = personality.birth_month;
+			document.getElementById("p2personalityPronunciation").innerHTML = pronunciation_guide[personality.birth_month];
+			document.getElementById("p2personalityDate").innerHTML = personality.birth_date;
+			Array.from(document.getElementsByName("months")).forEach(function (monthButton) {
+				monthButton.checked = false;
+			})
+			Array.from(document.getElementsByName("dates")).forEach(function (dateButton) {
+				dateButton.checked = false;
+			})
+			this.answerMonth = personality.birth_month;
+			this.answerDate = personality.birth_date;
+			this.guessMonth = null;
+			this.guessDate = null;
+		}
+		check () {
+			console.log(this.answerMonth, this.guessMonth, this.answerDate, this.guessDate);
+			if (this.answerMonth === this.guessMonth && this.answerDate === this.guessDate) {
+				console.log("CORRECT");
+				document.getElementById("p1").style.background = "lime";
+				document.getElementById("p2").style.background = "lime";
+				setTimeout(function () {
+					quiz = new Quiz();
+					GAME.swap();
+				}, 1000);
+			} else {
+				console.log("NOT YET");
+			}
+		}
+	}
+
+	Array.from(document.getElementsByName("months")).forEach(function (monthButton) {
+		monthButton.addEventListener("change", function () {
+			quiz.guessMonth = this.value;
+			quiz.check()
+		});
+	});
+	Array.from(document.getElementsByName("dates")).forEach(function (dateButton) {
+		dateButton.addEventListener("change", function () {
+			quiz.guessDate = this.value;
+			quiz.check()
+		});
+	});
+	let quiz = new Quiz();
+</script>
+</html>
