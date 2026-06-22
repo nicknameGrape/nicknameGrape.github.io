@@ -76,8 +76,8 @@ label {
 }
 #p2personality {
 	display: grid;
-	grid-template-columns: 30vh 60vh;
-	grid-template-rows: repeat(4, auto);
+	grid-template-columns: auto auto auto;
+	grid-template-rows: repeat(5, auto);
 	align-items: center;
 	justify-content: center;
 	font-size: 24pt;
@@ -94,6 +94,9 @@ label {
 	object-fit: contain;
 	text-align: center;
 }
+#p2personalityMonthGuess {
+	grid-area: 1/3/2/4;
+}
 #p2personalityPronunciation {
 	grid-area: 2/2/3/3;
 	width: 30vh;
@@ -108,8 +111,14 @@ label {
 	object-fit: contain;
 	text-align: center;
 }
+#p2personalityDateGuess {
+	grid-area: 3/3/4/4;
+}
 #p2personalityName {
 	grid-area: 4/1/5/3;
+}
+	#p2personalityNameJapanese {
+	grid-area: 5/1/6/3;
 }
 	</style>
 </head>
@@ -220,9 +229,12 @@ label {
 			<div id="p2personality">
 				<img id="p2personalityPhoto"/>
 				<div id="p2personalityMonth"></div>
+				<div id="p2personalityMonthGuess"></div>
 				<div id="p2personalityPronunciation"></div>
 				<div id="p2personalityName"></div>
+				<div id="p2personalityNameJapanese"></div>
 				<div id="p2personalityDate"></div>
+				<div id="p2personalityDateGuess"></div>
 			</div>
 		</div>
 	</div>
@@ -260,6 +272,8 @@ label {
 			document.getElementById("p2personalityMonth").innerHTML = personality.birth_month;
 			document.getElementById("p2personalityPronunciation").innerHTML = pronunciation_guide[personality.birth_month];
 			document.getElementById("p2personalityDate").innerHTML = personality.birth_date;
+			document.getElementById("p2personalityMonthGuess").innerHTML = "";
+			document.getElementById("p2personalityDateGuess").innerHTML = "";
 			Array.from(document.getElementsByName("months")).forEach(function (monthButton) {
 				monthButton.checked = false;
 			})
@@ -273,6 +287,8 @@ label {
 		}
 		check () {
 			console.log(this.answerMonth, this.guessMonth, this.answerDate, this.guessDate);
+			if (this.guessMonth !== null) {document.getElementById("p2personalityMonthGuess").innerHTML = this.guessMonth;}
+			if (this.guessDate !== null) {document.getElementById("p2personalityDateGuess").innerHTML = this.guessDate;}
 			if (this.answerMonth === this.guessMonth && this.answerDate === this.guessDate) {
 				console.log("CORRECT");
 				document.getElementById("p1").style.background = "lime";
