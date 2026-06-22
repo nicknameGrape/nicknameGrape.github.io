@@ -1,4 +1,21 @@
 const famous_birthdays = [
+	//TODO
+	//anne frank
+	//ikkyu
+	//edison
+	//christ
+	//toyotomi hideyoshi
+	//wright bros
+	//beethoven
+	//miyazawa kenji
+	//helen keller
+	//mother theresa
+	//fukuzawa yukichi
+	//kasuga tsubone
+	//MLK
+	//tougou heihachiro
+	//makino tomitaro
+	//saigo takamori
 	{
 		"name": "Hayao Miyazaki",
 		"photo": "photos/hayao_miyazaki.jpg",
