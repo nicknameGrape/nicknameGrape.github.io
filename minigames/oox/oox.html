@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+body {
+	display: grid;
+	grid-template-rows: 40vh 60vh;
+	grid-template-columns: 25vw 50vw 25vw;
+	background: gray;
+	margin: 0;
+	width: 100vw;
+	height: 100vh;
+}
+#chosen {
+	grid-column: 1/-1;
+	display: flex;
+	background: blue;
+	align-items: center;
+}
+#chosen img {
+	max-width: 100%;
+	height: 30vh;
+}
+#chosen.hidden {
+	display: none;
+}
+#like {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10vh;
+	background: hotpink;
+}
+#like.hidden {
+	display: none;
+}
+#choices {
+	display: grid;
+	grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+	gap: 5px;
+	background: tan;
+	align-items: center;
+	padding: 5px;
+}
+#choices.hidden {
+	display: none;
+}
+#dont {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10vh;
+	text-align: center;
+	background: red;
+}
+#dont.hidden {
+	display: none;
+}
+.choice {
+	display: flex;
+	flex-direction: column;
+	touch-action: none;
+	box-sizing: border-box;
+	border: medium solid gray;
+	padding: 5px;
+	width: 100%;
+	height: 14vh;
+}
+.liked {
+	background: hotpink;
+}
+.disliked {
+	font-weight: bold;
+	background: red;
+	color: white;
+}
+.pair {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 33.33%;
+}
+img {
+	max-width: 100%;
+	height: 12vh;
+	object-fit: contain;
+	justify-self: center;
+}
+.text {
+	height: 20%;
+	font-size: 5vh;
+}
+.hidden {
+	/*visibility: hidden;*/
+	display: none;
+}
+#sentences {
+	display: grid;
+	grid-template-rows: repeat(3, 33vh);
+	grid-template-columns: 25vw 75vw;
+	align-items: center;
+	font-family: "mext";
+	font-size: 48pt;
+	/*display: none;*/
+}
+#sentences img {
+	height: 30vh;
+	object-fit: contain;
+	justify-items: center;
+	box-sizing: border-box;
+	padding: 10px;
+	margin-right: 10px;
+}
+#sentences span {
+	padding: 10px;
+	justify-self: start;
+}
+#reset {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 16pt;
+}
+		</style>
+	</head>
+	<body>
+		<div id="chosen"></div>
+		<div id="like">Like</div>
+		<div id="choices"></div>
+		<div id="dont">Don't<br>Like</div>
+		<div id="sentences"></div>
+		<button id="reset">Reset</button>
+	</body>
+	<script type="module">
+import image_library from "../image_library/image_library.mjs"
+import HatDraw from "../js_modules/HatDraw.mjs"
+//console.log(image_library);
+function dragstartHandler(ev) {
+	console.log("DRAGGING", ev.target);
+	dragged = ev.target;
+}
+function dropHandler(ev) {
+	console.log(ev);
+	let pair = document.createElement("div");
+	let text = document.createElement("span");
+	pair.classList.add("pair");
+	text.classList.add("text");
+	let textInnerHTML = dragged.il_data.like ?
+		dragged.il_data.like : dragged.il_data.plural ? dragged.il_data.plural :
+		dragged.il_data.text;
+	text.innerHTML = textInnerHTML;
+	dragged.classList.remove("choice");
+	dragged.classList.add("chosen");
+	if (ev.target === divLike) {
+		pair.classList.add("liked");
+	} else if (ev.target === divDont) {
+		pair.classList.add("disliked");
+	}
+	pair.appendChild(dragged)
+	pair.appendChild(text)
+	let cloneImage = dragged.cloneNode(true);
+	let sentenceText = document.createElement("span");
+	if (pair.classList.contains("liked")) {
+		sentenceText.innerHTML = "I like "+textInnerHTML+".";
+		cloneImage.classList.add("liked");
+		sentenceText.classList.add("liked");
+	} else {
+		sentenceText.innerHTML = "I don't like "+textInnerHTML+".";
+		cloneImage.classList.add("disliked");
+		sentenceText.classList.add("disliked");
+	}
+	divSentences.appendChild(cloneImage);
+	divSentences.appendChild(sentenceText);
+	divChosen.appendChild(pair);
+	if (Array.from(divChosen.children).length > 2) {
+		divChoices.classList.add("hidden");
+		divLike.classList.add("hidden");
+		divDont.classList.add("hidden");
+		divChosen.classList.add("hidden");
+		divSentences.classList.remove("hidden");
+	}
+	dragged = null;
+}
+function setup() {
+	while (divChoices.firstChild) {
+		divChoices.removeChild(divChoices.firstChild);
+	}
+	while (divChosen.firstChild) {
+		divChosen.removeChild(divChosen.firstChild);
+	}
+	while (divSentences.firstChild) {
+		divSentences.removeChild(divSentences.firstChild);
+	}
+	for (let i=0;i<N;i++) {
+		let img = document.createElement("img");
+		//let ilo = image_library[Math.floor(Math.random()*image_library.length)];
+		//let ilo = ilFiltered.splice([Math.floor(Math.random()*ilFiltered.length)], 1)[0];
+		let ilo = hatdraw.drawOne();
+		console.log(ilo);
+		img.src = PATH2IMAGES + ilo.src;
+		img.il_data = ilo;
+		img.classList.add("choice");
+		img.addEventListener("dragstart", dragstartHandler);
+		img.addEventListener("touchstart", dragstartHandler);
+		img.addEventListener("click", dragstartHandler);
+		divChoices.appendChild(img);
+	}
+	divChoices.classList.remove("hidden");
+	divLike.classList.remove("hidden");
+	divDont.classList.remove("hidden");
+	divChosen.classList.remove("hidden");
+	divSentences.classList.add("hidden");
+	dragged = null;
+}
+const PATH2IMAGES = "../image_library/images/";
+//const N = 20;
+const N = 12;
+//const N = 9;
+const divChosen = document.getElementById("chosen");
+const divChoices = document.getElementById("choices");
+const divLike = document.getElementById("like");
+const divDont = document.getElementById("dont");
+const divSentences = document.getElementById("sentences");
+const tags = ["food", "fruit", "animal", "color", "drink", "sport", "vegetable", "monster", "vehicle", "entertainment"];
+const BLACKLIST = ["pet"];
+let dragged = null;
+let ilFiltered = image_library.filter(function (o) {
+	return o.tags.some(function (t) {return tags.includes(t);}) &&
+	!BLACKLIST.includes(o.text);
+	//return o;
+});
+const hatdraw = new HatDraw(ilFiltered);
+console.log(ilFiltered);
+setup();
+
+divLike.addEventListener("dragover", function (ev) {ev.preventDefault();});
+divLike.addEventListener("drop", dropHandler);
+divLike.addEventListener("click", dropHandler);
+divDont.addEventListener("dragover", function (ev) {ev.preventDefault();});
+divDont.addEventListener("drop", dropHandler);
+divDont.addEventListener("click", dropHandler);
+window.addEventListener("keydown", function (ev) {
+	if (ev.key === "n") {
+		setup();
+	}
+});
+document.getElementById("reset").addEventListener("click", function (ev) {
+	setup();
+});
+	</script>
+</html>
