@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<title>Ondoku</title>
+		<link rel="icon" type="image/png" href="/favicon.png">
+		<style>
+@font-face {
+    font-family: 'MEXT';
+    src: url('../../fonts/mext.otf') format("opentype");
+}
+body {
+	margin: 0px;
+}
+#top {
+	display: flex;
+	align-items: center;
+	height: 20vh;
+	background: pink;
+	font-size: 18pt;
+	gap: 20px;
+}
+#quiz {
+	display: grid;
+	grid-template-rows: auto auto;
+	grid-template-columns: auto auto;
+}
+#quiz_example {
+	grid-column: 2/3;
+	grid-row: 1/3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: orange;
+	font-size: 10vh;
+	font-family: "mext";
+	width: 70vw;
+	height: 80vh;
+}
+#quiz_word {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: skyblue;
+	font-size: 10vh;
+	font-family: "mext";
+}
+#quiz_img {
+	justify-self: center;
+	object-fit: contain;
+	width: 30vw;
+	aspect-ratio: 1/1;
+}
+		</style>
+	</head>
+	<body>
+		<div id="top">
+			<span id="title">おんどく</span>
+			<span><input type="checkbox" id="inputToggleQuizMode"></input><label for="inputToggleQuizMode">Quiz Mode</label></span>
+		</div>
+		<div id="quiz">
+			<div id="quiz_word">Word</div>
+			<div id="quiz_example">Example</div>
+			<img id="quiz_img"/>
+		</div>
+	</body>
+	<script type="module">
+import pd from "../../image_library/pd_eastman/pd_eastman.json" with { type: 'json' };
+import HatDraw from "../js_modules/HatDraw.mjs";
+import Loader from "../js_modules/Loader.mjs";
+
+class Quiz {
+	constructor(imgSrc, word, example) {
+		let img = LOADER.newImageAsset(imgSrc);
+		this.img = img;
+		this.word = word;
+		document.getElementById("quiz_word").innerHTML = word;
+		document.getElementById("quiz_img").src = img.src;
+		if (typeof(example) !== "undefined") {
+			this.example = example;
+			document.getElementById("quiz_example").innerHTML = example;
+		} else {
+			document.getElementById("quiz_example").innerHTML = "";
+		}
+	}
+}
+
+function setup() {
+	let draw = HD.drawOne();
+	new Quiz(draw[0], draw[1], draw[2]);
+}
+
+
+const LOADER = new Loader("../../image_library/pd_eastman/")
+const HD = new HatDraw(pd);
+
+document.addEventListener("keydown", function (ev) {
+	if (ev.key === "Enter") {
+		setup();
+	}
+});
+
+setup();
+	</script>
+</html>
