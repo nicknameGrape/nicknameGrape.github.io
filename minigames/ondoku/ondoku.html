@@ -14,10 +14,31 @@ body {
 #top {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	height: 20vh;
 	background: pink;
 	font-size: 18pt;
 	gap: 20px;
+	padding: 20px;
+	box-sizing: border-box;
+}
+#filters {
+	display: grid;
+	grid-template: auto auto/auto auto;
+	justify-items: end;
+}
+#inputExampleWordCount {
+	font-size: 18pt;
+	width: 3em;
+}
+#inputEntries {
+	background: black;
+	color: white;
+	text-align: end;
+}
+#inputEntries {
+	font-size: 18pt;
+	width: 3em;
 }
 #quiz {
 	display: grid;
@@ -54,7 +75,15 @@ body {
 	</head>
 	<body>
 		<div id="top">
-			<span id="title">おんどく</span>
+			<span id="title">Picture Dictionary</span>
+			<div id="filters">
+				<!--
+				<label for="inputExampleWordCount">Max Word Count:</label>
+				<input type="number" id="inputExampleWordCount" min="1" value="1"></input>
+				<label for="inputEntries">Entries:</label>
+				<input type="number" id="inputEntries" readonly></input>
+				-->
+			</div>
 			<span><input type="checkbox" id="inputToggleQuizMode"></input><label for="inputToggleQuizMode">Quiz Mode</label></span>
 		</div>
 		<div id="quiz">
@@ -84,14 +113,31 @@ class Quiz {
 	}
 }
 
+//function filterEntries() {
+//	let filtered = pd.filter(function (entry) {
+//		let example = entry[2];
+//		if (typeof(example) == "undefined") {
+//			return entry;
+//		} else if (example.split(" ").length == inputExampleWordCount.value) {
+//			return entry;
+//		}
+//	});
+//	hd = new HatDraw(filtered);
+//	inputEntries.value = filtered.length;
+//	setup()
+//}
+
 function setup() {
-	let draw = HD.drawOne();
+	let draw = hd.drawOne();
 	new Quiz(draw[0], draw[1], draw[2]);
 }
 
 
 const LOADER = new Loader("../../image_library/pd_eastman/")
 const HD = new HatDraw(pd);
+let hd = HD;
+const inputExampleWordCount = document.getElementById("inputExampleWordCount");
+const inputEntries = document.getElementById("inputEntries");
 
 document.addEventListener("keydown", function (ev) {
 	if (ev.key === "Enter") {
@@ -99,6 +145,9 @@ document.addEventListener("keydown", function (ev) {
 	}
 });
 
+//inputExampleWordCount.addEventListener("change", filterEntries);
+
+//filterEntries();
 setup();
 	</script>
 </html>
