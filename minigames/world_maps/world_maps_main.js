@@ -216,8 +216,12 @@ Object.values(COUNTRIES).forEach(function (c) {
 	let name = c.name[0].toUpperCase() + c.name.slice(1);
 	let nameJapanese = c.jp;
 	let link = document.createElement("a");
-	var linkText = document.createTextNode(name+"<br/>"+nameJapanese);
-	link.appendChild(linkText);
+	let linkTextEnglish = document.createTextNode(name);
+	let br = document.createElement("br");
+	let linkTextJapanese = document.createTextNode(nameJapanese);
+	link.appendChild(linkTextEnglish);
+	link.appendChild(br);
+	link.appendChild(linkTextJapanese);
 	link.title = "Visit "+name+ "!";
 	link.href = "img/"+c.large;
 	document.body.appendChild(link);
