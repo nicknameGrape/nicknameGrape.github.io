@@ -144,7 +144,7 @@ function keypressHandler(ev) {
 			game.context.fillStyle = "white";
 			game.context.fillRect(0, 0, game.canvas.width, game.canvas.height);
 			fitImage(game.context, busted);
-			fitText(game.context, "Do you have a ...?", 0, 0, game.canvas.width3, game.canvas.height*.3);
+			//fitText(game.context, "Do you have a ...?", 0, 0, game.canvas.width3, game.canvas.height*.3);
 		} else {
 			lastTime = performance.now();
 			disaster = new Disaster();
