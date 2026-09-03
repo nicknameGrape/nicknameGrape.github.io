@@ -81,16 +81,21 @@ var Desk = function () {
 	this.afterCanvas = afterCanvas;
 }
 var sources = [
+{"src": "pen_riy0tgg6.png", "text": "pen"},
+{"src": "pencil_fr2vzf58.png", "text": "pencil"},
+{"src": "pencil_case_b8klnd18.png", "text": "pencil case"},
+{"src": "pencil_sharpener_u5n_qife.png", "text": "pencil sharpener"},
+{"src": "marker_mvwktpp7.png", "text": "marker"},
+{"src": "stapler_gx_jj563.png", "text": "stapler"},
+{"src": "ruler_u0awfjpt.png", "text": "ruler"},
 {"src": "eraser_zf6oloie.png", "text": "eraser"},
 {"src": "notebook_4q00y5uy.png", "text": "notebook"},
-{"src": "pen_riy0tgg6.png", "text": "pen"},
-{"src": "pencil_case_b8klnd18.png", "text": "pencil case"},
-{"src": "pencil_fr2vzf58.png", "text": "pencil"},
-{"src": "ruler_u0awfjpt.png", "text": "ruler"},
-{"src": "marker_mvwktpp7.png", "text": "marker"},
-{"src": "crayon_avmnlvti.png", "text": "crayon"},
-{"src": "colorpencil.png", "text": "red pencil"},
-{"src": "pencil_sharpener_u5n_qife.png", "text": "pencil sharpener"}
+{"src": "magnet_6mx6gkyn.png", "text": "magnet"},
+{"src": "calendar_bu_w5q3l.png", "text": "calendar"},
+{"src": "glue_stick_0fkdbucx.png", "text": "glue stick"}
+//{"src": "crayon_avmnlvti.png", "text": "crayon"},
+//{"src": "colorpencil.png", "text": "red pencil"}
+
 ];
 game.loader = new Loader("images/");
 var images = sources.map(function (o) {
