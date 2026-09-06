@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="icon" href="/favicon.png"/>
+	<meta charset="utf-8">
+	<style>
+#p1 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.part {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: xx-large;
+}
+input[type="text"] {
+	font-size: xx-large;
+}
+input[type="checkbox"] {
+	display: none;
+}
+input[type="checkbox"]+label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: thick outset gray;
+	background: gray;
+}
+input[type="checkbox"]:checked+label {
+	border: thick outset lime;
+	background: lime;
+}
+.thumb {
+	height: 60px;
+	position: relative;
+	top: 25px;
+}
+.keyword {
+	font-weight: bold;
+	background: pink;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+.jp {
+	font-size: medium;
+	justify-self: end;
+}
+.like, .can {
+	background: lime;
+}
+.dontLike, .cant {
+	color: white;
+	background: red;
+}
+div:has(> .can)::before {
+	content:"○";
+}
+div:has(> .like)::before {
+	content:"♡";
+}
+div:has(> .cant)::before, div:has(> .dontLike)::before {
+	content:"×";
+}
+	</style>
+</head>
+<body>
+<!-- SPECIAL CHARACTERS ♡○× -->
+	<div id="p1">
+		<div id="aboutMe">
+			<div id="aboutMeName" class="part">
+				<div class="jp">名前</div>
+				<div>My name is <span id="aboutMeName" class="keyword">Messi.</span></div>
+				<div>
+				<input id="guessName" type="text" value="NAME HERE" size=10 disabled></input>
+				<input id="guessNameOK" type="checkbox"></input>
+				<label for="guessNameOK">OK</label>
+				</div>
+			</div>
+			<div id="aboutMeBirthday" class="part">
+				<div class="jp">誕生日</div>
+				<div>My birthday is
+					<ruby id="aboutMeBirthdayAnswer" class="keyword">
+						<ruby style="ruby-position: under;">June
+							<rt>ジューン</rt>
+						</ruby>
+						<rt>６月</rt>
+					</ruby>
+					24th.
+				</div>
+				<div id="p1month">
+					<input type="radio" name="months" id="jan" class="month" value="January"></input>
+					<label for="jan"><span class="jp">1月</span>January</label>
+					<input type="radio" name="months" id="feb" value="February" class="month"></input>
+					<label for="feb"><span class="jp">2月</span>February</label>
+					<input type="radio" name="months" id="mar" class="month" value="March"></input>
+					<label for="mar"><span class="jp">3月</span>March</label>
+					<input type="radio" name="months" id="apr" class="month" value="April"></input>
+					<label for="apr"><span class="jp">4月</span>April</label>
+					<input type="radio" name="months" id="may" class="month" value="May"></input>
+					<label for="may"><span class="jp">5月</span>May</label>
+					<input type="radio" name="months" id="jun" class="month" value="June"></input>
+					<label for="jun"><span class="jp">6月</span>June</label>
+					<input type="radio" name="months" id="jul" class="month" value="July"></input>
+					<label for="jul"><span class="jp">7月</span>July</label>
+					<input type="radio" name="months" id="aug" class="month" value="August"></input>
+					<label for="aug"><span class="jp">8月</span>August</label>
+					<input type="radio" name="months" id="sep" class="month" value="September"></input>
+					<label for="sep"><span class="jp">9月</span>September</label>
+					<input type="radio" name="months" id="oct" class="month" value="October"></input>
+					<label for="oct"><span class="jp">10月</span>October</label>
+					<input type="radio" name="months" id="nov" class="month" value="November"></input>
+					<label for="nov"><span class="jp">11月</span>November</label>
+					<input type="radio" name="months" id="dec" class="month" value="December"></input>
+					<label for="dec"><span class="jp">12月</span>December</label>
+				</div>
+				<div id="p1date">
+					<input type="radio" id="1st" name="dates" class="date" value="1st"></input>
+					<label for="1st">1st</label>
+					<input type="radio" id="2nd" name="dates" class="date" value="2nd"></input>
+					<label for="2nd">2nd</label>
+					<input type="radio" id="3rd" name="dates" class="date" value="3rd"></input>
+					<label for="3rd">3rd</label>
+					<input type="radio" id="4th" name="dates" class="date" value="4th"></input>
+					<label for="4th">4th</label>
+					<input type="radio" id="5th" name="dates" class="date" value="5th"></input>
+					<label for="5th">5th</label>
+					<input type="radio" id="6th" name="dates" class="date" value="6th"></input>
+					<label for="6th">6th</label>
+					<input type="radio" id="7th" name="dates" class="date" value="7th"></input>
+					<label for="7th">7th</label>
+					<input type="radio" id="8th" name="dates" class="date" value="8th"></input>
+					<label for="8th">8th</label>
+					<input type="radio" id="9th" name="dates" class="date" value="9th"></input>
+					<label for="9th">9th</label>
+					<input type="radio" id="10th" name="dates" class="date" value="10th"></button>
+					<label for="10th">10th</label>
+					<input type="radio" id="11th" name="dates" class="date" value="11th"></button>
+					<label for="11th">11th</label>
+					<input type="radio" id="12th" name="dates" class="date" value="12th"></button>
+				<input id="guessNameOK" type="checkbox"></input>
+				<label for="guessNameOK">OK</label>
+			</div>
+			<div id="aboutMeLikes" class="part">
+				<div class="jp">好ききらい</div>
+				<div>
+					<div>
+						I like <span id="aboutMeLikes1" class="keyword like">monkeys <img class="thumb" src="/image_library/images/monkey_jlpx5w08.png"/></span>.
+					</div>
+					<div>
+						I don't like <span id="aboutMeLikes2" class="keyword dontLike">mushrooms <img class="thumb" src="/image_library/images/mushroom__rv_jjsj.png"/></span>.
+					</div>
+
+				</div>
+			</div>
+			<span class="jp">できること、<br/>できないこと</span>
+			<div>
+				<div>
+					I can <span id="aboutMeCan1" class="keyword can">play soccer <img class="thumb" src="/image_library/images/soccer_player_dewqzvkj.png"/></span>.
+				</div>
+				<div>
+					I can't <span id="aboutMeCan2" class="keyword cant">sing <img class="thumb" src="/image_library/images/microphone_jg6dt4d5.png"/></span>.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="border"></div>
+	<div id="p2">
+		<div id="aboutYou">
+		</div>
+	</div>
+</body>
+<script type="module">
+	import Split_Screen from "../2p_split_screen.mjs";
+	const GAME = new Split_Screen(document.getElementById("p1"), document.getElementById("p2"));
+	console.log(GAME);
+	window.addEventListener("keydown", function (ev) {
+		console.log(GAME);
+		if (ev.key === " ") {
+			GAME.swap();
+		}
+	});
+</script>
+</html>
