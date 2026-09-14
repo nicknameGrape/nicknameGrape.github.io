@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<head>
+	<link rel="icon" href="/favicon.png"/>
+	<meta charset="utf-8"/>
+	<style>
+body {
+	display: grid;
+	justify-content: center;
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	background: linear-gradient(#f3cb27, #f8f081 20%, white, #7bae1c 80%);
+}
+canvas {
+}
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+<script type="module">
+import IMAGE_LIBRARY from "/image_library/image_library.mjs";
+import HatDraw from "../js_modules/HatDraw.mjs"
+import fitImage from "../js_modules/fitImage.mjs"
+import fitText from "../js_modules/fitText.mjs"
+import Loader from "../js_modules/Loader.mjs"
+console.log(IMAGE_LIBRARY);
+console.log("OLD MACDONALD HAD A FARM");
+function startAnimation() {
+	if (lloader.assetsLoaded && illoader.assetsLoaded) {
+		if (animationRequest === null) {
+			fruit = fruitsHD.drawOne();
+			number = numbersHD.drawOne().number;
+			worms = [];
+			let countWorms = Math.ceil((.6+Math.random()*.2)*number);
+			console.log(number, fruit.text, countWorms);
+			for (let i=0; i<countWorms; i++) {
+				worms.push(Math.random()*300);
+			}
+			for (let i=0; i<number-countWorms; i++) {
+				worms.push(null);
+			}
+			let tmp = worms;  worms = [];
+			while (tmp.length > 0) {
+				worms.push(tmp.splice(Math.floor(Math.random()*tmp.length), 1)[0]);
+			}
+			lastTime = performance.now();
+		}
+		animationRequest = window.requestAnimationFrame(farm);
+	}
+
+}
+function farm() {
+	console.log("rendering");
+	canvas.height = window.innerHeight;
+	canvas.width = canvas.height*imgFarm.width/imgFarm.height;
+	fitImage(context, imgFarm);
+	fitImage(context, imgStand, canvas.width*.05, canvas.height*.25, canvas.width*.6, canvas.height*.7);
+	if (showWorms) {
+		fitImage(context, imgFarmerHorrified, canvas.width*.7, canvas.height*.4, canvas.width*.3, canvas.height*.6);
+		fitText(context, "い - や - い - や - NO!", 0, 0, canvas.width, canvas.height*.2);
+	} else {
+		fitImage(context, imgFarmer, canvas.width*.7, canvas.height*.4, canvas.width*.3, canvas.height*.6);
+		fitText(context, "E - I - E - I - O", 0, 0, canvas.width, canvas.height*.2);
+	}
+	let fruitW = canvas.width*.37/Math.ceil(number/2);
+	let elapsed = performance.now() - lastTime;
+context.save();
+context.shadowColor = "rgba(0, 0, 0, .5)";
+context.shadowBlur = 20;
+context.shadowOffsetX = -5;
+context.shadowOffsetY = -10;
+	for (let i=0;i<number;i++) {
+		if (i < number/2) {
+			fitImage(context, fruit.img, canvas.width*.15+fruitW*i-.25, canvas.height*.64, canvas.width*.1, canvas.height*.1);
+			if (showWorms) {
+				if (worms[i] !== null) {
+					if ((elapsed-worms[i]) % 300 < 150) {
+						fitImage(context, imgWorm1, canvas.width*.15+fruitW*i-.25, canvas.height*.64, canvas.width*.1, canvas.height*.1);
+					} else {
+						fitImage(context, imgWorm2, canvas.width*.15+fruitW*i-.25, canvas.height*.64, canvas.width*.1, canvas.height*.1);
+					}
+				}
+			}
+		} else {
+			fitImage(context, fruit.img, canvas.width*.15+fruitW*(i-Math.ceil(number/2)+.25), canvas.height*.79, canvas.width*.1, canvas.height*.1);
+			if (showWorms) {	
+				if (worms[i] !== null) {
+					if ((elapsed-worms[i]) % 300 < 150) {
+						fitImage(context, imgWorm2, canvas.width*.15+fruitW*(i-Math.ceil(number/2)+.25), canvas.height*.79, canvas.width*.1, canvas.height*.1);
+					} else {
+						fitImage(context, imgWorm1, canvas.width*.15+fruitW*(i-Math.ceil(number/2)+.25), canvas.height*.79, canvas.width*.1, canvas.height*.1);
+					}
+				}
+			}
+		}
+	}
+context.restore();
+	animationRequest = window.requestAnimationFrame(farm);
+}
+
+const FRUITS = ["apple", "peach", "orange", "grapes", "banana", "pineapple", "lemon", "melon", "watermelon", "cherry", "kiwi", "strawberry"];
+const NUMBERS = [
+	{"number": 1, "text": "one"},
+	{"number": 2, "text": "two"},
+	{"number": 3, "text": "three"},
+	{"number": 4, "text": "four"},
+	{"number": 5, "text": "five"},
+	{"number": 6, "text": "six"},
+	{"number": 7, "text": "seven"},
+	{"number": 8, "text": "eight"},
+	{"number": 9, "text": "nine"},
+	{"number": 10, "text": "ten"},
+	{"number": 11, "text": "eleven"},
+	{"number": 12, "text": "twelve"}//,
+	//{"number": 13, "text": "thirteen"},
+	//{"number": 14, "text": "fourteen"},
+	//{"number": 15, "text": "fifteen"},
+	//{"number": 16, "text": "sixteen"},
+	//{"number": 17, "text": "seventeen"},
+	//{"number": 18, "text": "eighteen"},
+	//{"number": 19, "text": "nineteen"},
+	//{"number": 20, "text": "twenty"}
+];
+let illoader = new Loader("/image_library/images/");
+let lloader = new Loader();
+//let fruits = FRUITS.map(text => imageSearch.searchTextTag(text, "fruit"));
+let blacklist = ["grapefruit", "blueberries", "grapes"];
+let fruits = IMAGE_LIBRARY.filter(ilo => ilo.tags[0] === "fruit" && !blacklist.includes(ilo.text));
+fruits.forEach(function (o) {
+	o.img = illoader.newImageAsset(o.src, startAnimation);
+});
+let fruitsHD = new HatDraw(fruits);
+let numbersHD = new HatDraw(NUMBERS);
+let fruit = null;
+let number = null;
+let worms = [];
+let showWorms = false;
+
+
+let imgFarm = illoader.newImageAsset("farm_86tnyhmq.png", startAnimation);
+let imgFarmer = lloader.newImageAsset("farmer.png", startAnimation);
+let imgFarmerHorrified = lloader.newImageAsset("farmer_horrified.png", startAnimation);
+let imgStand = lloader.newImageAsset("fruit_stand.png", startAnimation);
+let imgWorm1 = lloader.newImageAsset("worm1.png", startAnimation);
+let imgWorm2 = lloader.newImageAsset("worm2.png", startAnimation);
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+let animationRequest = null;
+let lastTime = null;
+
+console.log(numbersHD.drawOne(), fruitsHD.drawOne());
+
+window.addEventListener("keypress", function (ev) {
+	if (ev.key === " ") {
+		if (showWorms) {
+			showWorms = false;
+			window.cancelAnimationFrame(animationRequest);
+			animationRequest = null;
+			startAnimation();
+		} else {
+			showWorms = true;
+		}
+
+
+	}
+});
+//canvas.addEventListener("click", function (ev) {
+//	console.log((ev.clientX - canvas.offsetLeft)/canvas.width, ev.clientY/canvas.height);
+//});
+</script>
+</body>
+</html>

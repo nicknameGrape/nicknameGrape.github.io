@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<head>
+	<style>
+		body {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 20vh 20vh 40vh 20vh;
+	margin: 0;
+	touch-action: none;
+	user-select: none;
+	background: green;
+	width: 100vw;
+	height: 100vh;
+		}
+img {
+	width: 80%;
+	max-height: 80%;
+	object-fit: contain;
+}
+#score_worm {
+	background: lime;
+}
+#score_farmer {
+	background: tan;
+}
+.buttons {
+	display: grid;
+	grid-template: repeat(2, 50%) / repeat(3, 20%);
+	justify-content: center;
+}
+:disabled {
+	opacity: 50%;
+}
+.score {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10vh;
+	color: yellow;
+	text-shadow: 3px 3px gray
+}	
+.prompt {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10vh;
+	color: white;
+}
+.start {
+	margin: 10px;
+	border: 5px outset;
+	background: yellow;
+}
+.pressed {
+	background: lime;
+	border: 5px inset;
+}
+.choice {
+	width: 100%;
+	height: 100%;
+}
+	</style>
+</head>
+<body>
+	<div style="display:grid; grid-template-columns:1fr 150px; background: lime;">
+		<div id="score_worm" class="score">0</div>
+		<img style="justify-self: center; align-self: center;" src="hungry_caterpillar.png"></img>
+	</div>
+	<div style="display:grid; grid-template-columns: 150px 1fr; background: tan;">
+		<img style="justify-self: center; align-self: center; height: 120px;" src="farmer.png"></img>
+		<div id="score_farmer" class="score">0</div>
+	</div>
+	<div id="prompt_worm" class="prompt"></div>
+	<div id="prompt_farmer" class="prompt"></div>
+	<div id="buttons_worm" class="buttons"></div>
+	<div id="buttons_farmer" class="buttons"></div>
+	<button id="start_worm" class="start"></button>
+	<button id="start_farmer" class="start"></button>
+
+<script src="../image_library/image_data_script.js"></script>
+<script src="../js/HatDraw_script.js"></script>
+<script>
+function searchTextTag(text, tag) {
+	let results = image_library.filter(o => o.text === text && o.tags.includes(tag));
+	if (results.length === 1) {
+		return results[0];
+	} else if (results.length === 0) {
+		console.log("searchTextTag", text, tag, "returned no results");
+		return {};
+	} else {
+		console.log("searchTextTag", text, tag, "returned more than one result");
+		return results[1];
+	}
+}
+const FRUITS = ["apple", "peach", "orange", "grapes", "banana", "pineapple", "lemon", "melon", "watermelon", "cherry", "kiwi", "strawberry"];
+function Quiz() {
+	let buttons = [];
+	let clones = [];
+	for (let i=0; i<6; i++) {
+		let fruit = fruitsHD.drawOne();
+		let button = document.createElement("button");
+		button.value = fruit.text;
+		button.guessed = false;
+		button.appendChild(fruit.img);
+		button.classList.add("choice");
+		buttons.push(button);
+		clones.push(button.cloneNode(true));
+	}
+	//shuffle clones
+	let tmp = [];
+	while (clones.length > 0) {
+		tmp.push(clones.splice(Math.floor(Math.random()*clones.length), 1)[0]);
+	}
+	clones = tmp;
+	while (divButtonsWorm.firstChild) {
+		divButtonsWorm.removeChild(divButtonsWorm.firstChild);
+	}
+	while (divButtonsFarmer.firstChild) {
+		divButtonsFarmer.removeChild(divButtonsFarmer.firstChild);
+	}
+	buttons.forEach(function (b) {
+		b.player = "worm";
+		b.addEventListener("pointerdown", checkGuess);
+		divButtonsWorm.appendChild(b);
+	});
+	clones.forEach(function (c) {
+		c.player = "farmer";
+		c.addEventListener("pointerdown", checkGuess);
+		divButtonsFarmer.appendChild(c);
+	});
+	let answer = buttons.splice(Math.floor(Math.random()*buttons.length), 1)[0].value;
+	console.log(answer);
+	divPromptWorm.innerHTML = answer.toUpperCase();
+	divPromptFarmer.innerHTML = answer.toUpperCase();
+	buttonStartWorm.disabled = true;
+	buttonStartFarmer.disabled = true;
+	this.answer = answer;
+	this.solved = false;
+};
+
+function checkGuess() {
+	if (!this.guessed) {
+	if (this.value === quiz.answer) {
+		let allButtons = Array.from(document.getElementsByClassName("choice"));
+		allButtons.forEach(b => {b.disabled = true; b.removeEventListener("pointerdown", checkGuess);});
+		this.style.background = "lime";
+		if (this.player === "worm") {
+			scoreWorm += 1;
+			divScoreWorm.innerHTML = scoreWorm;
+			audioBurp.play();
+		} else {
+			scoreFarmer += 1;
+			divScoreFarmer.innerHTML = scoreFarmer;	
+			audioEIEIO.play();	
+		}
+		quiz.solved = true;
+		buttonStartWorm.disabled = false;
+		buttonStartFarmer.disabled = false;
+	} else {
+		let player = this.player;
+		let allButtons = Array.from(document.getElementsByClassName("choice"));
+		let allPlayerButtons = allButtons.filter(b => b.player === player);
+		allPlayerButtons.forEach(function (b) {
+			b.disabled = true;
+			b.removeEventListener("pointerdown", checkGuess);
+			setTimeout(function () {
+				if (!quiz.solved) {
+					this.disabled = false;
+					this.addEventListener("pointerdown", checkGuess);
+				}
+			}.bind(b), 2000);
+		});
+		this.guessed = true;
+		this.style.background = "red";
+	}
+	}
+}
+
+function readyFarmer() {
+	if (!this.disabled) {
+		isReadyFarmer = true;
+		this.classList.add("pressed");
+		if (isReadyWorm) {
+			quiz = new Quiz();
+		}
+	}
+}
+
+function readyWorm() {
+	if (!this.disabled) {
+		isReadyWorm = true;
+		this.classList.add("pressed");
+		if (isReadyFarmer) {
+			quiz = new Quiz();
+		}
+	}
+}
+
+let fruits = FRUITS.map(text => searchTextTag(text, "fruit"));
+fruits.forEach(function (o) {
+	let img = document.createElement("img");
+	img.src = "../image_library/images/"+o.src;
+	o.img = img;
+});
+let fruitsHD = new HatDraw(fruits);
+let divScoreWorm = document.getElementById("score_worm");
+let divScoreFarmer = document.getElementById("score_farmer");
+let divPromptWorm = document.getElementById("prompt_worm");
+let divPromptFarmer = document.getElementById("prompt_farmer");
+let divButtonsWorm = document.getElementById("buttons_worm");
+let divButtonsFarmer = document.getElementById("buttons_farmer");
+let buttonStartWorm = document.getElementById("start_worm");
+let buttonStartFarmer = document.getElementById("start_farmer");
+
+let quiz = null;
+let scoreWorm = 0;
+let scoreFarmer = 0;
+let isReadyWorm = false;
+let isReadyFarmer = false;
+
+let audioBurp = document.createElement("audio");
+audioBurp.src = "eat_burp.mp3";
+let audioEIEIO = document.createElement("audio");
+audioEIEIO.src = "eieio.mp3";
+
+buttonStartWorm.addEventListener("pointerdown", readyWorm);
+
+buttonStartFarmer.addEventListener("pointerdown", readyFarmer);
+
+
+buttonStartWorm.addEventListener("pointerup", function () {
+	isReadyWorm = false;
+	this.classList.remove("pressed");
+});
+
+buttonStartFarmer.addEventListener("pointerup", function () {
+	isReadyFarmer = false;
+	this.classList.remove("pressed");
+});
+
+document.addEventListener('contextmenu', event => {
+    event.preventDefault();
+});
+
+</script>
+</body>
+</html>
