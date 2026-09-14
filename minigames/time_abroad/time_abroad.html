@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+	<link rel="icon" href="/favicon.png"/>
+	<meta charset="utf-8"/>
+	<style>
+body {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-template-rows: auto auto;
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	background: gray;
+}
+.timezone {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: white;
+	font-size: 26pt;
+}
+.timezone img {
+	height: 10vh;
+}
+.difference {
+	color: orange;
+}
+.clock {
+	background: white;
+	color: black;
+	border: thick solid lightgray;
+	border-radius: 10px;
+	padding: 10px;
+}
+	</style>
+</head>
+<body>
+<div id="jp" class="timezone">
+	<img src="/image_library/flags/img/jp.png"/>
+	<span>Japan</span>
+	<span class="difference">+0</span>
+	<span id="timeJP" class="clock"></span>
+</div>
+<div id="np" class="timezone">
+	<img src="/image_library/flags/img/np.png"/>
+	<span>Nepal</span>
+	<span class="difference">-3h15m</span>
+	<span id="timeNP" class="clock"></span>
+</div>
+<div id="ir" class="timezone">
+	<img src="/image_library/flags/img/ir.png"/>
+	<span>Iran</span>
+	<span class="difference">-5h30m</span>
+	<span id="timeIR" class="clock"></span>
+</div>
+<div id="su" class="timezone">
+	<img src="/image_library/flags/img/sd.png"/>
+	<span>Sudan</span>
+	<span class="difference">-7h</span>
+	<span id="timeSD" class="clock"></span>
+</div>
+<div id="br" class="timezone">
+	<img src="/image_library/flags/img/br.png"/>
+	<span>Brazil</span>
+	<span class="difference">-12h</span>
+	<span id="timeBR" class="clock"></span>
+</div>
+<div id="pe" class="timezone">
+	<img src="/image_library/flags/img/pe.png"/>
+	<span>Peru</span>
+	<span class="difference">-14h</span>
+	<span id="timePE" class="clock"></span>
+</div>
+<script type="module">
+const spanTimeJP = document.getElementById("timeJP");
+const spanTimeNP = document.getElementById("timeNP");
+const spanTimeIR = document.getElementById("timeIR");
+const spanTimeSD = document.getElementById("timeSD");
+const spanTimeBR = document.getElementById("timeBR");
+const spanTimePE = document.getElementById("timePE");
+function tickClocks() {
+	let date = new Date();
+	spanTimeJP.innerHTML = date.toLocaleTimeString("en-US");
+	spanTimeNP.innerHTML = date.toLocaleTimeString("en-US", {timeZone: "Asia/Kathmandu", timeStyle: "short"});
+	spanTimeIR.innerHTML = date.toLocaleTimeString("en-US", {timeZone: "Asia/Tehran", timeStyle: "short"});
+	spanTimeSD.innerHTML = date.toLocaleTimeString("en-US", {timeZone: "Africa/Khartoum", timeStyle: "short"});
+	spanTimeBR.innerHTML = date.toLocaleTimeString("en-US", {timeZone: "America/Sao_Paulo", timeStyle: "short"});
+	spanTimePE.innerHTML = date.toLocaleTimeString("en-US", {timeZone: "America/Lima", timeStyle: "short"});
+}
+tickClocks();
+setInterval(tickClocks, 1000);
+</script>
+</body>
