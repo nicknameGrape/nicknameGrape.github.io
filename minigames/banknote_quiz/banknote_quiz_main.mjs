@@ -2,7 +2,7 @@
 
 import Loader from "../js_modules/Loader.mjs";
 import shuffle from "../js_modules/shuffle.mjs";
-import flags from "../image_library/flags/flags.mjs";
+import flags from "/image_library/flags/flags.mjs";
 import BANKNOTES from "./banknotes_data.mjs";
 
 function Quiz() {
