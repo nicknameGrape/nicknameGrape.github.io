@@ -20,18 +20,23 @@ function Quiz() {
 	buttonChoice1.data = choices[0];
 	buttonChoice1.innerHTML = choices[0].english;
 	buttonChoice1.appendChild(choices[0].flag);
+	buttonChoice1.appendChild(document.createElement("span").innerHTML = choices[0].japanese);
 	buttonChoice2.data = choices[1];
 	buttonChoice2.innerHTML = choices[1].english;
 	buttonChoice2.appendChild(choices[1].flag);
+	buttonChoice2.appendChild(document.createElement("span").innerHTML = choices[1].japanese);
 	buttonChoice3.data = choices[2];
 	buttonChoice3.innerHTML = choices[2].english;
 	buttonChoice3.appendChild(choices[2].flag);
+	buttonChoice3.appendChild(document.createElement("span").innerHTML = choices[2].japanese);
 	buttonChoice4.data = choices[3];
 	buttonChoice4.innerHTML = choices[3].english;
 	buttonChoice4.appendChild(choices[3].flag);
+	buttonChoice4.appendChild(document.createElement("span").innerHTML = choices[3].japanese);
 	buttonChoice5.data = choices[4];
 	buttonChoice5.innerHTML = choices[4].english;
 	buttonChoice5.appendChild(choices[4].flag);
+	buttonChoice5.appendChild(document.createElement("span").innerHTML = choices[4].japanese);
 	Array.from(document.getElementsByTagName("button")).forEach(function (b) {
 		b.disabled = false;
 		b.style.background = "";
@@ -87,6 +92,7 @@ let quiz;
 let points = 0;
 Array.from(document.getElementsByClassName("choice")).forEach(el => el.addEventListener("click", buttonClickHandler));
 banknotes.forEach(function (bn) {
+	bn.japanese = flags[bn.country_code+"-jp"];
 	bn.img = loader.newImageAsset(bn.src, onload);
 	bn.flag = loaderFlags.newImageAsset(bn.country_code + ".png", onload);
 });
