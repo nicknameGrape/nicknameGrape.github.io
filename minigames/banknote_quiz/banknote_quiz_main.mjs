@@ -20,23 +20,23 @@ function Quiz() {
 	buttonChoice1.data = choices[0];
 	buttonChoice1.innerHTML = choices[0].english;
 	buttonChoice1.appendChild(choices[0].flag);
-	buttonChoice1.appendChild(document.createElement("span").innerHTML = choices[0].japanese);
+	let b1jp = document.createElement("span"); b1jp.innerHTML = choices[0].japanese; buttonChoice1.appendChild(b1jp);
 	buttonChoice2.data = choices[1];
 	buttonChoice2.innerHTML = choices[1].english;
 	buttonChoice2.appendChild(choices[1].flag);
-	buttonChoice2.appendChild(document.createElement("span").innerHTML = choices[1].japanese);
+	let b2jp = document.createElement("span"); b2jp.innerHTML = choices[1].japanese; buttonChoice2.appendChild(b2jp);
 	buttonChoice3.data = choices[2];
 	buttonChoice3.innerHTML = choices[2].english;
 	buttonChoice3.appendChild(choices[2].flag);
-	buttonChoice3.appendChild(document.createElement("span").innerHTML = choices[2].japanese);
+	let b3jp = document.createElement("span"); b3jp.innerHTML = choices[2].japanese; buttonChoice3.appendChild(b3jp);
 	buttonChoice4.data = choices[3];
 	buttonChoice4.innerHTML = choices[3].english;
 	buttonChoice4.appendChild(choices[3].flag);
-	buttonChoice4.appendChild(document.createElement("span").innerHTML = choices[3].japanese);
+	let b4jp = document.createElement("span"); b4jp.innerHTML = choices[3].japanese; buttonChoice4.appendChild(b4jp);
 	buttonChoice5.data = choices[4];
 	buttonChoice5.innerHTML = choices[4].english;
 	buttonChoice5.appendChild(choices[4].flag);
-	buttonChoice5.appendChild(document.createElement("span").innerHTML = choices[4].japanese);
+	let b5jp = document.createElement("span"); b5jp.innerHTML = choices[4].japanese; buttonChoice5.appendChild(b5jp);
 	Array.from(document.getElementsByTagName("button")).forEach(function (b) {
 		b.disabled = false;
 		b.style.background = "";
