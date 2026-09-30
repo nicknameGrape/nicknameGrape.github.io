@@ -8,7 +8,7 @@ export default [
 {"country_code": "cg", "english": "Congo", "src": "congo_banknote.jpg"},
 {"country_code": "eg", "english": "Egypt", "src": "egypt_banknote.jpg"},
 {"country_code": "et", "english": "Ethiopia", "src": "ethiopia_banknote.jpg"},
-{"country_code": "eu", "english": "Euro", "src": "euro_banknote.jpg"},
+{"country_code": "eu", "english": "E.U.", "src": "euro_banknote.jpg"},
 {"country_code": "gb", "english": "the U.K.", "src": "great_britain_banknote.jpg"},
 {"country_code": "in", "english": "India", "src": "india_banknote.jpg"},
 {"country_code": "id", "english": "Indonesia", "src": "indonesia_banknote.jpg"},
