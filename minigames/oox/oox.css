@@ -1,0 +1,87 @@
+body {
+	background: gray;
+	margin: 0;
+}
+.hidden {
+	display: none;
+}
+#choices {
+	display: grid;
+	grid-template-rows: repeat(4, calc(25% - 10px));
+	grid-template-columns: repeat(4, calc(25% - 10px));
+	align-items: center;
+	box-sizing: border-box;
+	padding: 10px;
+	padding-top: 50px;
+	gap: 10px;
+	width: 100vw;
+	height: 100vh;
+}
+.decisionBox {
+	display: grid;
+	grid-template-columns: repeat(4, 25%);
+	align-items: end;
+	background: tan;
+}
+.buttonLike {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	grid-area: 1/1/2/2;
+	background: pink;
+}
+.buttonDont {
+	grid-area: 1/4/2/5;
+	color: white;
+	background: red;
+}
+.like {
+	background: hotpink;
+}
+.dont {
+	background: red;
+	color: white;
+}
+.choice {
+	display: flex;
+	box-sizing: border-box;
+	padding: 5px;
+	width: 100%;
+}
+#choices img {
+	grid-area: 1/1/2/5;
+	height: 20vh;
+	object-fit: contain;
+	justify-self: center;
+}
+.hidden {
+	/*visibility: hidden;*/
+	display: none;
+}
+#sentences {
+	display: none;
+	grid-template-rows: repeat(3, 33vh);
+	grid-template-columns: 25vw 75vw;
+	align-items: center;
+	font-family: "mext";
+	font-size: 48pt;
+}
+#sentences img {
+	height: 30vh;
+	object-fit: contain;
+	justify-items: center;
+	box-sizing: border-box;
+	padding: 10px;
+	margin-right: 10px;
+}
+#sentences div {
+	padding: 10px;
+	justify-self: start;
+	font-weight: bold;
+}
+#reset {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	font-size: 16pt;
+}
