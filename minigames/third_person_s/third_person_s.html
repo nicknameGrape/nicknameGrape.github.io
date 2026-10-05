@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<title>S or no S</title>
+		<link rel="icon" type="image/png" href="/favicon.png">
+		<style>
+@font-face {
+    font-family: 'MEXT';
+    src: url('../../fonts/mext.otf') format("opentype");
+}
+body {
+	margin: 0px;
+}
+#top {
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	height: 20vh;
+	background: pink;
+	font-size: 18pt;
+	gap: 20px;
+	padding: 20px;
+	box-sizing: border-box;
+}
+#quiz {
+	display: flex;
+}
+#quiz_box {
+	margin-right: 1em;
+}
+		</style>
+	</head>
+	<body>
+		<div id="top">
+			<span id="score">Score:&nbsp;</span>
+			<span id="score">0</span>
+		</div>
+		<div id="quiz">
+			<span id="quiz_start">Start</span>
+			<input type="text" id="quiz_box" size="2"></input>
+			<span id="quiz_end">end.</span>
+		</div>
+	</body>
+	<script type="module">
+import HatDraw from "../js_modules/HatDraw.mjs";
+
+class Quiz {
+	constructor() {
+		this.verb = hdVerb.drawOne();
+		this.start = hdStart.drawOne() + " " + hdFrequency.drawOne() + " " + this.verb.uninflected;
+		spanStart.innerHTML = this.start;
+		spanEnd.innerHTML = this.verb.tail;
+	}
+}
+
+function setup() {
+	new Quiz();
+}
+
+function getSubject() {
+}
+
+const VERBS = [
+	{uninflected: "like", inflected: "likes", tail: "cats."},
+	{uninflected: "like", inflected: "likes", tail: "dogs."},
+	{uninflected: "want", inflected: "wants", tail: "a book."},
+	{uninflected: "have", inflected: "has", tail: "a pet."},
+	{uninflected: "play", inflected: "plays", tail: "soccer."},
+	{uninflected: "play", inflected: "plays", tail: "baseball."},
+	{uninflected: "play", inflected: "plays", tail: "volleyball."},
+	{uninflected: "play", inflected: "plays", tail: "the piano."},
+	{uninflected: "play", inflected: "plays", tail: "the guitar."},
+	{uninflected: "listen", inflected: "listens", tail: "to music."},
+	{uninflected: "walk", inflected: "walk", tail: "to school."},
+	{uninflected: "cook", inflected: "cooks", tail: "breakfast"},
+	{uninflected: "cook", inflected: "cooks", tail: "dinner"}
+];
+
+const FREQUENCIES = ["always", "usually", "sometimes", "never", null];
+
+const spanStart = document.getElementById("quiz_start");
+const spanEnd = document.getElementById("quiz_end");
+const inputTextbox = document.getElementById("quiz_box");
+
+const hdStart = new HatDraw(["I", "You", "He", "She", "We", "They"]);
+const hdVerb = new HatDraw(VERBS);
+const hdFrequency = new HatDraw(FREQUENCIES);
+
+
+document.addEventListener("keydown", function (ev) {
+	if (ev.key === "Enter") {
+		setup();
+	}
+});
+
+setup();
+	</script>
+</html>
