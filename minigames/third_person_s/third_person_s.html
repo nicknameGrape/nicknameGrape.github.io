@@ -6,39 +6,71 @@
 		<style>
 @font-face {
     font-family: 'MEXT';
-    src: url('../../fonts/mext.otf') format("opentype");
+    src: url('/fonts/mext.otf') format("opentype");
 }
 body {
 	margin: 0px;
+	font-size: 36pt;
+	font-family: "MEXT";
 }
 #top {
-	display: flex;
+	display: none;
 	align-items: center;
 	justify-content: end;
 	height: 20vh;
+	/*background: rgb(0, 255, 0);*/
 	background: pink;
-	font-size: 18pt;
 	gap: 20px;
 	padding: 20px;
 	box-sizing: border-box;
+	font-family: "";
+	font-size: 18pt;
 }
 #quiz {
 	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 10vh;
 }
 #quiz_box {
-	margin-right: 1em;
+	margin-right: .5em;
+	margin-left: .1em;
+	width: 1em;
+	font-family: "MEXT";
+	font-size: 36pt;
+	background: inherit;
+}
+#correction {
+	display: none;
+	align-items: center;
+	justify-content: center;
+}
+#correction_box {
+	margin-right: .5em;
+	margin-left: .1em;
+	width: 1em;
+	font-family: "MEXT";
+	font-size: 36pt;
+	background: lime;
 }
 		</style>
 	</head>
 	<body>
 		<div id="top">
-			<span id="score">Score:&nbsp;</span>
+			<span>Score:&nbsp;</span>
 			<span id="score">0</span>
+			<span>Attempts:&nbsp;</span>
+			<span id="attempts">0</span>
 		</div>
 		<div id="quiz">
 			<span id="quiz_start">Start</span>
-			<input type="text" id="quiz_box" size="2"></input>
+			<input type="text" id="quiz_box"></input>
 			<span id="quiz_end">end.</span>
+		</div>
+		<div id="correction">
+			<span id="correction_start">Correction Start</span>
+			<input type="text" id="correction_box" disabled></input>
+			<span id="correction_end">correction end.</span>
 		</div>
 	</body>
 	<script type="module">
@@ -46,53 +78,396 @@ import HatDraw from "../js_modules/HatDraw.mjs";
 
 class Quiz {
 	constructor() {
-		this.verb = hdVerb.drawOne();
-		this.start = hdStart.drawOne() + " " + hdFrequency.drawOne() + " " + this.verb.uninflected;
-		spanStart.innerHTML = this.start;
-		spanEnd.innerHTML = this.verb.tail;
+		this.completed = false; //needed to prevent queueing up multiple new Quizzes
+		let pronoun = hdPronouns.drawOne();
+		let verb = hdVerbs.drawOne();
+		//mix it between names and pronouns
+		let keepAsPronoun = Math.random() > .5 ? true : false;
+		if (keepAsPronoun) {
+			this.subject = pronoun;
+		} else {
+			if (
+				pronoun === "I" ||
+				pronoun === "You"
+			) {
+				this.subject = pronoun;
+			} else if (
+				pronoun === "He" ||
+				pronoun === "She"
+			) {
+				this.subject = hdNames.drawOne();
+			} else if (pronoun === "We") {
+				this.subject = hdNames.drawOne() + " and I";
+			} else if (pronoun === "They") {
+				this.subject = hdNames.drawOne() + " and " + hdNames.drawOne();
+			}
+		}
+		//define answer
+		if (pronoun === "He" || pronoun === "She") {
+			this.answer = verb.inflected;
+		} else {
+			this.answer = verb.uninflected;
+		}
+		//define verb root
+		let verb_root = "";
+		let index = 0;
+		while (index < verb.uninflected.length) {
+			if (verb.uninflected[index] === verb.inflected[index]) {
+				verb_root += verb.uninflected[verb_root.length];
+			} else {
+				break;
+			}
+			index += 1;
+		}
+		this.verb_root = verb_root;
+		//define starting value of quiz_box
+		//the player may need to erase an unnecessary "s", or add an "s", or add a missing "e" before the "s" in some few cases like "watches" and "goes"
+		if (Math.random() > .5) {
+			inputTextbox.value = "";
+		} else {
+			inputTextbox.value = "s";
+		}
+		correctionTextbox.value = this.answer.slice(this.verb_root.length, this.answer.length);
+		inputTextbox.focus();
+		//present Quiz
+		if (
+			verb.with_frequency &&
+			Math.random() > .5 //sometimes add frequency when a verb allows for it
+		) {
+			let frequency = hdFrequency.drawOne();
+			spanStart.innerHTML = this.subject + " " + frequency + " " + verb_root;
+			spanEnd.innerHTML = verb.tail + ".";
+			correctionStart.innerHTML = this.subject + " " + frequency + " " + verb_root;
+			correctionEnd.innerHTML = verb.tail + ".";
+		} else {
+			spanStart.innerHTML = this.subject + " " + verb_root;
+			spanEnd.innerHTML = verb.tail + ".";
+			correctionStart.innerHTML = this.subject + " " + verb_root;
+			correctionEnd.innerHTML = verb.tail + ".";
+		}
+		divQuiz.style.background = "";
+		divCorrection.style.display = "none";
+		//advance playCount
+		playCount += 1;
+	}
+	isGood() {
+		if (this.verb_root + inputTextbox.value === this.answer) {
+			points += 1;
+			divQuiz.style.background = "lime";
+			this.completed = true;
+			return true;
+		} else {
+			quiz_box.style.background = "red";
+			setTimeout(function () {
+				quiz_box.style.background = "";
+			}, 100);
+			divCorrection.style.display = "flex";
+		//	points -= 1;
+		}
+		spanScore.innerHTML = points;
+		spanAttempts.innerHTML = playCount;
+		let rgbGreen = Math.floor(255*points/playCount);
+		divTop.style.background = "rgb("+(255-rgbGreen)+","+rgbGreen+",0)";
+		console.log(points, playCount);
 	}
 }
 
 function setup() {
-	new Quiz();
-}
-
-function getSubject() {
+	quiz = new Quiz();
 }
 
 const VERBS = [
-	{uninflected: "like", inflected: "likes", tail: "cats."},
-	{uninflected: "like", inflected: "likes", tail: "dogs."},
-	{uninflected: "want", inflected: "wants", tail: "a book."},
-	{uninflected: "have", inflected: "has", tail: "a pet."},
-	{uninflected: "play", inflected: "plays", tail: "soccer."},
-	{uninflected: "play", inflected: "plays", tail: "baseball."},
-	{uninflected: "play", inflected: "plays", tail: "volleyball."},
-	{uninflected: "play", inflected: "plays", tail: "the piano."},
-	{uninflected: "play", inflected: "plays", tail: "the guitar."},
-	{uninflected: "listen", inflected: "listens", tail: "to music."},
-	{uninflected: "walk", inflected: "walk", tail: "to school."},
-	{uninflected: "cook", inflected: "cooks", tail: "breakfast"},
-	{uninflected: "cook", inflected: "cooks", tail: "dinner"}
+ {
+  "uninflected": "like",
+  "inflected": "likes",
+  "with_frequency": false,
+  "tail": "animals"
+ },
+ {
+  "uninflected": "like",
+  "inflected": "likes",
+  "with_frequency": false,
+  "tail": "sports"
+ },
+ {
+  "uninflected": "want",
+  "inflected": "wants",
+  "with_frequency": false,
+  "tail": "a book"
+ },
+ {
+  "uninflected": "have",
+  "inflected": "has",
+  "with_frequency": false,
+  "tail": "a pet"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "soccer"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "baseball"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "volleyball"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "the piano"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "the guitar"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "video games"
+ },
+ {
+  "uninflected": "play",
+  "inflected": "plays",
+  "with_frequency": true,
+  "tail": "<i>shogi</i>"
+ },
+ {
+  "uninflected": "listen",
+  "inflected": "listens",
+  "with_frequency": true,
+  "tail": "to music"
+ },
+ {
+  "uninflected": "walk",
+  "inflected": "walks",
+  "with_frequency": true,
+  "tail": "to school"
+ },
+ {
+  "uninflected": "cook",
+  "inflected": "cooks",
+  "with_frequency": true,
+  "tail": "breakfast"
+ },
+ {
+  "uninflected": "cook",
+  "inflected": "cooks",
+  "with_frequency": true,
+  "tail": "dinner"
+ },
+ {
+  "uninflected": "go",
+  "inflected": "goes",
+  "with_frequency": true,
+  "tail": "to juku"
+ },
+ {
+  "uninflected": "go",
+  "inflected": "goes",
+  "with_frequency": true,
+  "tail": "shopping"
+ },
+ {
+  "uninflected": "go",
+  "inflected": "goes",
+  "with_frequency": true,
+  "tail": "camping"
+ },
+ {
+  "uninflected": "go",
+  "inflected": "goes",
+  "with_frequency": true,
+  "tail": "fishing"
+ },
+ {
+  "uninflected": "go",
+  "inflected": "goes",
+  "with_frequency": true,
+  "tail": "to the park"
+ },
+ {
+  "uninflected": "go",
+  "inflected": "goes",
+  "with_frequency": true,
+  "tail": "to bed at 9:00"
+ },
+ {
+  "uninflected": "drink",
+  "inflected": "drinks",
+  "with_frequency": true,
+  "tail": "cola"
+ },
+ {
+  "uninflected": "drink",
+  "inflected": "drinks",
+  "with_frequency": true,
+  "tail": "coffee"
+ },
+ {
+  "uninflected": "eat",
+  "inflected": "eats",
+  "with_frequency": true,
+  "tail": "breakfast"
+ },
+ {
+  "uninflected": "eat",
+  "inflected": "eats",
+  "with_frequency": true,
+  "tail": "natto"
+ },
+ {
+  "uninflected": "speak",
+  "inflected": "speaks",
+  "with_frequency": false,
+  "tail": "English"
+ },
+ {
+  "uninflected": "make",
+  "inflected": "makes",
+  "with_frequency": true,
+  "tail": "art"
+ },
+ {
+  "uninflected": "wear",
+  "inflected": "wears",
+  "with_frequency": true,
+  "tail": "a hat"
+ },
+ {
+  "uninflected": "watch",
+  "inflected": "watches",
+  "with_frequency": true,
+  "tail": "TV"
+ },
+ {
+  "uninflected": "watch",
+  "inflected": "watches",
+  "with_frequency": true,
+  "tail": "movies"
+ },
+ {
+  "uninflected": "watch",
+  "inflected": "watches",
+  "with_frequency": true,
+  "tail": "the news"
+ },
+ {
+  "uninflected": "read",
+  "inflected": "reads",
+  "with_frequency": true,
+  "tail": "books"
+ },
+ {
+  "uninflected": "read",
+  "inflected": "reads",
+  "with_frequency": true,
+  "tail": "<i>manga</i>"
+ },
+ {
+  "uninflected": "help",
+  "inflected": "helps",
+  "with_frequency": false,
+  "tail": "animals"
+ },
+ {
+  "uninflected": "clean",
+  "inflected": "cleans",
+  "with_frequency": true,
+  "tail": "the house"
+ },
+ {
+  "uninflected": "ride",
+  "inflected": "rides",
+  "with_frequency": false,
+  "tail": "a bike to school"
+ },
+ {
+  "uninflected": "get",
+  "inflected": "gets",
+  "with_frequency": true,
+  "tail": "up at 6:00"
+ },
+ {
+  "uninflected": "take",
+  "inflected": "takes",
+  "with_frequency": true,
+  "tail": "out the garbage"
+ },
+ {
+  "uninflected": "take",
+  "inflected": "takes",
+  "with_frequency": true,
+  "tail": "a bath"
+ },
+ {
+  "uninflected": "wash",
+  "inflected": "washes",
+  "with_frequency": true,
+  "tail": "the dishes"
+ },
+ {
+  "uninflected": "wear",
+  "inflected": "wears",
+  "with_frequency": true,
+  "tail": "pink"
+ },
+ {
+  "uninflected": "look",
+  "inflected": "looks",
+  "with_frequency": true,
+  "tail": "at the stars"
+ }
 ];
 
-const FREQUENCIES = ["always", "usually", "sometimes", "never", null];
+const NAMES = ['Ai', 'Aiko', 'Akemi', 'Akihiro', 'Akiko', 'Akio', 'Akira', 'Asako', 'Asami', 'Atsuko', 'Atsushi', 'Aya', 'Ayako', 'Ayumi', 'Chie', 'Chieko', 'Chihiro', 'Chikako', 'Daisuke', 'Eiji', 'Emi', 'Emiko', 'Eri', 'Eriko', 'Etsuko', 'Fumiko', 'Haruka', 'Hideaki', 'Hideki', 'Hideo', 'Hideyuki', 'Hiroaki', 'Hiroki', 'Hiroko', 'Hiromi', 'Hiroshi', 'Hiroyuki', 'Hisako', 'Hitomi', 'Hitoshi', 'Ikuko', 'Isao', 'Izumi', 'Jun', 'Junichi', 'Junko', 'Kana', 'Kanako', 'Kaori', 'Kaoru', 'Kayoko', 'Kazue', 'Kazuhiko', 'Kazuhiro', 'Kazuko', 'Kazumi', 'Kazuo', 'Kazuya', 'Kei', 'Keiichi', 'Keiko', 'Keisuke', 'Ken', 'Kenichi', 'Kenji', 'Kentaro', 'Kimiko', 'Kiyoshi', 'Koichi', 'Koji', 'Kumiko', 'Kyoko', 'Mai', 'Maiko', 'Maki', 'Makiko', 'Makoto', 'Mami', 'Manabu', 'Mari', 'Mariko', 'Masaaki', 'Masahiko', 'Masahiro', 'Masaki', 'Masako', 'Masami', 'Masanori', 'Masao', 'Masaru', 'Masashi', 'Masato', 'Masaya', 'Masayuki', 'Mayumi', 'Megumi', 'Michiko', 'Midori', 'Mieko', 'Miho', 'Mika', 'Miki', 'Mikiko', 'Minako', 'Minoru', 'Mitsuko', 'Miwa', 'Miyoko', 'Miyuki', 'Naoki', 'Naoko', 'Naomi', 'Natsuko', 'Nobuko', 'Noriko', 'Norio', 'Osamu', 'Reiko', 'Rie', 'Rika', 'Risa', 'Ryo', 'Ryoko', 'Sachiko', 'Saori', 'Satomi', 'Satoru', 'Satoshi', 'Sayaka', 'Sayuri', 'Seiji', 'Setsuko', 'Shigeru', 'Shinichi', 'Shinji', 'Shoko', 'Tadashi', 'Takahiro', 'Takako', 'Takashi', 'Takayuki', 'Takeo', 'Takeshi', 'Takuya', 'Tatsuya', 'Tetsuo', 'Tetsuya', 'Tomohiro', 'Tomoko', 'Tomomi', 'Tomoyuki', 'Toru', 'Toshiko', 'Toshio', 'Toshiyuki', 'Tsutomu', 'Tsuyoshi', 'Wataru', 'Yasuhiro', 'Yasuko', 'Yasuo', 'Yasushi', 'Yoichi', 'Yoko', 'Yoshiaki', 'Yoshie', 'Yoshihiko', 'Yoshihiro', 'Yoshiko', 'Yoshimi', 'Yoshinori', 'Yoshio', 'Yoshiyuki', 'Yosuke', 'Yu', 'Yuji', 'Yuka', 'Yukari', 'Yuki', 'Yukie', 'Yukiko', 'Yukio', 'Yuko', 'Yumi', 'Yumiko', 'Yuri', 'Yuriko', 'Yusuke', 'Yutaka', 'Yuuki'];
 
+const FREQUENCIES = ["always", "usually", "sometimes", "never"];
+
+const divQuiz = document.getElementById("quiz");
 const spanStart = document.getElementById("quiz_start");
 const spanEnd = document.getElementById("quiz_end");
 const inputTextbox = document.getElementById("quiz_box");
+const divCorrection = document.getElementById("correction");
+const correctionStart = document.getElementById("correction_start");
+const correctionEnd = document.getElementById("correction_end");
+const correctionTextbox = document.getElementById("correction_box");
+const divTop = document.getElementById("top");
+const spanScore = document.getElementById("score");
+const spanAttempts = document.getElementById("attempts");
 
-const hdStart = new HatDraw(["I", "You", "He", "She", "We", "They"]);
-const hdVerb = new HatDraw(VERBS);
+const hdPronouns = new HatDraw(["I", "You", "He", "She", "We", "They"]);
+const hdNames = new HatDraw(NAMES);
+const hdVerbs = new HatDraw(VERBS);
 const hdFrequency = new HatDraw(FREQUENCIES);
 
 
 document.addEventListener("keydown", function (ev) {
 	if (ev.key === "Enter") {
-		setup();
+		if (!quiz.completed) {
+			if (quiz.isGood()) {
+				setTimeout(function () {
+					setup();
+				}, 1000);
+			}
+		}
 	}
 });
 
+let playCount = 0;
+let points = 0;
+let quiz = null;
 setup();
 	</script>
 </html>
