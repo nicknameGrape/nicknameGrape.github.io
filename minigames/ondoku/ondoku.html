@@ -41,17 +41,17 @@ body {
 	font-size: 18pt;
 	width: 3em;
 }
-#quiz {
+#ondoku {
 	display: flex;
 	flex-direction: column;
 }
-#quiz_img {
+#ondoku_img {
 	display: block;
 	object-fit: contain;
 	height: 50vh;
 	aspect-ratio: 1/1;
 }
-#quiz_example {
+#ondoku_example {
 	display: flex;
 	justify-content: center;
 	background: orange;
@@ -59,7 +59,7 @@ body {
 	font-family: "mext";
 	height: 40vh;
 }
-.quiz_word {
+.ondoku_word {
 	background: skyblue;
 	font-size: 10vh;
 	font-family: "mext";
@@ -70,6 +70,9 @@ body {
 	top: 15vh;
 	width: 10vw;
 	height: 50vh;
+}
+#quiz {
+	display: none;
 }
 		</style>
 	</head>
@@ -84,34 +87,44 @@ body {
 				<input type="number" id="inputEntries" readonly></input>
 				-->
 			</div>
-			<!-- 
-			<span><input type="checkbox" id="inputToggleQuizMode"></input><label for="inputToggleQuizMode">Quiz Mode</label></span>
-			-->
+			<div>
+				<span><input type="radio" name="mode" id="inputRadioOndokuMode" checked></input><label for="inputRadioOndokuMode">Ondoku Mode</label></span>
+				<span><input type="radio" name="mode" id="inputRadioQuizMode"></input><label for="inputRadioQuizMode">Quiz Mode</label></span>
+			</div>
+		</div>
+		<div id="ondoku">
+			<img id="ondoku_img"/>
+			<pre id="ondoku_example">Example</pre>
+			<button id="next">Next</button>
 		</div>
 		<div id="quiz">
-			<img id="quiz_img"/>
 			<pre id="quiz_example">Example</pre>
+			<img id="quiz_img_1"/>
+			<img id="quiz_img_2"/>
+			<img id="quiz_img_3"/>
+			<img id="quiz_img_4"/>
 		</div>
-		<button id="next">Next</button>
 	</body>
 	<script type="module">
 import pd from "../../image_library/pd_eastman/pd_eastman.json" with { type: 'json' };
 import HatDraw from "../js_modules/HatDraw.mjs";
 import Loader from "../js_modules/Loader.mjs";
+console.log(pd);
 
-class Quiz {
+class Ondoku {
 	constructor(imgSrc, word, example) {
+		console.log(imgSrc, word, example);
 		let img = LOADER.newImageAsset(imgSrc);
-		let tagged = example.replace(/\*(\w+)+/g, "<span class='quiz_word'>"+"$1"+"</span>");
 		this.img = img;
 		this.word = word;
-		//document.getElementById("quiz_word").innerHTML = word;
-		document.getElementById("quiz_img").src = img.src;
+		//document.getElementById("ondoku_word").innerHTML = word;
+		document.getElementById("ondoku_img").src = img.src;
 		if (typeof(example) !== "undefined") {
 			this.example = example;
-			document.getElementById("quiz_example").innerHTML = tagged;
+			let tagged = example.replace(/\*(\w+)/g, "<span class='ondoku_word'>"+"$1"+"</span>");
+			document.getElementById("ondoku_example").innerHTML = tagged;
 		} else {
-			document.getElementById("quiz_example").innerHTML = "";
+			document.getElementById("ondoku_example").innerHTML = "<span class='ondoku_word'>"+word+"</span>";
 		}
 	}
 }
@@ -132,7 +145,7 @@ class Quiz {
 
 function setup() {
 	let draw = hd.drawOne();
-	new Quiz(draw[0], draw[1], draw[2]);
+	new Ondoku(draw[0], draw[1], draw[2]);
 }
 
 
