@@ -4,4 +4,4 @@
 
 [submodule "js_modules"]
 	path = js_modules
-	url = https://github.com/nicknameGrape/js_module.git
+	url = https://github.com/nicknameGrape/js_modules.git
