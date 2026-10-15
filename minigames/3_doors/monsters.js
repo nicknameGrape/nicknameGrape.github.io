@@ -1,0 +1,22 @@
+const MONSTERS = [
+"alien.png",
+"bear.png",
+"boom_box.png",
+"cartoon_cat.png",
+"chucky.png",
+"creeper.png",
+"five_nights_bear.png",
+"ghost.png",
+"huggy_wuggy.png",
+"it.png",
+"jaian.png",
+"monster.png",
+"pigumon.png",
+"sena_keiko_no_obake.png",
+"slimer.png",
+"stormtrooper.png",
+"tentacle.png",
+"trex.png",
+"tung_tung_tung_sahur.png",
+"xenomorph.png"
+];
