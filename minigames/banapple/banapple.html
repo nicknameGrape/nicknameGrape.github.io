@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+	<head>
+		<link rel="icon" href="/favicon.png"/>
+		<style>
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+button {
+	padding: 10px;
+}
+button img {
+	height: 100%;
+	max-width: 100%;
+	object-fit: contain;
+}
+button[disabled] img {
+	opacity: 30%;
+	filter: grayscale(1);
+}
+.instructions {
+	grid-area: 1/1/2/6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.grid_tops_and_bottoms {
+	display: grid;
+	grid-template-columns: repeat(5, 15vw);
+	grid-template-rows: 15vh 30vh 30vh;
+	gap: 10px;
+}
+#bottoms {
+	display: none;
+}
+#result {
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+#result canvas {
+	height: 60vh;
+}
+		</style>
+	</head>
+	<body>
+		<div id="tops" class="grid_tops_and_bottoms">
+			<h1 class="instructions">Choose a top:</h1>
+			<button class="top" value="apple" id="appleTop"><img src="img/apple_top.png"/></button>
+			<button class="top" value="peach" id="peachTop"><img src="img/peach_top.png"/></button>
+			<button class="top" value="orange" id="orangeTop"><img src="img/orange_top.png"/></button>
+			<button class="top" value="banana" id="bananaTop"><img src="img/banana_top.png"/></button>
+			<button class="top" value="pineapple" id="pineappleTop"><img src="img/pineapple_top.png"/></button>
+			<button class="top" value="lemon" id="lemonTop"><img src="img/lemon_top.png"/></button>
+			<button class="top" value="melon" id="melonTop"><img src="img/melon_top.png"/></button>
+			<button class="top" value="cherry" id="cherryTop"><img src="img/cherry_top.png"/></button>
+			<button class="top" value="kiwi" id="kiwiTop"><img src="img/kiwi_top.png"/></button>
+			<button class="top" value="strawberry" id="strawberryTop"><img src="img/strawberry_top.png"/></button>
+		</div>
+		<div id="bottoms" class="grid_tops_and_bottoms">
+			<h1 class="instructions">Choose a bottom:</h1>
+			<button class="bottom" value="apple" id="appleBottom"><img src="img/apple_bot.png"/></button>
+			<button class="bottom" value="peach" id="peachBottom"><img src="img/peach_bot.png"/></button>
+			<button class="bottom" value="orange" id="orangeBottom"><img src="img/orange_bot.png"/></button>
+			<button class="bottom" value="banana" id="bananaBottom"><img src="img/banana_bot.png"/></button>
+			<button class="bottom" value="pineapple" id="pineappleBottom"><img src="img/pineapple_bot.png"/></button>
+			<button class="bottom" value="lemon" id="lemonBottom"><img src="img/lemon_bot.png"/></button>
+			<button class="bottom" value="melon" id="melonBottom"><img src="img/melon_bot.png"/></button>
+			<button class="bottom" value="cherry" id="cherryBottom"><img src="img/cherry_bot.png"/></button>
+			<button class="bottom" value="kiwi" id="kiwiBottom"><img src="img/kiwi_bot.png"/></button>
+			<button class="bottom" value="strawberry" id="strawberryBottom"><img src="img/strawberry_bot.png"/></button>
+		</div>
+		<div id="result">
+			<h1 class="instructions">Now, name it!</h1>
+			<canvas id="canvasResult" width="1000" height="1000"></canvas>
+			<button id="buttonAgain">Again!</button>
+		</div>
+		<script src="banapple.js" type="module"></script>
+	</body>
+</html>
