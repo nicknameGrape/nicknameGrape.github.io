@@ -1,0 +1,101 @@
+body {
+	font-size: 20pt;
+}
+
+#p1 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.playerFirstChild {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.jp {
+	color: gray;
+	font-size: medium;
+	justify-self: end;
+}
+.jp::after {
+	content: ":";
+}
+#dossier {
+	display: grid;
+	grid-template-columns: 30vh 70px 60vh;
+	align-items: center;
+	gap: 5px;
+}
+.answer_and_guess {
+	position: relative;
+	display: inline-grid;
+	grid-template-rows: auto auto;
+}
+#dossierOK {
+	justify-self: center;
+	grid-column: 1/span 3;
+	margin-top: 20px;
+	font-size: 18pt;
+}
+.thumb {
+	width: 70px;
+	height: 70px;
+	object-fit: contain;
+}
+.keyword {
+	justify-self: start;
+	font-weight: bold;
+	color: blue;
+	padding: 2px;
+}
+.guess {
+	position: absolute;
+	top: 1em;
+	justify-self: center;
+	font-weight: bold;
+	color: green;
+	text-wrap: nowrap;
+}
+#p2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+#choices {
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	align-items: center;
+	gap: 20px 5px;
+	font-size: 14pt;
+}
+#choices .jp {
+}
+#choicesName {
+	font-size: 20pt;
+}
+.radioGroup {
+	display: flex;
+	gap: 5px;
+}
+.radioWrapper {
+	display: inline-flex;
+	padding: 5px;
+	border: 2px dotted gray;
+	border-radius: 5px;
+	background: darkgray;
+	flex-wrap: nowrap;
+}
+.image_over_text {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+label {
+	display: flex;
+	align-items: end;
+}
+input[type="radio"] {
+	margin: 0px 5px 0px 0px;
+}

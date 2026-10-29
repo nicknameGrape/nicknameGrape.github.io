@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="/favicon.png"/>
+	<link rel="stylesheet" href="who_is_this_styles.css"/>
+	</style>
+</head>
+<body>
+<!-- SPECIAL CHARACTERS ♡○× -->
+	<div id="p1">
+		<div class="playerFirstChild">
+			<div class="prompt speech-bubble">This is...</div>
+			<div id="dossier">
+				<span class="jp">名前</span>
+				<img src="album.png" class="thumb"/>
+				<span>This is&nbsp;<span class="answer_and_guess">
+						<span id="dossierNameAnswer" class="keyword">Messi</span>
+						<span id="dossierNameGuess" class="guess"></span>
+					</span>.
+				</span>
+				<span class="jp">できること</span>
+				<img id="dossierCanThumb" class="thumb"/>
+				<span>
+					<span class="pronoun">He</span>&nbsp;can&nbsp;<span class="answer_and_guess">
+						<span id="dossierCanAnswer" class="keyword">play soccer</span>
+						<span id="dossierCanGuess" class="guess"></span>
+					</span>.
+				</span>
+				<span class="jp">性格</span>
+				<img id="dossierPersonalityThumb" class="thumb"/>
+				<span>
+					<span class="pronoun">He</span>&nbsp;is&nbsp;<span class="answer_and_guess">
+						<span id="dossierPersonalityAnswer" class="keyword">kind</span>
+						<span id="dossierPersonalityGuess" class="guess">(&emsp;)</span>
+					</span>
+				</span>.
+				<button id="dossierOK">OK</button>
+			</div>
+		</div>
+	</div>
+	<div id="border"></div>
+	<div id="p2">
+		<div class="playerFirstChild">
+			<img src="album.png" style="height: 10vw;"/>
+			<div class="prompt speech-bubble">Who is this?</div>
+			<div id="choices">
+				<span class="jp">名前</span>
+				<div id="choicesName" class="radioGroup">
+					<div class="radioWrapper">
+						<input type="radio" name="name" id="name1" value="Mike"/>
+						<label for="name1">Mike</label>
+					</div>
+					<div class="radioWrapper">
+						<input type="radio" name="name" id="name2" value="Messi"/>
+						<label for="name2">Messi</label>
+					</div>
+					<div class="radioWrapper">
+						<input type="radio" name="name" id="name3" value="Milton"/>
+						<label for="name3">Milton</label>
+					</div>
+				</div>
+				<span class="jp">できること</span>
+				<div id="choicesCan" class="radioGroup">
+					<div class="radioWrapper">
+						<input type="radio" name="can" id="can1" value="play tennis"/>
+						<label for="can1" class="image_over_text">
+							<img id="can1img" class="thumb"/>
+							<span id="can1span">play the piano</span>
+						</label>
+					</div>
+					<div class="radioWrapper">
+						<input type="radio" name="can" id="can2" value="play the piano"/>
+						<label for="can2" class="image_over_text">
+							<img id="can2img" class="thumb"/>
+							<span id="can2span">play the piano</span>
+						</label>
+					</div>
+					<div class="radioWrapper">
+						<input type="radio" name="can" id="can3" value="play soccer"/>
+						<label for="can3" class="image_over_text">
+							<img id="can3img" class="thumb"/>
+							<span id="can3span">play the piano</span>
+						</label>
+					</div>
+				</div>
+				<span class="jp">性格</span>
+				<div id="choicesPersonality" class="radioGroup">
+					<div class="radioWrapper">
+						<input type="radio" name="personality" id="personality1" value="kind"/>
+						<label for="personality1" class="image_over_text">
+							<img id="personality1img" class="thumb"/>
+							<span id="personality1span"></span>
+						</label>
+					</div>
+					<div class="radioWrapper">
+						<input type="radio" name="personality" id="personality2" value="smart"/>
+						<label for="personality2" class="image_over_text">
+							<img id="personality2img" class="thumb"/>
+							<span id="personality2span"></span>
+						</label>
+					</div>
+					<div class="radioWrapper">
+						<input type="radio" name="personality" id="personality3" value="strong"/>
+						<label for="personality3" class="image_over_text">
+							<img id="personality3img" class="thumb"/>
+							<span id="personality3span"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="module" src="who_is_this_main.js">
+</script>
+</html>
