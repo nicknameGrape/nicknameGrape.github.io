@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+
+@font-face {
+	font-family: "mext";
+	src: url("./mext.otf");
+}
+
+body {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background: gray;
+	margin: 0;
+	height: 100vh;
+}
+#loading {
+	display: grid;
+	grid-template-rows: 10vh 40vh;
+	justify-items: center;
+	align-items: center;
+	gap: 10px;
+	margin: 50px;
+	color: white;
+}
+#demos {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 18pt;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+#scrambled {
+	display: none;
+	grid-template-rows: repeat(4, 6vw);
+	grid-template-columns: repeat(7, 6vw);
+	gap: 10px;
+	background: hotpink;
+}
+#ordered {
+	display: none;
+	grid-template-rows: repeat(4, 6vw);
+	grid-template-columns: repeat(7, 6vw);
+	gap: 10px;
+	background: orange;
+}
+.letter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: white;
+	font-size: 5vw;
+	border: 5px outset ghostwhite;
+}
+.placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: "mext";
+	font-size: 3vw;
+}
+#again {
+	grid-area: 4/6/5/span 2;
+	margin: 10px;
+}
+		</style>
+	</head>
+	<body>
+		<div id="loading">
+			<div style="text-align: center;">Loading Fonts...<br><span id="numberLoaded">0</span>/<span id="toLoad"></span></div>
+			<div id="demos"></div>
+		</div>
+		<div id="scrambled">
+		</div>
+		<div id="ordered">
+			<button id="again" disabled>Again</button>
+		</div>
+	</body>
+	<script type="module">
+import shuffle from "https://nicknamegrape.github.io/minigames/js_modules/shuffle.mjs"
+
+const FONTS = [
+	"64.ttf",
+	"agu.ttf",
+	"anty.ttf",
+	"bamboo.ttf",
+	"beast.ttf",
+	"berk.ttf",
+	"bit.ttf",
+	"bodoni.ttf",
+	"chewy.ttf",
+	"china.ttf",
+	"cloud.otf",
+	"cloudy.otf",
+	"cody.ttf",
+	"condiment.ttf",
+	"crayon.ttf",
+	"creep.ttf",
+	"dan.ttf",
+	"diamond.ttf",
+	"dogtags.ttf",
+	"doodle.ttf",
+	"dragon.ttf",
+	"drip.otf",
+	"ewert.ttf",
+	"fasc.ttf",
+	"fast.ttf",
+	"frijole.ttf",
+	"hatch.ttf",
+	"inflate.ttf",
+	"jurassic.ttf",
+	"loki.ttf",
+	"major.ttf",
+	"manu.ttf",
+	"mate.ttf",
+	"mingola.otf",
+	"monoton.ttf",
+	"monster.ttf",
+	"moo.ttf",
+	"moon.otf",
+	"notable.ttf",
+	"pijamas.ttf",
+	"pirata.ttf",
+	"pixels.ttf",
+	"plastic.ttf",
+	"prism.ttf",
+	"puddles.ttf",
+	"quest.ttf",
+	"rampart.ttf",
+	"ripple.otf",
+	"sakera.otf",
+	"salt.ttf",
+	"shiny.ttf",
+	"stars.ttf",
+	"sugar.ttf",
+	"taati.otf",
+	"train.ttf",
+	"xmas.ttf",
+	"yuji.ttf"
+];
+let loaded = 0;
+
+function loadFonts() {
+	document.getElementById("toLoad").innerHTML = FONTS.length;
+	FONTS.forEach(function (src) {
+		const fontFile = new FontFace(
+		  src.replace(".ttf", "").replace(".otf", ""),
+		  'url("./fun_fonts/'+src+'")'
+		);
+		document.fonts.add(fontFile)
+		fontFile.load().then(function (font) {
+			loaded++;
+			console.log(font.family, loaded, "loaded");
+			let demoSpan = document.createElement("span");
+			demoSpan.style.fontFamily = font.family;
+			demoSpan.innerHTML = "ABCDEFG";
+			document.getElementById("numberLoaded").innerHTML = loaded;
+			document.getElementById("demos").appendChild(demoSpan);
+			if (loaded === FONTS.length) {
+				setup();
+			}
+		});
+	});
+}
+
+function setup() {
+	console.log("setup");
+	document.getElementById("loading").style.display = "none";
+	document.querySelectorAll(".placeholder").forEach(el => el.remove());
+	document.querySelectorAll(".letter").forEach(el => el.remove());
+	document.querySelectorAll(".dummy").forEach(el => el.remove());
+	document.getElementById("scrambled").style.display = "grid";
+	document.getElementById("ordered").style.display = "grid";
+	let alphabet = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	alphabet.forEach(function (letter) {
+		let placeholder = document.createElement("span");
+		placeholder.innerHTML = letter;
+		placeholder.classList.add("placeholder");
+		document.getElementById("ordered").appendChild(placeholder);
+	});
+	shuffle(FONTS);
+	while (alphabet.length > 0) {
+		let letter = alphabet.splice(Math.floor(Math.random()*alphabet.length), 1)[0];
+		let funFont = document.createElement("span");
+		funFont.classList.add("letter");
+		funFont.innerHTML = letter;
+		funFont.style.fontFamily = FONTS[alphabet.length].replace(".ttf", "").replace(".otf", "");
+		console.log(letter, FONTS[alphabet.length], funFont.style.fontFamily);
+		funFont.addEventListener("pointerdown", checkLetter);
+		document.getElementById("scrambled").appendChild(funFont);
+	}
+	document.querySelector(".placeholder").style.background = "lime";
+	document.querySelector("#again").disabled = true;
+}
+
+function checkLetter(ev) {
+	let checkAgainst = document.querySelector(".placeholder");
+	if (this.innerHTML === checkAgainst.innerHTML) {
+		let dummy = document.createElement("span");
+		dummy.classList.add("dummy");
+		this.replaceWith(dummy);
+		checkAgainst.replaceWith(this);
+		try {
+			document.querySelector(".placeholder").style.background = "lime";
+		} catch (error) {
+			document.querySelector("#again").disabled = false;
+		}
+	}
+}
+
+loadFonts();
+
+window.addEventListener("keypress", function (ev) {
+	setup();
+});
+
+document.getElementById("again").addEventListener("click", function (ev) {
+	setup();
+});
+	</script>
+</html>

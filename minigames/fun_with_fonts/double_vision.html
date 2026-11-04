@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: gray;
+	margin: 0;
+	height: 100vh;
+}
+#letters {
+	display: grid;
+	grid-template-rows: repeat(5, 15vh);
+	grid-template-columns: repeat(5, 15vh);
+	gap: 10px;
+}
+.letter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: pink;
+	font-size: 10vh;
+}
+		</style>
+	</head>
+	<body>
+		<div id="letters">
+			<span class="letter">A</span>
+			<span class="letter">B</span>
+			<span class="letter">C</span>
+			<span class="letter">D</span>
+			<span class="letter">E</span>
+			<span class="letter">F</span>
+			<span class="letter">G</span>
+			<span class="letter">H</span>
+			<span class="letter">I</span>
+			<span class="letter">J</span>
+			<span class="letter">K</span>
+			<span class="letter">L</span>
+			<span class="letter">M</span>
+			<span class="letter">N</span>
+			<span class="letter">O</span>
+			<span class="letter">P</span>
+			<span class="letter">Q</span>
+			<span class="letter">R</span>
+			<span class="letter">S</span>
+			<span class="letter">T</span>
+			<span class="letter">U</span>
+			<span class="letter">V</span>
+			<span class="letter">W</span>
+			<span class="letter">X</span>
+			<span class="letter">Y</span>
+		</div>
+	</body>
+	<script type="module">
+//import HatDraw from "../js_modules/HatDraw.mjs"
+import HatDraw from "https://nicknamegrape.github.io/minigames/js_modules/HatDraw.mjs"
+
+const FONTS = [
+	"64.ttf",
+	"agu.ttf",
+	"bamboo.ttf",
+	"beast.ttf",
+	"berk.ttf",
+	"bit.ttf",
+	"bodoni.ttf",
+	"cody.ttf",
+	"creep.ttf",
+	"dan.ttf",
+	"dogtags.ttf",
+	"doodle.ttf",
+	"ewert.ttf",
+	"fasc.ttf",
+	"fast.ttf",
+	"frijole.ttf",
+	"hatch.ttf",
+	"major.ttf",
+	"mate.ttf",
+	"monoton.ttf",
+	"moo.ttf",
+	"notable.ttf",
+	"pixels.ttf",
+	"prism.ttf",
+	"puddles.ttf",
+	"quest.ttf",
+	"rampart.ttf",
+	"salt.ttf",
+	"stars.ttf",
+	"train.ttf"
+]
+const hdFonts = new HatDraw(FONTS.map(src => src.replace(".ttf", "")));
+let loaded = 0;
+
+function loadFonts() {
+	FONTS.forEach(function (src) {
+		const fontFile = new FontFace(
+		  src.replace(".ttf", ""),
+		  'url("./fun_fonts/'+src+'")'
+		);
+		document.fonts.add(fontFile)
+		fontFile.load().then(function () {
+			loaded++;
+			console.log(loaded, "loaded");
+			if (loaded === FONTS.length) {
+				setup();
+			}
+		});
+	});
+}
+
+function setup() {
+	console.log("setup");
+	let alphabet = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	document.querySelectorAll(".letter").forEach(function (letterElement) {
+		let letter = alphabet.splice(Math.floor(Math.random()*alphabet.length), 1)[0];
+		letterElement.innerHTML = letter;
+		letterElement.style.fontFamily = hdFonts.drawOne();
+	});
+}
+
+loadFonts();
+
+window.addEventListener("keypress", function (ev) {
+	if (ev.key === "n") {
+		setup();
+	}
+});
+	</script>
+</html>
