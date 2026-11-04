@@ -52,6 +52,13 @@ h3 {
 	margin-left: 10px;
 	position: relative;
 }
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-left: 20px;
+	position: relative;
+}
 #about {
 }
 video {

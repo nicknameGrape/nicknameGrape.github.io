@@ -53,6 +53,7 @@ body {
 	background: white;
 	font-size: 5vw;
 	border: 5px outset ghostwhite;
+	user-select: none;
 }
 .placeholder {
 	display: flex;
@@ -98,7 +99,7 @@ const FONTS = [
 	"condiment.ttf",
 	"crayon.ttf",
 	"creep.ttf",
-	"dan.ttf",
+	//"dan.ttf",
 	"diamond.ttf",
 	"dogtags.ttf",
 	"doodle.ttf",
@@ -109,7 +110,7 @@ const FONTS = [
 	"fast.ttf",
 	"frijole.ttf",
 	"hatch.ttf",
-	"inflate.ttf",
+	//"inflate.ttf",
 	"jurassic.ttf",
 	"loki.ttf",
 	"major.ttf",
@@ -212,9 +213,9 @@ function checkLetter(ev) {
 
 loadFonts();
 
-window.addEventListener("keypress", function (ev) {
-	setup();
-});
+//window.addEventListener("keypress", function (ev) {
+//	setup();
+//});
 
 document.getElementById("again").addEventListener("click", function (ev) {
 	setup();
