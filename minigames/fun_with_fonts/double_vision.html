@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 	<head>
 		<style>
+@font-face {
+	font-family: "mext";
+	src: url("./mext.otf");
+}
 body {
 	display: flex;
 	justify-content: center;
@@ -21,41 +25,18 @@ body {
 	justify-content: center;
 	background: pink;
 	font-size: 10vh;
+	font-family: "mext";
 }
 		</style>
 	</head>
 	<body>
 		<div id="letters">
-			<span class="letter">A</span>
-			<span class="letter">B</span>
-			<span class="letter">C</span>
-			<span class="letter">D</span>
-			<span class="letter">E</span>
-			<span class="letter">F</span>
-			<span class="letter">G</span>
-			<span class="letter">H</span>
-			<span class="letter">I</span>
-			<span class="letter">J</span>
-			<span class="letter">K</span>
-			<span class="letter">L</span>
-			<span class="letter">M</span>
-			<span class="letter">N</span>
-			<span class="letter">O</span>
-			<span class="letter">P</span>
-			<span class="letter">Q</span>
-			<span class="letter">R</span>
-			<span class="letter">S</span>
-			<span class="letter">T</span>
-			<span class="letter">U</span>
-			<span class="letter">V</span>
-			<span class="letter">W</span>
-			<span class="letter">X</span>
-			<span class="letter">Y</span>
 		</div>
 	</body>
 	<script type="module">
 //import HatDraw from "../js_modules/HatDraw.mjs"
 import HatDraw from "https://nicknamegrape.github.io/minigames/js_modules/HatDraw.mjs"
+import shuffle from "https://nicknamegrape.github.io/minigames/js_modules/shuffle.mjs"
 
 const FONTS = [
 	"64.ttf",
@@ -89,42 +70,73 @@ const FONTS = [
 	"stars.ttf",
 	"train.ttf"
 ]
-const hdFonts = new HatDraw(FONTS.map(src => src.replace(".ttf", "")));
-let loaded = 0;
+//const hdFonts = new HatDraw(FONTS.map(src => src.replace(".ttf", "")));
+const UPPERCASE = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const hdUppercase = new HatDraw(UPPERCASE);
 
-function loadFonts() {
-	FONTS.forEach(function (src) {
-		const fontFile = new FontFace(
-		  src.replace(".ttf", ""),
-		  'url("./fun_fonts/'+src+'")'
-		);
-		document.fonts.add(fontFile)
-		fontFile.load().then(function () {
-			loaded++;
-			console.log(loaded, "loaded");
-			if (loaded === FONTS.length) {
-				setup();
-			}
-		});
-	});
-}
+let answer = null;
+//let loaded = 0;
+//function loadFonts() {
+//	FONTS.forEach(function (src) {
+//		const fontFile = new FontFace(
+//		  src.replace(".ttf", ""),
+//		  'url("./fun_fonts/'+src+'")'
+//		);
+//		document.fonts.add(fontFile)
+//		fontFile.load().then(function () {
+//			loaded++;
+//			console.log(loaded, "loaded");
+//			if (loaded === FONTS.length) {
+//				setup();
+//			}
+//		});
+//	});
+//}
 
 function setup() {
 	console.log("setup");
 	let alphabet = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	document.querySelectorAll(".letter").forEach(function (letterElement) {
-		let letter = alphabet.splice(Math.floor(Math.random()*alphabet.length), 1)[0];
-		letterElement.innerHTML = letter;
-		letterElement.style.fontFamily = hdFonts.drawOne();
+	answer = hdUppercase.drawOne();
+	alphabet.splice(alphabet.indexOf(answer), 1);
+	let tilesUpper = alphabet.slice(0, 12);
+	let tilesLower = alphabet.slice(12,23).map(c => c.toLowerCase());
+	let tiles = tilesUpper.concat(tilesLower);
+	tiles.push(answer, answer.toLowerCase());
+	shuffle(tiles);
+	console.log(answer, tiles);
+	document.querySelectorAll(".letter").forEach(el => el.remove());
+	tiles.forEach(function (c) {
+		let tile = document.createElement("span");
+		tile.classList.add("letter");
+		tile.innerHTML = c;
+		tile.addEventListener("pointerdown", checkLetter);
+		document.getElementById("letters").appendChild(tile);
 	});
 }
 
-loadFonts();
+//loadFonts();
+function checkLetter() {
+	if (this.innerHTML.toUpperCase() !== answer) {
+		this.style.background = "red";
+	}
+	revealAnswer();
+}
+
+function revealAnswer() {
+	document.querySelectorAll(".letter").forEach(function (el) {
+		if (el.innerHTML.toUpperCase() === answer) {
+			el.style.background = "lime";
+		}
+	});
+	setTimeout(setup, 2000);
+}
 
 window.addEventListener("keypress", function (ev) {
 	if (ev.key === "n") {
 		setup();
 	}
 });
+
+setup();
 	</script>
 </html>
