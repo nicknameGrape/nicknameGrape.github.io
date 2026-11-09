@@ -3,6 +3,7 @@
 		<meta charset="utf-8">
 		<title>Ondoku</title>
 		<link rel="icon" type="image/png" href="/favicon.png">
+		<link rel="stylesheet" href="https://unpkg.com/keyboard-css@1.2.4/dist/css/main.min.css" />
 		<style>
 @font-face {
     font-family: 'MEXT';
@@ -10,7 +11,7 @@
 }
 body {
 	display: grid;
-	grid-template-rows: 10vh 50vh 40vh;
+	grid-template-rows: 10vh 90vh;
 	margin: 0px;
 }
 #top {
@@ -23,10 +24,9 @@ body {
 	padding: 20px;
 	box-sizing: border-box;
 }
-#filters {
-	display: grid;
-	grid-template: auto auto/auto auto;
-	justify-items: end;
+#divMode {
+	display: flex;
+	gap: 30px;
 }
 #inputExampleWordCount {
 	font-size: 18pt;
@@ -42,8 +42,11 @@ body {
 	width: 3em;
 }
 #ondoku {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: auto auto;
+	justify-content: center;
+	justify-items: center;
+	align-items: center;
 }
 #ondoku_img {
 	display: block;
@@ -57,7 +60,6 @@ body {
 	background: orange;
 	font-size: 10vh;
 	font-family: "mext";
-	height: 40vh;
 }
 .ondoku_word {
 	background: skyblue;
@@ -71,52 +73,99 @@ body {
 	width: 10vw;
 	height: 50vh;
 }
-#quiz {
+#choosePicture {
+	display: grid;
+	grid-template-rows: auto 50% auto;
+	grid-template-columns: auto auto auto auto;
+	align-content: center;
+	justify-items: center;
+}
+#choosePicturePhrase {
+	grid-area: 1/1/2/5;
+	display: flex;
+	justify-content: center;
+	background: orange;
+	font-size: 10vh;
+	font-family: "mext";
+	padding: 0px 10px 0px 10px;
+	margin-bottom: 20px;
+}
+#choosePicture img {
+	width: 20vw;
+	height: 20vw;
+	object-fit: contain;
+	box-sizing: border-box;
+	padding: 10px;
+}
+#mistakes {
 	display: none;
+	grid-template-columns: auto auto;
+	align-content: start;
+	align-items: center;
+	justify-content: start;
+	gap: 20px;
+	margin: 30px;
+}
+#mistakes img {
+	width: 20vh;
+	height: 20vh;
+	object-fit: contain;
+}
+#mistakes span {
+	font-size: 5vh;
 }
 		</style>
 	</head>
 	<body>
 		<div id="top">
 			<span id="title">Picture Dictionary</span>
-			<div id="filters">
+			<div id="divMode">
+				<span><input type="radio" name="mode" id="inputRadioOndoku" value="ondoku" checked></input><label for="inputRadioOndoku">Ondoku</label></span>
+				<span><input type="radio" name="mode" id="inputRadioQuizChoosePicture" value="choosePicture"></input><label for="inputRadioQuizChoosePicture">Quiz: Choose Picture</label></span>
 				<!--
-				<label for="inputExampleWordCount">Max Word Count:</label>
-				<input type="number" id="inputExampleWordCount" min="1" value="1"></input>
-				<label for="inputEntries">Entries:</label>
-				<input type="number" id="inputEntries" readonly></input>
+				<span><input type="radio" name="mode" id="inputRadioQuizChoosePhrase" value="choosePhrase"></input><label for="inputRadioQuizChoosePhrase">Quiz: Choose Phrase</label></span>
 				-->
-			</div>
-			<div>
-				<span><input type="radio" name="mode" id="inputRadioOndokuMode" checked></input><label for="inputRadioOndokuMode">Ondoku Mode</label></span>
-				<span><input type="radio" name="mode" id="inputRadioQuizMode"></input><label for="inputRadioQuizMode">Quiz Mode</label></span>
+				<span><input type="radio" name="mode" id="inputRadioQuizMistakes" value="mistakes"></input><label for="inputRadioQuizMistakes">Mistakes (<span id="spanMistakesCount">0</span>)</label></span>
 			</div>
 		</div>
-		<div id="ondoku">
+		<div class="mode" id="ondoku">
 			<img id="ondoku_img"/>
 			<pre id="ondoku_example">Example</pre>
 			<button id="next">Next</button>
 		</div>
-		<div id="quiz">
-			<pre id="quiz_example">Example</pre>
-			<img id="quiz_img_1"/>
-			<img id="quiz_img_2"/>
-			<img id="quiz_img_3"/>
-			<img id="quiz_img_4"/>
+		<div class="mode" id="choosePicture">
+			<div id="choosePicturePhrase">Example</div>
+			<button class="choosePictureButton"><img id="choosePictureImg1"/></button>
+			<button class="choosePictureButton"><img id="choosePictureImg2"/></button>
+			<button class="choosePictureButton"><img id="choosePictureImg3"/></button>
+			<button class="choosePictureButton"><img id="choosePictureImg4"/></button>
+			<kbd class="kbc-button">A</kbd>
+			<kbd class="kbc-button">S</kbd>
+			<kbd class="kbc-button">D</kbd>
+			<kbd class="kbc-button">F</kbd>
+		</div>
+		<div class="mode" id="mistakes">
+			<h3>Mistakes</h3><span></span>
 		</div>
 	</body>
 	<script type="module">
 import pd from "../../image_library/pd_eastman/pd_eastman.json" with { type: 'json' };
 import HatDraw from "../js_modules/HatDraw.mjs";
 import Loader from "../js_modules/Loader.mjs";
+import shuffle from "../js_modules/shuffle.mjs";
 console.log(pd);
 
 class Ondoku {
-	constructor(imgSrc, word, example) {
+	constructor() {
+		let draw = hd.drawOne();
+		let imgSrc = draw[0];
+		let word = draw[1];
+		let example = draw[2];
 		console.log(imgSrc, word, example);
 		let img = LOADER.newImageAsset(imgSrc);
 		this.img = img;
 		this.word = word;
+		this.readerIsFinished = false;
 		//document.getElementById("ondoku_word").innerHTML = word;
 		document.getElementById("ondoku_img").src = img.src;
 		if (typeof(example) !== "undefined") {
@@ -129,47 +178,131 @@ class Ondoku {
 	}
 }
 
-//function filterEntries() {
-//	let filtered = pd.filter(function (entry) {
-//		let example = entry[2];
-//		if (typeof(example) == "undefined") {
-//			return entry;
-//		} else if (example.split(" ").length == inputExampleWordCount.value) {
-//			return entry;
-//		}
-//	});
-//	hd = new HatDraw(filtered);
-//	inputEntries.value = filtered.length;
-//	setup()
-//}
+class ChoosePicture {
+	constructor() {
+		let answer = hd.drawOne();
+		let wrong1 = hd.drawOne(); 
+		let wrong2 = hd.drawOne(); 
+		let wrong3 = hd.drawOne(); 
+		let phrase = "";
+		if (typeof answer[2] !== "undefined") {
+			phrase = answer[2].replaceAll("*", "");
+		} else {
+			phrase = answer[1];
+		}
+		document.activeElement.blur();
+		document.querySelectorAll(".choosePictureButton").forEach(el => el.style.background = "");
+		//shuffle order of images
+		let order = [answer, wrong1, wrong2, wrong3];
+		shuffle(order);
+		document.getElementById("choosePicturePhrase").innerHTML = phrase;
+		document.getElementById("choosePictureImg1").src = PATH_TO_IMAGES + order[0][0];
+		document.getElementById("choosePictureImg2").src = PATH_TO_IMAGES + order[1][0];
+		document.getElementById("choosePictureImg3").src = PATH_TO_IMAGES + order[2][0];
+		document.getElementById("choosePictureImg4").src = PATH_TO_IMAGES + order[3][0];
+		//assign keyword as values to buttons
+		document.getElementById("choosePictureImg1").parentElement.value = order[0][1];
+		document.getElementById("choosePictureImg2").parentElement.value = order[1][1];
+		document.getElementById("choosePictureImg3").parentElement.value = order[2][1];
+		document.getElementById("choosePictureImg4").parentElement.value = order[3][1];
+
+		this.answer = answer;
+		this.phrase = phrase;
+		this.madeMistake = false;
+		this.checking = true;
+	}
+	check(el) {
+		if (this.checking) {
+			if (el.value === this.answer[1]) {
+				el.style.background = "lime";
+				this.checking = false;
+				setTimeout(setup, 1500);
+			} else {
+				el.style.background = "red";
+				if (!this.madeMistake) {
+					this.madeMistake = true;
+					let mistakeImage = LOADER.newImageAsset(this.answer[0]);
+					let mistakeSpan = document.createElement("span");
+					mistakeSpan.innerHTML = this.phrase;
+					document.getElementById("mistakes").appendChild(mistakeImage);
+					document.getElementById("mistakes").appendChild(mistakeSpan);
+					countMistakes++;
+					document.getElementById("spanMistakesCount").innerHTML = countMistakes;
+				}
+			}
+		}
+	}
+}
 
 function setup() {
-	let draw = hd.drawOne();
-	new Ondoku(draw[0], draw[1], draw[2]);
+	document.querySelectorAll(".mode").forEach(el => el.style.display = "none");
+	if (mode === "ondoku") {
+		document.getElementById("ondoku").style.display = "grid";
+		if (quiz.readerIsFinished) {
+			quiz = new Ondoku();
+		}
+	} else if (mode === "choosePicture") {
+		document.getElementById("choosePicture").style.display = "grid";
+		if (!quiz?.checking) {
+			quiz = new ChoosePicture();
+		}
+	} else if (mode === "mistakes") {
+		document.getElementById("mistakes").style.display = "grid";
+	}
 }
 
 
-const LOADER = new Loader("../../image_library/pd_eastman/")
+const PATH_TO_IMAGES = "../../image_library/pd_eastman/";
+const LOADER = new Loader(PATH_TO_IMAGES)
 const HD = new HatDraw(pd);
 let hd = HD;
+let mode = "ondoku";
+let quiz = null;
+let countMistakes = 0;
 const inputExampleWordCount = document.getElementById("inputExampleWordCount");
 const inputEntries = document.getElementById("inputEntries");
 
-document.addEventListener("keydown", function (ev) {
-	if (
-		ev.key === "Enter" ||
-		ev.key === " " ||
-		ev.key === "ArrowRight"
-	) {
+
+document.getElementById("next").addEventListener("click", function () {
+	quiz.readerIsFinished = true; setup();
+});
+
+document.querySelectorAll("[name='mode']").forEach(function(el) {
+	el.addEventListener("change", function (ev) {
+		mode = ev.target.value;
 		setup();
+	});
+});
+
+document.querySelectorAll(".choosePictureButton").forEach(function (el) {
+	el.addEventListener("click", function () {
+		quiz.check(this);
+	});
+});
+
+document.addEventListener("keydown", function (ev) {
+	if (mode === "ondoku") {
+		if (
+			ev.key === "Enter" ||
+			ev.key === " " ||
+			ev.key === "ArrowRight"
+		) {
+			quiz.readerIsFinished = true;
+			setup();
+		}
+	} else if (mode === "choosePicture") {
+		if (ev.key.toUpperCase() === "A") {
+			quiz.check(document.getElementById("choosePictureImg1").parentElement);
+		} else if (ev.key.toUpperCase() === "S") {
+			quiz.check(document.getElementById("choosePictureImg2").parentElement);
+		} else if (ev.key.toUpperCase() === "D") {
+			quiz.check(document.getElementById("choosePictureImg3").parentElement);
+		} else if (ev.key.toUpperCase() === "F") {
+			quiz.check(document.getElementById("choosePictureImg4").parentElement);
+		}
 	}
 });
 
-document.getElementById("next").addEventListener("click", setup);
-
-//inputExampleWordCount.addEventListener("change", filterEntries);
-
-//filterEntries();
-setup();
+quiz = new Ondoku();
 	</script>
 </html>
