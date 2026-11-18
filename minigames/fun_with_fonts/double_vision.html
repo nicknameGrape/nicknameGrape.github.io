@@ -15,9 +15,10 @@ body {
 }
 #letters {
 	display: grid;
-	grid-template-rows: repeat(5, 15vh);
-	grid-template-columns: repeat(5, 15vh);
+	grid-template-rows: repeat(2, 15vh);
+	grid-template-columns: repeat(2, 15vh);
 	gap: 10px;
+	user-select: none;
 }
 .letter {
 	display: flex;
@@ -73,6 +74,11 @@ const FONTS = [
 //const hdFonts = new HatDraw(FONTS.map(src => src.replace(".ttf", "")));
 const UPPERCASE = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const hdUppercase = new HatDraw(UPPERCASE);
+const DEFAULT_TILES = 4;
+const MAX_TILES = 25;
+const MIN_TILES = 4;
+let numberOfTiles = 4;
+let canAnswer = true;
 
 let answer = null;
 //let loaded = 0;
@@ -95,15 +101,22 @@ let answer = null;
 
 function setup() {
 	console.log("setup");
+	canAnswer = true;
 	let alphabet = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	answer = hdUppercase.drawOne();
 	alphabet.splice(alphabet.indexOf(answer), 1);
-	let tilesUpper = alphabet.slice(0, 12);
-	let tilesLower = alphabet.slice(12,23).map(c => c.toLowerCase());
+	shuffle(alphabet);
+	//let tilesUpper = alphabet.slice(0, 12);
+	//let tilesLower = alphabet.slice(12,23).map(c => c.toLowerCase());
+	let tilesUpper = alphabet.slice(0, Math.floor((numberOfTiles-1)/2));
+	let tilesLower = alphabet.slice(Math.floor((numberOfTiles-1)/2),numberOfTiles-2).map(c => c.toLowerCase());
 	let tiles = tilesUpper.concat(tilesLower);
 	tiles.push(answer, answer.toLowerCase());
 	shuffle(tiles);
 	console.log(answer, tiles);
+	let cols = Math.ceil(Math.sqrt(numberOfTiles));
+	document.getElementById("letters").style.gridTemplateColumns = "repeat("+cols+", 15vh)";
+	document.getElementById("letters").style.gridTemplateRows = "repeat("+Math.ceil(numberOfTiles/cols)+", 15vh)";
 	document.querySelectorAll(".letter").forEach(el => el.remove());
 	tiles.forEach(function (c) {
 		let tile = document.createElement("span");
@@ -116,10 +129,16 @@ function setup() {
 
 //loadFonts();
 function checkLetter() {
-	if (this.innerHTML.toUpperCase() !== answer) {
-		this.style.background = "red";
+	if (canAnswer) {
+		if (this.innerHTML.toUpperCase() !== answer) {
+			this.style.background = "red";
+			if (numberOfTiles > MIN_TILES) {numberOfTiles--;}
+		} else {
+			if (numberOfTiles === MAX_TILES) {document.body.style.background = "limegreen";}
+			if (numberOfTiles < MAX_TILES) {numberOfTiles++;}
+		}
+		revealAnswer();
 	}
-	revealAnswer();
 }
 
 function revealAnswer() {
@@ -128,13 +147,19 @@ function revealAnswer() {
 			el.style.background = "lime";
 		}
 	});
+	canAnswer = false;
 	setTimeout(setup, 2000);
 }
 
 window.addEventListener("keypress", function (ev) {
-	if (ev.key === "n") {
-		setup();
-	}
+	let matchingTile = Array.from(document.querySelectorAll(".letter")).find(el => el.innerHTML.toUpperCase() === ev.key.toUpperCase());
+	if (typeof matchingTile !== "undefined") {
+		console.log(matchingTile);
+		checkLetter.bind(matchingTile)();
+	} 
+	//if (ev.key === "n") {
+	//	setup();
+	//}
 });
 
 setup();
