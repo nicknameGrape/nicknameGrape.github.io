@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="spell_words.css"/>
+</head>
+<body>
+	<div id="p1">
+		<div id="namer">
+			<img id="imgNamer"/>
+			<span id="spelling"></span>
+			<!--
+			<div id="divRadioMirrorCase">
+				<input type="radio" id="mirrorCaseUpper" name="case" value="uppercase" checked/>
+				<label for="mirrorCaseUpper">ABCDEF</label>
+				&emsp;
+				<input type="radio" id="mirrorCaseLower" name="case" value="lowercase"/>
+				<label for="mirrorCaseLower">abcdef</label>
+			</div>
+			-->
+			<div id="mirrorContainer">
+				<input type="text" id="mirror" disabled></input>
+				<button id="namerBackspace">&larr;BS</button>
+			</div>
+			<button id="ok">OK</button>
+		</div>
+	</div>
+	<div id="border"></div>
+	<div id="p2">
+		<div id="speller">
+			<img id="imgSpeller"/>
+			<div id="inputContainer">
+				<input type="text" id="inputSpeller" disabled/>
+			</div>
+			<div id="keyboardContainer">
+				<div id="keyboardABC">
+<button id="keyA" class="key">a</button>
+<button id="keyB" class="key">b</button>
+<button id="keyC" class="key">c</button>
+<button id="keyD" class="key">d</button>
+<button id="keyE" class="key">e</button>
+<button id="keyF" class="key">f</button>
+<button id="keyG" class="key">g</button>
+<button id="keyH" class="key">h</button>
+<button id="keyI" class="key">i</button>
+<button id="keyJ" class="key">j</button>
+<button id="keyK" class="key">k</button>
+<button id="keyL" class="key">l</button>
+<button id="keyM" class="key">m</button>
+<button id="keyN" class="key">n</button>
+<button id="keyO" class="key">o</button>
+<button id="keyP" class="key">p</button>
+<button id="keyQ" class="key">q</button>
+<button id="keyR" class="key">r</button>
+<button id="keyS" class="key">s</button>
+<button id="keyT" class="key">t</button>
+<button id="keyU" class="key">u</button>
+<button id="keyV" class="key">v</button>
+<button id="keyW" class="key">w</button>
+<button id="keyX" class="key">x</button>
+<button id="keyY" class="key">y</button>
+<button id="keyZ" class="key">z</button>
+<button id="spellerBackspaceABC">&larr;BS</button>
+				</div>
+				<div id="keyboardQWERTY">
+					<div class="QWERTY_row">
+<button id="keyQ" class="key">q</button>
+<button id="keyW" class="key">w</button>
+<button id="keyE" class="key">e</button>
+<button id="keyR" class="key">r</button>
+<button id="keyT" class="key">t</button>
+<button id="keyY" class="key">y</button>
+<button id="keyU" class="key">u</button>
+<button id="keyI" class="key">i</button>
+<button id="keyO" class="key">o</button>
+<button id="keyP" class="key">p</button>
+					</div>
+					<div class="QWERTY_row">
+<button id="keyA" class="key">a</button>
+<button id="keyS" class="key">s</button>
+<button id="keyD" class="key">d</button>
+<button id="keyF" class="key">f</button>
+<button id="keyG" class="key">g</button>
+<button id="keyH" class="key">h</button>
+<button id="keyJ" class="key">j</button>
+<button id="keyK" class="key">k</button>
+<button id="keyL" class="key">l</button>
+					</div>
+					<div class="QWERTY_row">
+<button id="keyZ" class="key">z</button>
+<button id="keyX" class="key">x</button>
+<button id="keyC" class="key">c</button>
+<button id="keyV" class="key">v</button>
+<button id="keyB" class="key">b</button>
+<button id="keyN" class="key">n</button>
+<button id="keyM" class="key">m</button>
+<button id="spellerBackspaceQWERTY">&larr;BS</button>
+					</div>
+				</div>
+			</div>
+			<div>
+				<input type="radio" id="inputKeyboardABCDEF" name="layout" value="ABCDE" checked/>
+				<label for="inputKeyboardABCDEF">abcdef</label>
+				&emsp;
+				<input type="radio" id="inputKeyboardQWERTY" name="layout" value="QWERTY"/>
+				<label for="inputKeyboardQWERTY">qwerty</label>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="module">
+	import IMAGE_LIBRARY from "https://nicknamegrape.github.io/image_library/image_library.mjs";
+	import Split_Screen from "../2p_split_screen.mjs";
+	import HatDraw from "https://nicknamegrape.github.io/js_modules/HatDraw.mjs";
+	import Loader from "https://nicknamegrape.github.io/js_modules/Loader.mjs";
+	const GAME = new Split_Screen(document.getElementById("p1"), document.getElementById("p2"));
+	const LOWERCASE_ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+	const hdWords = new HatDraw(IMAGE_LIBRARY.filter(
+		ilo =>
+			!ilo.text.includes(" ") &&
+			!ilo.text.includes(".") &&
+			ilo.text.length <= 6 &&
+			Array.from(ilo.text).every(c => LOWERCASE_ALPHABET.includes(c))
+	));
+	console.log(hdWords);
+	const loader = new Loader("https://nicknamegrape.github.io/image_library/images/");
+	const inputSpeller = document.getElementById("inputSpeller");
+	const mirror = document.getElementById("mirror");
+	let isInputAllowed = true;
+	let word;
+	let image;
+	let p1preferredKeyboard = null;
+	let p2preferredKeyboard = null;
+	function newWord() {
+		word = hdWords.drawOne();
+		image = loader.newImageAsset(word.src, function () {
+			document.getElementById("imgSpeller").src = image.src;
+			document.getElementById("imgNamer").src = image.src;
+			document.getElementById("imgSpeller").style.visibility = "visible";
+			document.getElementById("imgNamer").style.visibility = "visible";
+		});
+		//document.getElementById("spelling").innerHTML = word.text.toUpperCase();
+		document.getElementById("spelling").innerHTML = word.text;
+		document.getElementById("imgSpeller").style.visibility = "hidden";
+		document.getElementById("imgNamer").style.visibility = "hidden";
+		document.getElementById("inputSpeller").value = "";
+		document.getElementById("mirror").value = "";
+		document.getElementById("mirror").value = "";
+		inputSpeller.style.background = "";
+		mirror.style.background = "";
+		isInputAllowed = true;
+	}
+	Array.from(document.getElementsByClassName("key")).forEach(function (button) {
+		button.addEventListener("click", function (ev) {
+			if (isInputAllowed) {
+				inputSpeller.value += this.innerHTML;
+				//inputSpeller.value = inputSpeller.value.toUpperCase();
+				inputSpeller.value = inputSpeller.value;
+				mirror.value = inputSpeller.value;
+			}
+		});
+	});
+	document.getElementById("spellerBackspaceABC").addEventListener("click", function () {
+		if (isInputAllowed) {
+			inputSpeller.value = inputSpeller.value.slice(0, -1);
+			mirror.value = inputSpeller.value;
+		}
+	});
+	document.getElementById("spellerBackspaceQWERTY").addEventListener("click", function () {
+		if (isInputAllowed) {
+			inputSpeller.value = inputSpeller.value.slice(0, -1);
+			mirror.value = inputSpeller.value;
+		}
+	});
+	document.getElementById("namerBackspace").addEventListener("click", function () {
+		if (isInputAllowed) {
+			inputSpeller.value = inputSpeller.value.slice(0, -1);
+			mirror.value = inputSpeller.value;
+		}
+	});
+	document.getElementById("ok").addEventListener("click", function () {
+		if (isInputAllowed) {
+			isInputAllowed = false;
+			newWord();
+			GAME.swap();
+		}
+	});
+	document.querySelectorAll("input[name='layout']").forEach(rb => rb.addEventListener("change", function () {
+		if (this.value === "QWERTY") {
+			document.getElementById("keyboardABC").style.display = "none";
+			document.getElementById("keyboardQWERTY").style.display = "flex";
+		} else {
+			document.getElementById("keyboardABC").style.display = "grid";
+			document.getElementById("keyboardQWERTY").style.display = "none";
+		}
+	}));
+	newWord();
+</script>
+</html>
