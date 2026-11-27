@@ -19,8 +19,8 @@ class Lot {
 		let c = this.canvas;
 		let cx = this.context;
 		let roadWidth = window.innerWidth*.01;
-		c.width = window.innerWidth*.2;
-		c.height = window.innerHeight*.25;
+		c.width = window.innerWidth*.3333+1;
+		c.height = window.innerHeight*.3333+1;
 		cx.clearRect(0, 0, c.width, c.height);
 		cx.fillStyle = "gray";
 		cx.fillRect(0, 0, c.width, c.height);
@@ -29,11 +29,11 @@ class Lot {
 		cx.strokeStyle = "white";
 		cx.beginPath();
 		cx.setLineDash([c.width*.03, c.width*.03]);
-		cx.moveTo(c.width*.05, c.height-1);
-		cx.lineTo(c.width*.95, c.height-1);
+		cx.moveTo(c.width*.05, c.height-2);
+		cx.lineTo(c.width*.95, c.height-2);
 		cx.stroke();
-		cx.moveTo(c.width-1, roadWidth);
-		cx.lineTo(c.width-1, c.height-roadWidth);
+		cx.moveTo(c.width-2, roadWidth);
+		cx.lineTo(c.width-2, c.height-roadWidth);
 		cx.stroke();
 		if (this.buildingText !== null && this.buildingImg !== null && this.adjective !== null) {
 			fitImage(cx, this.buildingImg, c.width*.1, 0, c.width*.5, c.height*.7);
@@ -64,7 +64,7 @@ function updateLot(ev) {
 			currentLot.buildingText = ev.target.data.text;
 			currentLot.buildingImg = loader.newImageAsset(ev.target.data.src, currentLot.render.bind(currentLot));
 		} else if (ev.target.name === "adjective") {
-			currentLot.adjective = ev.target.id;
+			currentLot.adjective = ev.target.value;
 		}
 		if (
 			currentLot.adjective !== null &&
@@ -82,7 +82,12 @@ let BLACKLIST = [
 	"the Taj Mahal",
 	"the Great Wall"
 ]
-let buildings = IMAGE_LIBRARY.filter(o => o.tags.includes("building") && !BLACKLIST.includes(o.text));
+let buildings = IMAGE_LIBRARY.filter(o =>
+	(
+		o.tags.includes("building") &&
+		!BLACKLIST.includes(o.text)
+	)
+);
 let OTHER = [
 	"mountain",
 	"river"
@@ -109,7 +114,8 @@ buildings.forEach(function (b) {
 	div.appendChild(label);
 	divBuildings.appendChild(div);
 });
-for (let i=0; i<20; i++) {
+//for (let i=0; i<20; i++) {
+for (let i=0; i<9; i++) {
 	let lot = new Lot();
 	lots.push(lot);
 	lot.render();

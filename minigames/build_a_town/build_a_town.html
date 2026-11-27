@@ -10,8 +10,8 @@ img {
 }
 #city {
 	display: grid;
-	grid-template-rows: repeat(4, 25vh);
-	grid-template-columns: repeat(5, 20vw);
+	grid-template-rows: repeat(3, 33.33vh);
+	grid-template-columns: repeat(3, 33.33vw);
 	background: green;
 }
 #buildMenu {
@@ -36,6 +36,11 @@ label {
 	color: white;
 	font-size: 5vh;
 }
+.translation {
+	margin-left: 10px;
+	font-size: 70%;
+	color: gray;
+}
 #buildings {
 	display: flex;
 	flex-direction: column;
@@ -51,40 +56,40 @@ label {
 	<div id="buildMenu">
 		<div id="adjectives">
 			<div>
-				<input id="big" type="radio" name="adjective"/>
-				<label for="big">big</label>
+				<input id="big" type="radio" name="adjective" value="big"/>
+				<label for="big">big<span class="translation">大きい</span></label>
 			</div>
 			<div>
-				<input id="small" type="radio" name="adjective"/>
-				<label for="small">small</label>
+				<input id="small" type="radio" name="adjective" value="small"/>
+				<label for="small">small<span class="translation">小さい</span></label>
 			</div>
 			<div>
-				<input id="new" type="radio" name="adjective"/>
-				<label for="new">new</label>
+				<input id="new" type="radio" name="adjective" value="new"/>
+				<label for="new">new<span class="translation">新しい</span></label>
 			</div>
 			<div>
-				<input id="old" type="radio" name="adjective"/>
-				<label for="old">old</label>
+				<input id="old" type="radio" name="adjective" value="old"/>
+				<label for="old">old<span class="translation">古い</span></label>
 			</div>
 			<div>
-				<input id="beautiful" type="radio" name="adjective"/>
-				<label for="beautiful">beautiful</label>
+				<input id="beautiful" type="radio" name="adjective" value="beautiful"/>
+				<label for="beautiful">beautiful<span class="translation">美しい</span></label>
 			</div>
 			<div>
-				<input id="famous" type="radio" name="adjective"/>
-				<label for="famous">famous</label>
+				<input id="famous" type="radio" name="adjective" value="famous"/>
+				<label for="famous">famous<span class="translation">有名な</span></label>
 			</div>
 			<div>
-				<input id="exciting" type="radio" name="adjective"/>
-				<label for="exciting">exciting</label>
+				<input id="exciting" type="radio" name="adjective" value="exciting"/>
+				<label for="exciting">exciting<span class="translation">わくわくする</span></label>
 			</div>
 			<div>
-				<input id="fantastic" type="radio" name="adjective"/>
-				<label for="fantastic">fantastic</label>
+				<input id="fantastic" type="radio" name="adjective" value="fantastic"/>
+				<label for="fantastic">fantastic<span class="translation">すばらしい</span></label>
 			</div>
 			<div>
-				<input id="cool" type="radio" name="adjective"/>
-				<label for="cool">cool</label>
+				<input id="cool" type="radio" name="adjective" value="cool"/>
+				<label for="cool">cool<span class="translation">かっこいい</span></label>
 			</div>
 		</div>
 		<div id="buildings"></div>
